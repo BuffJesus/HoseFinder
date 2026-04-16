@@ -23,19 +23,20 @@ export function hoseImgSrc(partNo) {
  *   partNo: string,
  *   catalogPage?: number,
  *   silhouette: string,
+ *   polyline?: number[][],
  *   className?: string,
  *   imgClassName?: string,
  *   preferCatalog?: boolean,
  * }} props
  */
-export function HoseImage({ partNo, catalogPage, silhouette, className = "", imgClassName = "", preferCatalog = false }) {
+export function HoseImage({ partNo, catalogPage, silhouette, polyline, className = "", imgClassName = "", preferCatalog = false }) {
   const [mode, setMode] = useState(preferCatalog ? "catalog" : "hose");
 
   if (mode === "silhouette") {
     return (
       <div className={`flex items-center justify-center ${className}`.trim()}>
         <div className={`text-violet-300 ${imgClassName}`.trim()}>
-          <HoseSilhouette type={silhouette} />
+          <HoseSilhouette type={silhouette} polyline={polyline} />
         </div>
       </div>
     );
@@ -58,7 +59,7 @@ export function HoseImage({ partNo, catalogPage, silhouette, className = "", img
         />
       ) : (
         <div className={`text-violet-300 ${imgClassName}`.trim()}>
-          <HoseSilhouette type={silhouette} />
+          <HoseSilhouette type={silhouette} polyline={polyline} />
         </div>
       )}
     </div>

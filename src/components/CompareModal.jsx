@@ -89,7 +89,7 @@ export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
                   <X className="h-3 w-3" />
                 </button>
                 <div className="h-16 text-violet-300">
-                  <HoseSilhouette type={h.silhouette} />
+                  <HoseSilhouette type={h.silhouette} polyline={h.shape?.polyline} />
                 </div>
                 <div className="mt-2 text-base font-semibold tabular tracking-tight text-white">{h.partNo}</div>
                 <div className="truncate text-[11px] text-zinc-400">{h.visualFamily}</div>

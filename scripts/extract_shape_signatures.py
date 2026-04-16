@@ -278,6 +278,21 @@ def compute_signature(path: list[tuple[int, int]], branch_count: int) -> dict | 
         if dev >= BEND_DEVIATION_THRESHOLD_DEG:
             bends.append(round(dev, 1))
 
+    # Normalise the simplified polyline into a 0–100 coordinate box so the
+    # front-end can render it as an SVG path at any scale without knowing the
+    # source image dimensions. Preserves aspect ratio.
+    xs = [p[0] for p in simplified]
+    ys = [p[1] for p in simplified]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+    span_x = max_x - min_x or 1
+    span_y = max_y - min_y or 1
+    scale = 100.0 / max(span_x, span_y)
+    norm_pts = [
+        [round((p[0] - min_x) * scale, 1), round((p[1] - min_y) * scale, 1)]
+        for p in simplified
+    ]
+
     return {
         "bendCount": len(bends),
         "bendAngles": bends,
@@ -287,6 +302,7 @@ def compute_signature(path: list[tuple[int, int]], branch_count: int) -> dict | 
         "orientationDeg": round(orientation, 1),
         "branchCount": branch_count,
         "polylinePointCount": len(simplified),
+        "polyline": norm_pts,
     }
 
 

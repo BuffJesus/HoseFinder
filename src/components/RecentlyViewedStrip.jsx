@@ -54,7 +54,7 @@ export function RecentlyViewedStrip({ hoses, onSelect }) {
               </div>
             </div>
             <div className="mt-3 h-14 text-violet-300/90 transition group-hover:text-violet-200">
-              <HoseSilhouette type={hose.silhouette} />
+              <HoseSilhouette type={hose.silhouette} polyline={hose.shape?.polyline} />
             </div>
             <div className="mt-3 line-clamp-1 text-sm text-zinc-300">{hose.visualFamily}</div>
             <div className="mt-1 text-xs text-zinc-400">

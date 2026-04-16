@@ -101,7 +101,7 @@ export function DetailModal({
               </div>
             </div>
             <div className="hidden h-20 w-40 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-black/30 text-violet-200 sm:flex">
-              <HoseSilhouette type={hose.silhouette} />
+              <HoseSilhouette type={hose.silhouette} polyline={hose.shape?.polyline} />
             </div>
           </div>
         </DialogHeader>
@@ -279,7 +279,7 @@ export function DetailModal({
                     className="group flex items-center gap-3 rounded-2xl border border-violet-400/20 bg-violet-500/5 p-3 text-left transition hover:border-violet-400/40 hover:bg-violet-500/10"
                   >
                     <div className="h-10 w-16 shrink-0 text-violet-300 transition group-hover:text-violet-200">
-                      <HoseSilhouette type={p.silhouette} />
+                      <HoseSilhouette type={p.silhouette} polyline={p.shape?.polyline} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-white tabular">{p.partNo}</div>
@@ -314,7 +314,7 @@ export function DetailModal({
                     className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-left transition hover:border-violet-400/30 hover:bg-white/[0.07] hover:shadow-[0_12px_30px_-12px_rgba(139,92,246,0.5)]"
                   >
                     <div className="h-10 w-16 shrink-0 text-violet-300 transition group-hover:text-violet-200">
-                      <HoseSilhouette type={s.silhouette} />
+                      <HoseSilhouette type={s.silhouette} polyline={s.shape?.polyline} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-white tabular">{s.partNo}</div>

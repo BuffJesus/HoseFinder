@@ -115,6 +115,7 @@ export function HoseCard({ hose, shortlist, toggleShortlist, onSelect, onShowRow
               partNo={hose.partNo}
               catalogPage={hose.catalogPage}
               silhouette={hose.silhouette}
+              polyline={hose.shape?.polyline}
               className="h-24"
               imgClassName="h-full w-auto max-w-full object-contain transition duration-500 group-hover:scale-[1.04]"
             />

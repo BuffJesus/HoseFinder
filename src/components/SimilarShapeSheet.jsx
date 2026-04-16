@@ -88,7 +88,7 @@ export function SimilarShapeSheet({ open, target, allHoses, onClose, onSelect })
                     className="group flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-left transition hover:border-violet-400/30 hover:bg-white/[0.07]"
                   >
                     <div className="h-10 w-16 shrink-0 text-violet-300 transition group-hover:text-violet-200">
-                      <HoseSilhouette type={hose.silhouette} />
+                      <HoseSilhouette type={hose.silhouette} polyline={hose.shape?.polyline} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-baseline gap-2">

@@ -29,8 +29,32 @@ const PATHS = {
   branchFour: "M22 72 L218 72 M90 72 L90 26 M158 72 L158 26",
 };
 
-/** @param {{ type: string, color?: string }} props */
-export function HoseSilhouette({ type, color = "currentColor" }) {
+/**
+ * Render a hose silhouette. When a `polyline` array (from shape_signatures)
+ * is provided, renders the hose's ACTUAL extracted centerline instead of
+ * the generic category icon. Falls back to the category SVG when polyline
+ * data isn't available.
+ *
+ * @param {{ type: string, color?: string, polyline?: number[][] }} props
+ */
+export function HoseSilhouette({ type, color = "currentColor", polyline }) {
+  // Per-hose polyline: render the real extracted shape.
+  if (polyline && polyline.length >= 2) {
+    const d = polyline.map((p, i) => `${i === 0 ? "M" : "L"} ${p[0]} ${p[1]}`).join(" ");
+    return (
+      <svg viewBox="-5 -5 110 110" className="h-full w-full" preserveAspectRatio="xMidYMid meet" aria-hidden>
+        <path
+          d={d}
+          fill="none"
+          stroke={color}
+          strokeWidth={8}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  // Fallback: generic category icon.
   const d = PATHS[type] || PATHS.sweep;
   const isBranch = type?.startsWith("branch");
   return (

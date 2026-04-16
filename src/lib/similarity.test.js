@@ -23,22 +23,30 @@ describe("shapeSimilarity", () => {
     expect(shapeSimilarity(hose(), null).score).toBe(0);
   });
 
-  it("identical shape family scores highest", () => {
+  it("identical shape family scores well (fallback path, no shape data)", () => {
     const a = hose({ partNo: "1" });
     const b = hose({ partNo: "2" });
     const { score, reasons } = shapeSimilarity(a, b);
-    // same silhouette 0.50 + same length class 0.10 + same size band 0.05 = 0.65
-    expect(score).toBeCloseTo(0.65);
-    expect(reasons[0].label).toBe("same silhouette");
+    // same silhouette 0.30 + curvature 0.10 + length 0.10 + size band 0.05 = 0.55
+    expect(score).toBeCloseTo(0.55);
+    expect(reasons[0].label).toBe("same shape family");
+  });
+
+  it("hoses with real shape data use geometric distance", () => {
+    const shape = { bendCount: 1, bendAngles: [60], arcToChordRatio: 1.2 };
+    const a = hose({ partNo: "1", shape });
+    const b = hose({ partNo: "2", shape });
+    const { score, reasons } = shapeSimilarity(a, b);
+    expect(score).toBeGreaterThan(0.7);
+    expect(reasons[0].label).toBe("very similar shape");
   });
 
   it("different silhouette but same curvature group scores medium", () => {
-    // 'elbow' + 'shortElbow' both belong to curvature group 'elbow'
     const a = hose({ partNo: "1", silhouette: "elbow" });
     const b = hose({ partNo: "2", silhouette: "shortElbow" });
     const { score, reasons } = shapeSimilarity(a, b);
-    // same hoseType 0.15 + matching curvature 0.20 + length 0.10 + size band 0.05 = 0.50
-    expect(score).toBeCloseTo(0.50);
+    // same hoseType 0.10 + matching curvature 0.10 + length 0.10 + size band 0.05 = 0.35
+    expect(score).toBeCloseTo(0.35);
     expect(reasons.some((r) => r.label === "matching curvature")).toBe(true);
   });
 
@@ -53,7 +61,7 @@ describe("shapeSimilarity", () => {
     });
     const { score, reasons } = shapeSimilarity(a, b);
     expect(reasons.some((r) => r.label.endsWith("step"))).toBe(true);
-    expect(score).toBeGreaterThan(0.5);
+    expect(score).toBeGreaterThan(0.35);
   });
 
   it("reasons are sorted by descending weight", () => {
@@ -83,15 +91,15 @@ describe("findSimilarHoses", () => {
   it("sorts by score descending, then catalog page ascending", () => {
     const target = hose({ partNo: "a" });
     const out = findSimilarHoses(target, catalog);
-    // 'b' shares silhouette (score 0.65) — strongest
+    // 'b' shares silhouette (highest score) — strongest
     expect(out[0].hose.partNo).toBe("b");
   });
 
   it("filters out candidates below minScore", () => {
     const target = hose({ partNo: "a" });
     // Use a high minScore that only the strongest match can clear
-    const out = findSimilarHoses(target, catalog, { minScore: 0.6 });
-    expect(out.every((r) => r.score >= 0.6)).toBe(true);
+    const out = findSimilarHoses(target, catalog, { minScore: 0.5 });
+    expect(out.every((r) => r.score >= 0.5)).toBe(true);
   });
 
   it("respects the limit", () => {
