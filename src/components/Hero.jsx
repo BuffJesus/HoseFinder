@@ -90,18 +90,7 @@ export function Hero({
             >
               {t("hero.ctaGuide")}
             </button>
-            <button
-              type="button"
-              onClick={onShowShortcuts}
-              className="hidden items-center gap-1.5 text-xs text-zinc-400 transition hover:text-white sm:inline-flex"
-              aria-label={t("common.shortcuts")}
-            >
-              {t("common.shortcuts")} <Kbd>?</Kbd>
-            </button>
           </div>
-          {onSelectHose && allHoses.length > 0 && (
-            <PartNumberLookup allHoses={allHoses} onMatch={onSelectHose} />
-          )}
         </div>
 
         <HeroLiveCount

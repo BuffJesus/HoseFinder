@@ -543,30 +543,15 @@ export default function CoolantHoseFinder() {
           onShowShortcuts={() => setKeyboardHelpOpen(true)}
         />
 
-        {showPresets ? (
+        {/* ── Presets + shape strip: only when the user asks ── */}
+        {showPresets && (
           <PresetsStrip
             presets={PRESETS}
             onApply={applyPreset}
             onDismiss={() => setShowPresets(false)}
           />
-        ) : (
-          <div className="mt-6 flex justify-start">
-            <button
-              type="button"
-              onClick={() => setShowPresets(true)}
-              className="group inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs text-zinc-300 transition hover:border-violet-400/30 hover:bg-white/[0.06] hover:text-white"
-            >
-              <span className={`inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r ${ACCENT} text-white shadow-[0_4px_12px_-2px_rgba(139,92,246,0.55)]`}>
-                <Sparkles className="h-3 w-3" />
-              </span>
-              Start from a preset
-              <ArrowRight className="h-3 w-3 text-zinc-400 transition group-hover:translate-x-0.5 group-hover:text-violet-300" />
-            </button>
-          </div>
         )}
-
-        {/* ── Quick shape strip — "wire method" ── */}
-        {step === 1 && !shapeMode && (
+        {shapeMode && step === 1 && (
           <QuickShapeStrip
             candidates={curvatureCandidates}
             curvature={curvature}
@@ -600,6 +585,9 @@ export default function CoolantHoseFinder() {
           toggleShapePage={toggleShapePage}
           shapeMode={shapeMode} setShapeMode={setShapeMode}
           filteredCount={filtered.length}
+          onShowPresets={() => setShowPresets(true)}
+          onPartLookup={setSelected}
+          allHosesForLookup={allHoses}
         />
 
         {/* ── Refine disclosure — one progressive-depth surface for every viewport ── */}

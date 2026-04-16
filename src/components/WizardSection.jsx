@@ -9,7 +9,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Search } from "lucide-react";
 import { FlowCards } from "./FlowCards.jsx";
 import { WizardSizesStep } from "./WizardSizesStep.jsx";
 import { WizardLengthStep } from "./WizardLengthStep.jsx";
@@ -47,6 +47,9 @@ import { ShapeBrowser } from "./ShapeBrowser.jsx";
  *   shapeMode: boolean,
  *   setShapeMode: (v: boolean) => void,
  *   filteredCount: number,
+ *   onShowPresets?: () => void,
+ *   onPartLookup?: (hose: any) => void,
+ *   allHosesForLookup?: any[],
  * }} props
  */
 export function WizardSection({
@@ -65,6 +68,7 @@ export function WizardSection({
   setSilhouettes, setSelectedRows, toggleShapePage,
   shapeMode, setShapeMode,
   filteredCount,
+  onShowPresets, onPartLookup, allHosesForLookup,
 }) {
   const titleForStep = () => {
     if (step === 1) return t("wizard.step1Prompt");
@@ -95,13 +99,35 @@ export function WizardSection({
       </div>
 
       {(step === 1 || flow === "all") ? (
-        <FlowCards
-          flow={flow}
-          onSelect={(key) => {
-            setFlow(key);
-            setStep(2);
-          }}
-        />
+        <>
+          <FlowCards
+            flow={flow}
+            onSelect={(key) => {
+              setFlow(key);
+              setStep(2);
+            }}
+          />
+          {onShowPresets && (
+            <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-400">
+              <button type="button" onClick={onShowPresets} className="transition hover:text-violet-200">
+                <Sparkles className="mr-1 inline h-3 w-3 text-violet-300/70" />
+                Start from a common engine preset
+              </button>
+              {onPartLookup && allHosesForLookup && allHosesForLookup.length > 0 && (
+                <button type="button" onClick={() => {
+                  const raw = window.prompt("Enter a 5-digit Gates part number:");
+                  if (!raw) return;
+                  const partNo = raw.replace(/\D/g, "").slice(0, 5);
+                  const hose = allHosesForLookup.find((h) => h.partNo === partNo);
+                  if (hose) onPartLookup(hose);
+                }} className="transition hover:text-violet-200">
+                  <Search className="mr-1 inline h-3 w-3 text-violet-300/70" />
+                  Look up a part number
+                </button>
+              )}
+            </div>
+          )}
+        </>
       ) : (
         <WizardSummaryStrip label="Step 1" value={flowSummary} onClick={() => setStep(1)} />
       )}
