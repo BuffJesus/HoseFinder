@@ -48,9 +48,10 @@ const TILES = [
  *   flow: string,
  *   setFlow: (f: string) => void,
  *   onOpenBendBuilder?: () => void,
+ *   onOpenWirePhoto?: () => void,
  * }} props
  */
-export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, setFlow, onOpenBendBuilder }) {
+export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, setFlow, onOpenBendBuilder, onOpenWirePhoto }) {
   const counts = useMemo(() => {
     const m = /** @type {Record<string, number>} */ ({});
     for (const h of candidates) {
@@ -100,16 +101,28 @@ export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, set
             Tiles narrow to hoses with that routing. Combine with a size below.
           </p>
         </div>
-        {onOpenBendBuilder && (
-          <button
-            type="button"
-            onClick={onOpenBendBuilder}
-            className="shrink-0 inline-flex items-center gap-1.5 rounded-2xl border border-violet-400/30 bg-violet-500/15 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-violet-400/50 hover:bg-violet-500/25"
-          >
-            Sketch a custom shape
-            <span aria-hidden>→</span>
-          </button>
-        )}
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          {onOpenBendBuilder && (
+            <button
+              type="button"
+              onClick={onOpenBendBuilder}
+              className="inline-flex items-center gap-1.5 rounded-2xl border border-violet-400/30 bg-violet-500/15 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-violet-400/50 hover:bg-violet-500/25"
+            >
+              Sketch it
+              <span aria-hidden>→</span>
+            </button>
+          )}
+          {onOpenWirePhoto && (
+            <button
+              type="button"
+              onClick={onOpenWirePhoto}
+              className="inline-flex items-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-zinc-200 transition hover:border-violet-400/30 hover:bg-white/[0.08] hover:text-white"
+            >
+              Photo of wire
+              <span aria-hidden>→</span>
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid gap-2.5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">

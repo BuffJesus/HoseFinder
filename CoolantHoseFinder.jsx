@@ -39,6 +39,7 @@ import { Hero } from "./src/components/Hero.jsx";
 import { FlowCards } from "./src/components/FlowCards.jsx";
 import { QuickShapeStrip } from "./src/components/QuickShapeStrip.jsx";
 import { BendBuilderDialog } from "./src/components/BendBuilderDialog.jsx";
+import { WirePhotoDialog } from "./src/components/WirePhotoDialog.jsx";
 import { WizardSizesStep } from "./src/components/WizardSizesStep.jsx";
 import { WizardLengthStep } from "./src/components/WizardLengthStep.jsx";
 import { ResultsHeader } from "./src/components/ResultsHeader.jsx";
@@ -300,6 +301,7 @@ export default function CoolantHoseFinder() {
   const [projectManagerOpen, setProjectManagerOpen] = useState(false);
   const [photoMeasureOpen, setPhotoMeasureOpen] = useState(false);
   const [bendBuilderOpen, setBendBuilderOpen] = useState(false);
+  const [wirePhotoOpen, setWirePhotoOpen] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [showPresets, setShowPresets] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
@@ -758,6 +760,7 @@ export default function CoolantHoseFinder() {
             flow={flow}
             setFlow={setFlow}
             onOpenBendBuilder={() => setBendBuilderOpen(true)}
+            onOpenWirePhoto={() => setWirePhotoOpen(true)}
           />
         )}
 
@@ -1221,6 +1224,12 @@ export default function CoolantHoseFinder() {
       <BendBuilderDialog
         open={bendBuilderOpen}
         onClose={() => setBendBuilderOpen(false)}
+        allHoses={allHoses}
+        onSelect={(h) => setSelected(h)}
+      />
+      <WirePhotoDialog
+        open={wirePhotoOpen}
+        onClose={() => setWirePhotoOpen(false)}
         allHoses={allHoses}
         onSelect={(h) => setSelected(h)}
       />
