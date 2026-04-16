@@ -121,11 +121,37 @@
     "byProximity": "Por proximidad",
     "catalogImages": "Imágenes de la página del catálogo Gates"
   },
+  "compare": {
+    "sideBySide": "Lado a lado",
+    "compare": "Comparar",
+    "differences": "Las diferencias se resaltan en violeta.",
+    "openSideBySide": "Abrir lado a lado",
+    "hide": "Ocultar",
+    "clear": "Limpiar"
+  },
   "shortlist": {
     "parts": "Lista de piezas",
     "printBom": "Imprimir BOM",
     "quickPrint": "Impresión rápida",
-    "openBom": "Abrir BOM"
+    "openBom": "Abrir BOM",
+    "shortlist": "Lista rápida",
+    "clear": "Limpiar",
+    "emptyHint": "Guarda piezas desde las tarjetas o el modal de detalle para crear una lista imprimible."
+  },
+  "filter": {
+    "search": "Buscar",
+    "searchPlaceholder": "Número de pieza, tamaño, tipo...",
+    "yourMeasurements": "Tus medidas",
+    "photo": "Foto",
+    "moreFilters": "Más filtros",
+    "moreFiltersHint": "Tolerancia y controles de categoría",
+    "diameterTolerance": "Tolerancia de diámetro",
+    "lengthTolerance": "Tolerancia de longitud",
+    "sizeBand": "Banda de tamaño",
+    "allSizes": "Todos los tamaños",
+    "numberOfEnds": "Número de extremos",
+    "anyEndCount": "Cualquier cantidad",
+    "clearAllFilters": "Limpiar todos los filtros"
   },
   "guide": {
     "title": "Cómo medir",

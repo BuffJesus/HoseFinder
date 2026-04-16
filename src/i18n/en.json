@@ -121,11 +121,37 @@
     "byProximity": "By proximity",
     "catalogImages": "Images from Gates catalog page"
   },
+  "compare": {
+    "sideBySide": "Side-by-side",
+    "compare": "Compare",
+    "differences": "Differences are highlighted in violet.",
+    "openSideBySide": "Open side-by-side",
+    "hide": "Hide",
+    "clear": "Clear"
+  },
   "shortlist": {
     "parts": "Parts list",
     "printBom": "Print BOM",
     "quickPrint": "Quick print",
-    "openBom": "Open BOM"
+    "openBom": "Open BOM",
+    "shortlist": "Shortlist",
+    "clear": "Clear",
+    "emptyHint": "Save parts from cards or the detail modal to build a printable list."
+  },
+  "filter": {
+    "search": "Search",
+    "searchPlaceholder": "Part number, size, type...",
+    "yourMeasurements": "Your measurements",
+    "photo": "Photo",
+    "moreFilters": "More filters",
+    "moreFiltersHint": "Tolerance and category controls",
+    "diameterTolerance": "Diameter tolerance",
+    "lengthTolerance": "Length tolerance",
+    "sizeBand": "Size band",
+    "allSizes": "All sizes",
+    "numberOfEnds": "Number of ends",
+    "anyEndCount": "Any end count",
+    "clearAllFilters": "Clear all filters"
   },
   "guide": {
     "title": "How to measure",

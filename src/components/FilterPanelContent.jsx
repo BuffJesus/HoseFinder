@@ -17,6 +17,7 @@ import { MeasurementHint } from "./MeasurementHint.jsx";
 import { NaturalDimInput } from "./NaturalDimInput.jsx";
 import { CommonSizesPicker } from "./CommonSizesPicker.jsx";
 import { TolerancePresets } from "./TolerancePresets.jsx";
+import { useLocale } from "../context/i18n.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
@@ -60,6 +61,7 @@ export function FilterPanelContent({
   allHoses = [],
 }) {
   const unitMode = useUnit();
+  const { t } = useLocale();
   // Pair-aware filtering for the Common sizes chips: when the user fills
   // End 1, dim End 2 chips that don't appear in the catalogue alongside
   // that value. And vice versa.
@@ -84,19 +86,19 @@ export function FilterPanelContent({
           <SlidersHorizontal className="h-4 w-4" />
         </span>
         <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">Refine results</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">{t("refine.label")}</div>
           <p className="mt-0.5 text-xs leading-5 text-zinc-400">
-            Enter measurements. Tolerance controls how close a match can be.
+            {t("refine.subtitle")}
           </p>
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="part-search-input" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Search</label>
+        <label htmlFor="part-search-input" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">{t("filter.search")}</label>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400 transition peer-focus:text-violet-300" aria-hidden="true" />
           <Input id="part-search-input" value={search} onChange={(e) => setSearch(e.target.value)}
-            placeholder="Part number, size, type..."
+            placeholder={t("filter.searchPlaceholder")}
             className="peer min-h-11 rounded-2xl border-white/10 bg-black/20 pl-10 text-zinc-100 placeholder:text-zinc-600"
           />
         </div>
@@ -115,7 +117,7 @@ export function FilterPanelContent({
           <span className={`inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r ${ACCENT} text-white shadow-[0_4px_12px_-2px_rgba(139,92,246,0.6)]`}>
             <Ruler className="h-3 w-3" />
           </span>
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-200">Your measurements</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-200">{t("filter.yourMeasurements")}</div>
           {onOpenPhotoMeasure && (
             <button
               type="button"
@@ -123,7 +125,7 @@ export function FilterPanelContent({
               className="ml-auto inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] uppercase tracking-wide text-zinc-300 transition hover:border-violet-400/30 hover:text-white"
               title="Measure from a photo"
             >
-              <Sparkles className="h-3 w-3" /> Photo
+              <Sparkles className="h-3 w-3" /> {t("filter.photo")}
             </button>
           )}
         </div>
@@ -213,8 +215,8 @@ export function FilterPanelContent({
           className="flex min-h-11 w-full items-center justify-between text-left"
         >
           <div>
-            <div className="text-sm font-medium text-white">More filters</div>
-            <div className="text-xs text-zinc-400">Tolerance and category controls</div>
+            <div className="text-sm font-medium text-white">{t("filter.moreFilters")}</div>
+            <div className="text-xs text-zinc-400">{t("filter.moreFiltersHint")}</div>
           </div>
           <ChevronDown className={`h-4 w-4 text-zinc-400 transition ${showAdvancedFilters ? "rotate-180" : ""}`} />
         </button>
@@ -223,7 +225,7 @@ export function FilterPanelContent({
             <div className="space-y-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Diameter tolerance</label>
+                  <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">{t("filter.diameterTolerance")}</label>
                   <span className={`inline-flex items-center rounded-full bg-gradient-to-r ${ACCENT} px-2.5 py-0.5 text-[11px] font-semibold tabular text-white shadow-[0_4px_14px_-2px_rgba(139,92,246,0.5)]`}>
                     ±{unitMode === "mm" ? (idTol[0] * MM_PER_IN).toFixed(1) : idTol[0].toFixed(2)}<span className="opacity-70">{unitMode === "mm" ? " mm" : "\""}</span>
                   </span>
@@ -232,7 +234,7 @@ export function FilterPanelContent({
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Length tolerance</label>
+                  <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">{t("filter.lengthTolerance")}</label>
                   <span className={`inline-flex items-center rounded-full bg-gradient-to-r ${ACCENT} px-2.5 py-0.5 text-[11px] font-semibold tabular text-white shadow-[0_4px_14px_-2px_rgba(139,92,246,0.5)]`}>
                     {lenTol[0] >= 99 ? "Any" : <>±{unitMode === "mm" ? (lenTol[0] * MM_PER_IN).toFixed(0) : lenTol[0].toFixed(1)}<span className="opacity-70">{unitMode === "mm" ? " mm" : "\""}</span></>}
                   </span>
@@ -243,13 +245,13 @@ export function FilterPanelContent({
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Size band</label>
+                <label className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">{t("filter.sizeBand")}</label>
                 <Select value={sizeBandFilter} onValueChange={setSizeBandFilter}>
                   <SelectTrigger className="min-h-11 rounded-2xl border-white/10 bg-black/20 text-zinc-100">
-                    <SelectValue placeholder="All sizes" />
+                    <SelectValue placeholder={t("filter.allSizes")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All sizes</SelectItem>
+                    <SelectItem value="all">{t("filter.allSizes")}</SelectItem>
                     {Object.entries(SIZE_BAND_LABELS).map(([k, v]) => (
                       <SelectItem key={k} value={k}>{v}</SelectItem>
                     ))}
@@ -258,13 +260,13 @@ export function FilterPanelContent({
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Number of ends</label>
+                <label className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">{t("filter.numberOfEnds")}</label>
                 <Select value={endCountFilter} onValueChange={setEndCountFilter}>
                   <SelectTrigger className="min-h-11 rounded-2xl border-white/10 bg-black/20 text-zinc-100">
-                    <SelectValue placeholder="Any" />
+                    <SelectValue placeholder={t("filter.anyEndCount")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Any end count</SelectItem>
+                    <SelectItem value="all">{t("filter.anyEndCount")}</SelectItem>
                     <SelectItem value="1">1 end (same-size)</SelectItem>
                     <SelectItem value="2">2 ends (reducer)</SelectItem>
                     <SelectItem value="3">3 ends (branched)</SelectItem>
@@ -282,7 +284,7 @@ export function FilterPanelContent({
         className="min-h-11 w-full rounded-2xl border border-white/10 bg-white/[0.04] text-xs text-zinc-400 transition hover:border-violet-400/30 hover:bg-white/[0.07] hover:text-white"
         onClick={clearAllFilters}
       >
-        <X className="mr-2 h-3.5 w-3.5" /> Clear all filters
+        <X className="mr-2 h-3.5 w-3.5" /> {t("filter.clearAllFilters")}
       </Button>
     </div>
   );

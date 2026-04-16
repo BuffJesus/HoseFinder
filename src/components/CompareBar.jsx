@@ -8,6 +8,7 @@ import { GitCompare, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CountPill } from "./primitives.jsx";
 import { Dim } from "../context/unit.jsx";
+import { useLocale } from "../context/i18n.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
@@ -22,6 +23,7 @@ const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
  * }} props
  */
 export function CompareBar({ compared, toggleCompare, clearCompare, open, onToggleOpen, onOpenCompareView }) {
+  const { t } = useLocale();
   return (
     <motion.div
       layout
@@ -56,9 +58,9 @@ export function CompareBar({ compared, toggleCompare, clearCompare, open, onTogg
             </span>
             {open && (
               <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Side-by-side</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("compare.sideBySide")}</div>
                 <div className="flex items-center gap-2 text-base font-semibold text-white">
-                  Compare <CountPill value={compared.length} max={3} />
+                  {t("compare.compare")} <CountPill value={compared.length} max={3} />
                 </div>
               </div>
             )}
@@ -66,9 +68,9 @@ export function CompareBar({ compared, toggleCompare, clearCompare, open, onTogg
           {open && (
             <div className="flex items-center gap-1">
               <Button variant="ghost" className="h-9 rounded-2xl px-3 text-xs text-zinc-400 hover:bg-white/10 hover:text-white" onClick={onToggleOpen}>
-                Hide
+                {t("compare.hide")}
               </Button>
-              <Button variant="ghost" className="h-9 rounded-2xl px-3 text-xs text-zinc-400 hover:bg-white/10 hover:text-white" onClick={clearCompare}>Clear</Button>
+              <Button variant="ghost" className="h-9 rounded-2xl px-3 text-xs text-zinc-400 hover:bg-white/10 hover:text-white" onClick={clearCompare}>{t("compare.clear")}</Button>
             </div>
           )}
         </div>
@@ -109,7 +111,7 @@ export function CompareBar({ compared, toggleCompare, clearCompare, open, onTogg
                   className={`mt-3 w-full rounded-2xl border-0 bg-gradient-to-r ${ACCENT} px-4 text-white shadow-[0_8px_24px_-6px_rgba(139,92,246,0.5)] transition hover:shadow-[0_12px_30px_-6px_rgba(217,70,239,0.6)]`}
                 >
                   <GitCompare className="mr-2 h-4 w-4" />
-                  Open side-by-side
+                  {t("compare.openSideBySide")}
                 </Button>
               )}
             </motion.div>
