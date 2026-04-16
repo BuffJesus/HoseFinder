@@ -34,11 +34,22 @@ jobs:
           cp -r data dist/data
           cp -r images dist/images
           touch dist/.nojekyll
+      # configure-pages@v5 with enablement: true turns Pages on if it's
+      # disabled, but doesn't *flip* an already-enabled site from branch
+      # mode to workflow mode. This extra step force-sets build_type via
+      # the REST API so the deploy artifact actually publishes. Runs
+      # before configure-pages so the latter has clean state to validate.
+      - name: Force Pages build_type to workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api "repos/${{ github.repository }}/pages" \
+            -X PUT \
+            -f build_type=workflow \
+            && echo "Pages: forced to workflow build type" \
+            || echo "Pages: not yet enabled — configure-pages will handle it"
       - uses: actions/configure-pages@v5
         with:
-          # Enable Pages on first run so the workflow doesn't require a
-          # manual Settings → Pages step. Needs `pages: write` perm, which
-          # is already granted above.
           enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
