@@ -532,6 +532,8 @@ export default function CoolantHoseFinder() {
           totalHoses={allHoses.length}
           filteredCount={filtered.length}
           hasActiveFilters={hasActiveFilters}
+          allHoses={allHoses}
+          onSelectHose={setSelected}
           onStart={() => {
             setShapeMode(false);
             setStep(flow === "all" ? 1 : step);

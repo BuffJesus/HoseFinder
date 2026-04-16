@@ -16,6 +16,7 @@ import { MmHint } from "./primitives.jsx";
 import { MeasurementHint } from "./MeasurementHint.jsx";
 import { NaturalDimInput } from "./NaturalDimInput.jsx";
 import { CommonSizesPicker } from "./CommonSizesPicker.jsx";
+import { TolerancePresets } from "./TolerancePresets.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
@@ -198,6 +199,12 @@ export function FilterPanelContent({
           )}
         </div>
       </div>
+
+      <TolerancePresets
+        idTol={idTol[0]}
+        lenTol={lenTol[0]}
+        onApply={(newId, newLen) => { setIdTol([newId]); setLenTol([newLen]); }}
+      />
 
       <div className="rounded-3xl border border-white/10 bg-black/20 p-4">
         <button

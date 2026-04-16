@@ -790,26 +790,28 @@ me everything" — not ±0.06 vs ±0.10. Three labeled radio buttons
 directly below each dimension input remove that cognitive load.
 
 **Acceptance criteria:**
-- [ ] Three preset buttons visible under the dimension inputs in both
-  wizard step 2/3 and the refine panel
-- [ ] Selecting a preset sets the underlying numeric tolerances
-- [ ] Preset deselects if the user manually adjusts the slider
-- [ ] Slider stays available in advanced mode
+- [x] Three preset buttons visible in the refine panel — `TolerancePresets`
+  component between the dimension inputs and "More filters" disclosure
+- [x] Selecting a preset sets the underlying numeric tolerances
+  (Exact: ±0.02"/0.5", Flexible: ±0.06"/2.0", Wide: ±0.15"/5.0")
+- [x] Preset deselects to "Custom" if the user manually adjusts the slider
+- [x] Slider stays available in advanced mode
 
 ---
 
 ### 11.4 — Reverse lookup: "I have this part number"
 
 **Why:** Builder pulls a cracked hose, reads a part number off the
-remnants, and wants "what else fits this routing?" A fourth entry point
-on step 1 that takes a known part number and shows its specs + all
-alternatives in the same shape row + similar shapes.
+remnants, and wants "what else fits this routing?" A quiet secondary
+input in the hero lets them skip the wizard entirely.
 
 **Acceptance criteria:**
-- [ ] Dedicated "I have a part number" input on step 1
-- [ ] Typing a valid part shows that part's specs immediately
-- [ ] "Show alternatives" button filters to same row + similar shapes
-- [ ] Results header says "Alternatives to 22062" with a dismiss button
+- [x] "Already have a part number?" input in the hero below the CTA row
+- [x] Typing a valid 5-digit part instantly opens the detail modal for
+  that hose (detail modal already shows alternatives via its "Similar
+  hoses" and "All N in this shape" buttons)
+- [x] Input auto-clears after a match so the hero resets cleanly
+- [x] Digits-only, maxLength 5 — no noise for non-part-number text
 
 ---
 

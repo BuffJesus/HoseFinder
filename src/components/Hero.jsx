@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { HeroLiveCount } from "./HeroLiveCount.jsx";
 import { Kbd } from "./primitives.jsx";
+import { PartNumberLookup } from "./PartNumberLookup.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
@@ -31,6 +32,8 @@ const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
  *   onToggleShape: () => void,
  *   onShowGuide: () => void,
  *   onShowShortcuts: () => void,
+ *   allHoses?: any[],
+ *   onSelectHose?: (h: any) => void,
  * }} props
  */
 export function Hero({
@@ -42,6 +45,8 @@ export function Hero({
   onToggleShape,
   onShowGuide,
   onShowShortcuts,
+  allHoses = [],
+  onSelectHose,
 }) {
   return (
     <motion.div
@@ -94,6 +99,9 @@ export function Hero({
               {t("common.shortcuts")} <Kbd>?</Kbd>
             </button>
           </div>
+          {onSelectHose && allHoses.length > 0 && (
+            <PartNumberLookup allHoses={allHoses} onMatch={onSelectHose} />
+          )}
         </div>
 
         <HeroLiveCount
