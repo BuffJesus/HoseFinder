@@ -39,8 +39,9 @@ export const LENGTH_CLASS_BY_KEY = Object.fromEntries(
 /** Curvature groups. Each entry maps a user-facing label to one or more silhouette types. */
 /** @type {ReadonlyArray<{ key: string, label: string, types: string[] }>} */
 export const CURVATURE_GROUPS = [
+  { key: "straight", label: "Straight",    types: ["gentle", "long"] },
   { key: "elbow",    label: "Elbow",       types: ["elbow", "shortElbow"] },
-  { key: "sweep",    label: "Sweep",       types: ["sweep", "wideArc", "long", "gentle"] },
+  { key: "sweep",    label: "Sweep",       types: ["sweep", "wideArc"] },
   { key: "compound", label: "Compound S",  types: ["compound", "deepS"] },
   { key: "z",        label: "Z-routing",   types: ["Zturn"] },
   { key: "hook",     label: "J-hook",      types: ["hook"] },

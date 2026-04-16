@@ -31,7 +31,7 @@ const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
 /** @type {ReadonlyArray<ShapeTile>} */
 const TILES = [
-  { key: "straight", label: "Straight-ish", hint: "wire stays almost flat",             silhouette: "gentle",     curvatureKey: "sweep"    },
+  { key: "straight", label: "Straight-ish", hint: "wire stays almost flat",             silhouette: "gentle",     curvatureKey: "straight" },
   { key: "gentle",   label: "Gentle curve", hint: "one wide sweep, no hard corners",    silhouette: "wideArc",    curvatureKey: "sweep"    },
   { key: "elbow",    label: "Tight elbow",  hint: "one sharp turn, short each side",    silhouette: "shortElbow", curvatureKey: "elbow"    },
   { key: "s-bend",   label: "S-bend",       hint: "two opposing turns in a row",        silhouette: "compound",   curvatureKey: "compound" },
