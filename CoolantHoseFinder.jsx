@@ -11,17 +11,14 @@ import {
 } from "./src/lib/shapeBuckets.js";
 import { shapeSimilarity, findSimilarHoses } from "./src/lib/similarity.js";
 import { scoreAndFilter } from "./src/lib/filter.js";
-import { MatchBadge, CountPill, Kbd, MmHint, Viewer360Icon } from "./src/components/primitives.jsx";
 import { HoseSilhouette, MorphingHoseSilhouette, SILHOUETTE_FAMILIES } from "./src/components/HoseSilhouette.jsx";
 import { ToastViewport } from "./src/components/ToastViewport.jsx";
 import { KeyboardHelp } from "./src/components/KeyboardHelp.jsx";
 import { AnimatedCount } from "./src/components/AnimatedCount.jsx";
 import { CatalogFooter } from "./src/components/CatalogFooter.jsx";
 import { UnitToggle, LocaleToggle } from "./src/components/toggles.jsx";
-import { MeasurementHint } from "./src/components/MeasurementHint.jsx";
 import { UnitContext, useUnit, Dim } from "./src/context/unit.jsx";
 import { BottomSheet } from "./src/components/BottomSheet.jsx";
-import { CommonSizesPicker } from "./src/components/CommonSizesPicker.jsx";
 import { GapExplainer } from "./src/components/GapExplainer.jsx";
 import { SavedSearchesStrip } from "./src/components/SavedSearchesStrip.jsx";
 import { RecentlyViewedStrip } from "./src/components/RecentlyViewedStrip.jsx";
@@ -29,8 +26,7 @@ import { ActiveFilterStrip } from "./src/components/ActiveFilterStrip.jsx";
 import { HoseImage, ImageTile, hoseImgSrc, catalogImgSrc } from "./src/components/HoseImage.jsx";
 import { ShortlistButton } from "./src/components/ShortlistButton.jsx";
 import { PresetIcon, PresetsStrip } from "./src/components/PresetsStrip.jsx";
-import { WizardStepCard, WizardSummaryStrip } from "./src/components/wizard-cards.jsx";
-import { NaturalDimInput } from "./src/components/NaturalDimInput.jsx";
+import { WizardSummaryStrip } from "./src/components/wizard-cards.jsx";
 import { pushMeasurementHistory } from "./src/lib/measurementHistory.js";
 import { SmartEmptyState } from "./src/components/SmartEmptyState.jsx";
 import { StepRatioChips, LengthClassChips, CurvatureChips } from "./src/components/filter-chips.jsx";
@@ -42,6 +38,8 @@ import { gatesUrl, gates360Url } from "./src/lib/gatesUrls.js";
 import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/context/i18n.jsx";
 import { TopBar } from "./src/components/TopBar.jsx";
 import { Hero } from "./src/components/Hero.jsx";
+import { WizardSizesStep } from "./src/components/WizardSizesStep.jsx";
+import { WizardLengthStep } from "./src/components/WizardLengthStep.jsx";
 import { MeasurementGuide } from "./src/components/MeasurementGuide.jsx";
 import { CompareBar } from "./src/components/CompareBar.jsx";
 import { ShortlistBar } from "./src/components/ShortlistBar.jsx";
@@ -72,7 +70,6 @@ import { useMediaQuery } from "./src/hooks/useMediaQuery.js";
 import { useKeyboardShortcuts } from "./src/hooks/useKeyboardShortcuts.js";
 import { PRESETS } from "./src/lib/presets.js";
 import { printShortlist as printShortlistCmd } from "./src/lib/printShortlist.js";
-import { validPairingsFor } from "./src/lib/endPairings.js";
 import {
   FLOW_CARDS, flowSummary as buildFlowSummary,
   sizeSummary as buildSizeSummary, lengthSummary as buildLengthSummary,
@@ -93,7 +90,6 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
@@ -860,108 +856,19 @@ export default function CoolantHoseFinder() {
               {flow !== "all" && (
                 <>
                   {step === 2 ? (
-                    <WizardStepCard
-                      step={2}
-                      title="Your sizes"
-                      subtitle="Enter the neck diameters you measured. Results start narrowing as soon as you type."
-                    >
-                      <div className="grid gap-4 md:grid-cols-2">
-                        <div className="space-y-1.5">
-                          <div className="flex items-center justify-between gap-2">
-                            <label htmlFor="wiz-dim-id1" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                              End 1 diameter (I.D., {unitMode === "mm" ? "mm" : "inches"})
-                            </label>
-                            <MeasurementHint type="id" />
-                          </div>
-                          <NaturalDimInput
-                            id="wiz-dim-id1"
-                            value={targetId1}
-                            onChange={setTargetId1}
-                            placeholder={unitMode === "mm" ? "e.g. 38" : "e.g. 1.50"}
-                            historyKey="id1"
-                          />
-                          <CommonSizesPicker
-                            value={targetId1}
-                            onPick={setTargetId1}
-                            validValues={needsSecondDiameter && targetId2 ? validPairingsFor(allHoses, targetId2) : null}
-                            constraintLabel={needsSecondDiameter && targetId2 ? `pairs with ${targetId2}"` : ""}
-                          />
-                          <AnimatePresence>
-                            {targetId1 !== "" && (
-                              <motion.div
-                                initial={{ opacity: 0, y: -4 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -4 }}
-                                className="flex items-center gap-1.5 text-xs text-violet-300"
-                              >
-                                <Sparkles className="h-3 w-3" />
-                                <AnimatedCount value={liveDiameterMatches} /> hose{liveDiameterMatches === 1 ? "" : "s"} match this diameter set
-                                <MmHint value={targetId1} className="ml-auto text-[10px]" />
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                        {needsSecondDiameter && (
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between gap-2">
-                              <label htmlFor="wiz-dim-id2" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                                End 2 diameter (I.D., {unitMode === "mm" ? "mm" : "inches"})
-                              </label>
-                              <MeasurementHint type="id" />
-                            </div>
-                            <NaturalDimInput
-                              id="wiz-dim-id2"
-                              value={targetId2}
-                              onChange={setTargetId2}
-                              placeholder={unitMode === "mm" ? "e.g. 32" : "e.g. 1.25"}
-                              historyKey="id2"
-                            />
-                            <CommonSizesPicker
-                              value={targetId2}
-                              onPick={setTargetId2}
-                              validValues={targetId1 ? validPairingsFor(allHoses, targetId1) : null}
-                              constraintLabel={targetId1 ? `pairs with ${targetId1}"` : ""}
-                            />
-                            <AnimatePresence>
-                              {targetId2 !== "" && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: -4 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -4 }}
-                                  className="flex items-center gap-1.5 text-xs text-violet-300"
-                                >
-                                  <Sparkles className="h-3 w-3" />
-                                  <AnimatedCount value={liveDiameterMatches} /> hose{liveDiameterMatches === 1 ? "" : "s"} match both end sizes
-                                  <MmHint value={targetId2} className="ml-auto text-[10px]" />
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        )}
-                        <div className="md:col-span-2 flex flex-wrap items-center gap-3">
-                          <Button
-                            onClick={() => setStep(3)}
-                            disabled={!hasRequiredDimensions}
-                            className={`group h-11 rounded-2xl px-5 transition ${
-                              hasRequiredDimensions
-                                ? `border-0 bg-gradient-to-r ${ACCENT} text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.55)] hover:shadow-[0_14px_40px_-8px_rgba(217,70,239,0.65)]`
-                                : "border border-white/10 bg-white/[0.04] text-zinc-400 cursor-not-allowed"
-                            }`}
-                          >
-                            {t("common.continue")}
-                            <ChevronRight className="ml-1.5 h-4 w-4 transition group-hover:translate-x-0.5" />
-                          </Button>
-                          <button
-                            type="button"
-                            onClick={() => setStep(3)}
-                            disabled={!hasRequiredDimensions}
-                            className="text-xs text-zinc-400 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
-                          >
-                            Skip to length
-                          </button>
-                        </div>
-                      </div>
-                    </WizardStepCard>
+                    <WizardSizesStep
+                      targetId1={targetId1}
+                      setTargetId1={setTargetId1}
+                      targetId2={targetId2}
+                      setTargetId2={setTargetId2}
+                      needsSecondDiameter={needsSecondDiameter}
+                      hasRequiredDimensions={hasRequiredDimensions}
+                      liveDiameterMatches={liveDiameterMatches}
+                      unitMode={unitMode}
+                      allHoses={allHoses}
+                      t={t}
+                      onAdvance={() => setStep(3)}
+                    />
                   ) : (
                     <div className="mt-6">
                       <WizardSummaryStrip label="Step 2" value={sizeSummary} onClick={() => setStep(2)} />
@@ -970,70 +877,19 @@ export default function CoolantHoseFinder() {
 
                   {hasRequiredDimensions && step !== 2 && (
                     step === 3 ? (
-                      <WizardStepCard
-                        step={3}
-                        title="Route length"
-                        subtitle="Add a centerline length if you have one, or skip and browse by size first."
-                      >
-                        <div className="space-y-5">
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between gap-2">
-                              <label htmlFor="wiz-dim-len" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                                Centerline length ({unitMode === "mm" ? "mm" : "inches"})
-                              </label>
-                              <MeasurementHint type="length" />
-                            </div>
-                            <NaturalDimInput
-                              id="wiz-dim-len"
-                              value={targetLen}
-                              onChange={setTargetLen}
-                              placeholder={unitMode === "mm" ? "e.g. 470" : "e.g. 18.5"}
-                              historyKey="len"
-                            />
-                            <AnimatePresence>
-                              {targetLen !== "" && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: -4 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -4 }}
-                                  className="flex items-center gap-1.5 text-xs text-violet-300"
-                                >
-                                  <Sparkles className="h-3 w-3" />
-                                  <AnimatedCount value={liveLengthMatches} /> hose{liveLengthMatches === 1 ? "" : "s"} fit this routed length
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Length tolerance</label>
-                              <span className={`inline-flex items-center rounded-full bg-gradient-to-r ${ACCENT} px-2.5 py-0.5 text-[11px] font-semibold tabular text-white shadow-[0_4px_14px_-2px_rgba(139,92,246,0.5)]`}>
-                                {lenTol[0] >= 99 ? "Any" : <>±{lenTol[0].toFixed(1)}<span className="opacity-70">"</span></>}
-                              </span>
-                            </div>
-                            <Slider min={0.5} max={6} step={0.5} value={lenTol[0] >= 99 ? [6] : lenTol} onValueChange={setLenTol} />
-                          </div>
-                          <div className="flex flex-wrap items-center gap-3">
-                            <Button
-                              onClick={() => setStep("results")}
-                              className={`group h-11 rounded-2xl border-0 bg-gradient-to-r ${ACCENT} px-5 text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.55)] transition hover:shadow-[0_14px_40px_-8px_rgba(217,70,239,0.65)]`}
-                            >
-                              Show results
-                              <ChevronRight className="ml-1.5 h-4 w-4 transition group-hover:translate-x-0.5" />
-                            </Button>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setLenTol([99]);
-                                setStep("results");
-                              }}
-                              className="text-xs text-zinc-400 transition hover:text-white"
-                            >
-                              {t("common.skipForNow")}
-                            </button>
-                          </div>
-                        </div>
-                      </WizardStepCard>
+                      <WizardLengthStep
+                        targetLen={targetLen}
+                        setTargetLen={setTargetLen}
+                        lenTol={lenTol}
+                        setLenTol={setLenTol}
+                        liveLengthMatches={liveLengthMatches}
+                        unitMode={unitMode}
+                        t={t}
+                        onAdvance={(skip) => {
+                          if (skip) setLenTol([99]);
+                          setStep("results");
+                        }}
+                      />
                     ) : (
                       <div className="mt-6">
                         <WizardSummaryStrip label="Step 3" value={lengthSummary || "Length: Not set"} onClick={() => setStep(3)} />
