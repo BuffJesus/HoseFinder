@@ -53,24 +53,21 @@ export function WirePhotoDialog({ open, onClose, allHoses, onSelect }) {
       if (!canvas) return;
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext("2d");
+      if (!ctx) { setResult({ signature: null, diagnostics: { reason: "Canvas context unavailable." } }); return; }
       ctx.drawImage(img, 0, 0, w, h);
       const imageData = ctx.getImageData(0, 0, w, h);
       const res = imageToSignature(imageData);
       setResult(res);
 
-      // Render a soft overlay — colour the skeleton in the canvas so the
-      // user sees what the pipeline extracted. We re-binarize + thin
-      // just to paint; the actual match uses the full pipeline result.
-      // (Cheaper UX option would be to expose the skeleton bitmap from
-      //  imageToSignature, but this keeps the lib surface small.)
       const overlay = overlayRef.current;
       if (overlay) {
         overlay.width = w; overlay.height = h;
         const octx = overlay.getContext("2d");
-        octx.clearRect(0, 0, w, h);
+        if (octx) octx.clearRect(0, 0, w, h);
       }
     } catch (err) {
-      setResult({ signature: null, diagnostics: { reason: `Processing failed: ${err?.message || err}` } });
+      const msg = err instanceof Error ? err.message : String(err);
+      setResult({ signature: null, diagnostics: { reason: `Processing failed: ${msg}` } });
     } finally {
       setBusy(false);
     }

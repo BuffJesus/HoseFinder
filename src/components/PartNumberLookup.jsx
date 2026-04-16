@@ -21,6 +21,8 @@ import { Search } from "lucide-react";
 export function PartNumberLookup({ allHoses, onMatch }) {
   const [value, setValue] = useState("");
   const indexRef = useRef(/** @type {Map<string, any> | null} */ (null));
+  const hosesRef = useRef(allHoses);
+  if (hosesRef.current !== allHoses) { indexRef.current = null; hosesRef.current = allHoses; }
 
   const getIndex = useCallback(() => {
     if (!indexRef.current && allHoses.length > 0) {

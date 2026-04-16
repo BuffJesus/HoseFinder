@@ -47,7 +47,7 @@ export function BendBuilderDialog({ open, onClose, allHoses, onSelect }) {
   const svgRef = useRef(/** @type {SVGSVGElement | null} */ (null));
 
   useEffect(() => {
-    if (open) setPoints(DEFAULT_POINTS());
+    if (open) { setPoints(DEFAULT_POINTS()); setDragIndex(null); }
   }, [open]);
 
   const toSvgPoint = useCallback((clientX, clientY) => {
@@ -217,6 +217,8 @@ export function BendBuilderDialog({ open, onClose, allHoses, onSelect }) {
                           stroke="rgba(244, 63, 94, 0.5)"
                           strokeWidth="1.5"
                           className="cursor-pointer"
+                          role="button"
+                          aria-label="Remove this bend"
                           onClick={() => removeBend(i)}
                         >
                           <title>Remove this bend</title>

@@ -9,6 +9,10 @@
 // typed, no trailing-zero string drift) so callers can compare with
 // parseFloat(chipValue).
 
+// 0.02" covers the largest rounding gap between the canonical chip
+// strings (e.g. "1.5" → 1.500) and the raw endSizes floats in the
+// catalog (e.g. 1.510). Paired with toFixed(3) on output to collapse
+// float noise before Set dedup.
 const MATCH_TOL = 0.02;
 
 /**

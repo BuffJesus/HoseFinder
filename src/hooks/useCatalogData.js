@@ -54,7 +54,7 @@ export function useCatalogData() {
     () => rawHoses.map((h) => {
       const enriched = enrichHose(h);
       const sig = shapeSignatures[enriched.partNo];
-      if (!sig) return enriched;
+      if (!sig || typeof sig.bendCount !== "number") return enriched;
       // Reclassify silhouette using real geometry instead of the old
       // rowNo-hash assignment. Updates silhouette, visualFamily, and
       // the curvature group the hose falls into for QuickShapeStrip.

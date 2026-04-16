@@ -40,7 +40,11 @@ export function classifyShape(shape, context = {}) {
     ? angles.reduce((a, b) => a + b, 0) / angles.length
     : 0;
 
-  // ── Straight-ish: very few bends AND low arc-to-chord ratio
+  // ── Straight-ish: very few bends AND low arc-to-chord ratio.
+  // Order matters: bendCount≤1 + very-low-atc → "gentle" (near-straight);
+  // then bendCount===0 + moderately-low-atc → "long" (slight sweep but no bend).
+  // A 1-bend hose with 1.08 ≤ atc < 1.15 falls through to the single-bend
+  // section below — intentional, it's more of a sweep than a straight.
   if (bendCount <= 1 && atc < 1.08) return "gentle";
   if (bendCount === 0 && atc < 1.15) return "long";
 

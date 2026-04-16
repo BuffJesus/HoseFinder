@@ -37,7 +37,7 @@ export function FloatingBars({ compare, shortlist }) {
   const compareVisible = compare.compared.length > 0;
   const shortlistVisible = shortlist.shortlisted.length > 0 || shortlist.warning || shortlist.open;
   return (
-    <>
+    <div aria-live="polite">
       <AnimatePresence>
         {compareVisible && (
           <CompareBar
@@ -69,6 +69,6 @@ export function FloatingBars({ compare, shortlist }) {
           />
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

@@ -125,7 +125,7 @@ export function findSimilarHoses(target, allHoses, { limit = 8, minScore = 0.15 
     })
     .filter(Boolean);
   scored.sort(
-    (a, b) => b.score - a.score || (a.hose.catalogPage || 0) - (b.hose.catalogPage || 0),
+    (a, b) => b.score - a.score || (a.hose.catalogPage ?? 0) - (b.hose.catalogPage ?? 0),
   );
   return scored.slice(0, limit);
 }

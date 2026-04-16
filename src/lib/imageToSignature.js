@@ -239,8 +239,10 @@ export function pruneSpurs(adj, minLen = SPUR_MIN_PX) {
   // Clone for safe mutation.
   const m = new Map();
   for (const [k, v] of adj) m.set(k, [...v]);
+  let iterations = 0;
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    if (++iterations > 200) break;
     const spurs = [];
     for (const [p, ns] of m) {
       if (ns.length !== 1) continue;

@@ -27,6 +27,8 @@ const PRESETS = [
  */
 export function TolerancePresets({ idTol, lenTol, onApply }) {
   const activeKey = useMemo(() => {
+    // Epsilons are half the smallest gap between adjacent presets so a
+    // slider nudge of one step (idTol step=0.01, lenTol step=0.5) deselects.
     for (const p of PRESETS) {
       if (Math.abs(p.idTol - idTol) < 0.005 && Math.abs(p.lenTol - lenTol) < 0.05) return p.key;
     }
