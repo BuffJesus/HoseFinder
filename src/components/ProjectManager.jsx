@@ -166,7 +166,7 @@ export function ProjectManager({ open, onClose, projects, activeId, onSwitch, on
                   else if (e.key === "Escape") { setNewName(""); setCreating(false); }
                 }}
                 maxLength={40}
-                placeholder="Project name — e.g. 1967 Camaro rebuild"
+                placeholder="e.g. OM606 → C10 cooling"
                 className="min-w-0 flex-1 rounded-lg border border-violet-400/40 bg-black/40 px-2 py-1 text-sm text-white focus:border-violet-400 focus:outline-none"
               />
               <button

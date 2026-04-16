@@ -136,13 +136,25 @@ export function HoseCard({ hose, shortlist, toggleShortlist, onSelect, onShowRow
             </div>
           </div>
 
-          <Button
-            onClick={() => onSelect(hose)}
-            className={`mt-4 w-full rounded-2xl bg-gradient-to-r ${ACCENT} text-white shadow-lg shadow-violet-950/40 hover:opacity-90`}
-          >
-            View details
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
+          <div className="mt-4 flex items-center gap-2">
+            <Button
+              onClick={() => onSelect(hose)}
+              className={`flex-1 rounded-2xl bg-gradient-to-r ${ACCENT} text-white shadow-lg shadow-violet-950/40 hover:opacity-90`}
+            >
+              View details
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+            <a
+              href={gates360Url(hose.partNo)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              title="View 360° on Gates"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-zinc-400 transition hover:border-violet-400/30 hover:bg-white/[0.08] hover:text-white"
+            >
+              <Viewer360Icon className="h-4 w-4" />
+            </a>
+          </div>
           <div className="mt-2 grid grid-cols-2 gap-2">
             <Button
               variant="ghost"
