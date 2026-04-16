@@ -18,36 +18,31 @@ import { UnitToggle, LocaleToggle } from "./src/components/toggles.jsx";
 import { UnitContext, useUnit } from "./src/context/unit.jsx";
 import { BottomSheet } from "./src/components/BottomSheet.jsx";
 import { GapExplainer } from "./src/components/GapExplainer.jsx";
-import { SavedSearchesStrip } from "./src/components/SavedSearchesStrip.jsx";
 import { RecentlyViewedStrip } from "./src/components/RecentlyViewedStrip.jsx";
-import { ActiveFilterStrip } from "./src/components/ActiveFilterStrip.jsx";
 import { HoseImage, ImageTile, hoseImgSrc, catalogImgSrc } from "./src/components/HoseImage.jsx";
 import { ShortlistButton } from "./src/components/ShortlistButton.jsx";
 import { PresetIcon, PresetsStrip } from "./src/components/PresetsStrip.jsx";
 import { pushMeasurementHistory } from "./src/lib/measurementHistory.js";
-import { StepRatioChips, LengthClassChips, CurvatureChips } from "./src/components/filter-chips.jsx";
 import { RoleSection } from "./src/components/RoleSection.jsx";
 import { gatesUrl, gates360Url } from "./src/lib/gatesUrls.js";
 import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/context/i18n.jsx";
 import { TopBar } from "./src/components/TopBar.jsx";
 import { Hero } from "./src/components/Hero.jsx";
 import { QuickShapeStrip } from "./src/components/QuickShapeStrip.jsx";
-import { BendBuilderDialog } from "./src/components/BendBuilderDialog.jsx";
-import { WirePhotoDialog } from "./src/components/WirePhotoDialog.jsx";
 import { ResultsHeader } from "./src/components/ResultsHeader.jsx";
 import { ResultsArea } from "./src/components/ResultsArea.jsx";
 import { RefineDisclosure } from "./src/components/RefineDisclosure.jsx";
 import { WizardSection } from "./src/components/WizardSection.jsx";
+import { TrailingDialogs } from "./src/components/TrailingDialogs.jsx";
+import { FloatingBars } from "./src/components/FloatingBars.jsx";
+import { PreResultsStrips } from "./src/components/PreResultsStrips.jsx";
 import { MeasurementGuide } from "./src/components/MeasurementGuide.jsx";
-import { CompareBar } from "./src/components/CompareBar.jsx";
-import { ShortlistBar } from "./src/components/ShortlistBar.jsx";
+// ShareImportDialog is still used inside the ProjectOverview branch
+// (separate render from the main-page TrailingDialogs), so its import
+// stays even though TrailingDialogs owns the main-page mount.
 import { ShareImportDialog } from "./src/components/ShareImportDialog.jsx";
-import { ProjectManager } from "./src/components/ProjectManager.jsx";
-import { SimilarShapeSheet } from "./src/components/SimilarShapeSheet.jsx";
-import { CompareModal } from "./src/components/CompareModal.jsx";
 import { DetailModal } from "./src/components/DetailModal.jsx";
 import { ProjectOverview } from "./src/components/ProjectOverview.jsx";
-import { PhotoMeasureDialog } from "./src/components/PhotoMeasureDialog.jsx";
 import { FilterPanelContent } from "./src/components/FilterPanelContent.jsx";
 import {
   enrichHose, SIZE_BAND_LABELS, APPLICATION_LABELS, SHAPE_LABELS,
@@ -78,153 +73,16 @@ import {
   Filter, Link2, Keyboard,
 } from "lucide-react";
 
-// Viewer360Icon, MatchBadge, CountPill, Kbd, MmHint moved to
-// ./src/components/primitives.jsx — imported at top.
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const PAGE_SIZE = 24;
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
-// Roles / share codec live in ./src/lib/roles.js — imported above.
-// Project state + persistence live in ./src/hooks/useProjects.js.
-
 const SAVED_SEARCHES_KEY = "hosefinder-saved-searches";
 const SAVED_SEARCHES_LIMIT = 12;
-
-// gatesUrl + gates360Url moved to ./src/lib/gatesUrls.js
-
-// UnitContext + useUnit + Dim moved to ./src/context/unit.jsx
 const UNIT_KEY = "hosefinder-unit";
-
-// Measurement history moved to ./src/lib/measurementHistory.js
-// NaturalDimInput moved to ./src/components/NaturalDimInput.jsx
-
-// LocaleContext, useLocale, createTranslator, LOCALES moved to ./src/context/i18n.jsx
 const LOCALE_KEY = "hosefinder-locale";
-
-// UnitToggle + LocaleToggle moved to ./src/components/toggles.jsx
-
-// useMediaQuery moved to ./src/hooks/useMediaQuery.js
-// BottomSheet moved to ./src/components/BottomSheet.jsx
-// PRESETS moved to ./src/lib/presets.js
-
-// Map sizeBand key → human label
-// SIZE_BAND_LABELS moved to ./src/lib/enrichHose.js
-
-// enrichHose + helpers moved to ./src/lib/enrichHose.js
-
-// Shape buckets, reducerStepRatio, shapeSimilarity, findSimilarHoses live in
-// ./src/lib/shapeBuckets.js + ./src/lib/similarity.js — imported at top.
-
-// scoreAndFilter lives in ./src/lib/filter.js — imported at top.
-
-// ─── SVG Silhouettes ─────────────────────────────────────────────────────────
-// HoseSilhouette + MorphingHoseSilhouette + SILHOUETTE_FAMILIES moved to
-// ./src/components/HoseSilhouette.jsx
-
-// ─── Gap explainer ───────────────────────────────────────────────────────────
-// GapExplainer moved to ./src/components/GapExplainer.jsx
-
-// ─── Match badge ─────────────────────────────────────────────────────────────
-// MatchBadge + MmHint moved to ./src/components/primitives.jsx
-
-// CommonSizesPicker + COMMON_IDS moved to ./src/components/CommonSizesPicker.jsx
-
-// ─── Keyboard kbd badge ─────────────────────────────────────────────────────
-// Kbd moved to ./src/components/primitives.jsx
-
-// KeyboardHelp moved to ./src/components/KeyboardHelp.jsx
-
-// ToastViewport moved to ./src/components/ToastViewport.jsx
-
-// SavedSearchesStrip moved to ./src/components/SavedSearchesStrip.jsx
-
-// StepRatioChips + LengthClassChips + CurvatureChips moved to
-// ./src/components/filter-chips.jsx
-
-// ─── Wizard step card — glass surface with step indicator + accent hairline ─
-// WizardStepCard moved to ./src/components/wizard-cards.jsx
-
-// ─── Slim top bar — appears after the user scrolls past the hero ─────────────
-// TopBar moved to ./src/components/TopBar.jsx
-
-// ─── Loading skeleton — placeholder cards while catalog data loads ──────────
-// HoseCardSkeleton moved to ./src/components/HoseCard.jsx
-
-// AnimatedCount moved to ./src/components/AnimatedCount.jsx
-
-// HeroLiveCount moved to ./src/components/HeroLiveCount.jsx
-
-// IdMeasurementSVG + LengthMeasurementSVG + MeasurementHint moved to
-// ./src/components/MeasurementHint.jsx
-
-// HoseImage / ImageTile / catalogImgSrc / hoseImgSrc moved to ./src/components/HoseImage.jsx
-// ShortlistButton moved to ./src/components/ShortlistButton.jsx
-// PresetIcon + PresetsStrip moved to ./src/components/PresetsStrip.jsx
-
-
-// RecentlyViewedStrip moved to ./src/components/RecentlyViewedStrip.jsx
-
-// ─── BOM role section ────────────────────────────────────────────────────
-// RoleSection moved to ./src/components/RoleSection.jsx
-
-// ─── Project overview (BOM) ──────────────────────────────────────────────
-// ProjectOverview moved to ./src/components/ProjectOverview.jsx
-
-// PhotoMeasureDialog + PHOTO_REFERENCES + dist() moved to
-// ./src/components/PhotoMeasureDialog.jsx
-
-// ─── Similar-shape sheet ─────────────────────────────────────────────────
-// SimilarShapeSheet moved to ./src/components/SimilarShapeSheet.jsx
-
-// ─── Share import dialog ────────────────────────────────────────────────
-// ShareImportDialog moved to ./src/components/ShareImportDialog.jsx
-
-// ─── Project manager dialog ──────────────────────────────────────────────
-// ProjectManager moved to ./src/components/ProjectManager.jsx
-
-// CompareModal moved to ./src/components/CompareModal.jsx
-
-// ─── HoseCard ─────────────────────────────────────────────────────────────────
-// HoseCard moved to ./src/components/HoseCard.jsx
-
-// HoseListCard moved to ./src/components/HoseListCard.jsx
-
-// HoseCompactTable moved to ./src/components/HoseCompactTable.jsx
-
-// ─── GlassStat ────────────────────────────────────────────────────────────────
-// GlassStat was defined but unused — removed during extraction.
-
-// ─── Measurement Guide ────────────────────────────────────────────────────────
-// WizardSummaryStrip moved to ./src/components/wizard-cards.jsx
-
-// ActiveFilterStrip moved to ./src/components/ActiveFilterStrip.jsx
-
-// APPLICATIONS + ShapeBrowser moved to ./src/components/ShapeBrowser.jsx
-
-// MeasurementGuide moved to ./src/components/MeasurementGuide.jsx
-
-// ─── Compare Bar ─────────────────────────────────────────────────────────────
-// CountPill moved to ./src/components/primitives.jsx
-
-// CompareBar moved to ./src/components/CompareBar.jsx
-
-// ShortlistBar moved to ./src/components/ShortlistBar.jsx
-
-// ─── Detail Modal ─────────────────────────────────────────────────────────────
-// DetailModal moved to ./src/components/DetailModal.jsx
-
-// ─── Smart empty state ───────────────────────────────────────────────────────
-// Relaxation paths — each is one targeted concession the user can opt into.
-// Ordered so the most conservative path is tried first.
-// RELAXATIONS, relaxedHits, relaxationHint, SmartEmptyState moved to
-// ./src/components/SmartEmptyState.jsx
-
-// ─── Filter panel (shared between desktop sidebar and mobile bottom sheet) ───
-// FilterPanelContent moved to ./src/components/FilterPanelContent.jsx
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function CoolantHoseFinder() {
@@ -814,46 +672,27 @@ export default function CoolantHoseFinder() {
             {!loading && !hasActiveFilters && recentHoses.length > 0 && (
               <RecentlyViewedStrip hoses={recentHoses} onSelect={setSelected} />
             )}
-            {/* Results header */}
-            {canShowResults && !loading && (
-              <>
-                <SavedSearchesStrip
-                  items={savedSearches}
-                  onApply={applySavedSearch}
-                  onRemove={removeSavedSearch}
-                  onSave={saveCurrentSearch}
-                  onShare={shareCurrentSearch}
-                  canSave={hasActiveFilters}
-                />
-                <LengthClassChips
-                  candidates={lengthClassCandidates}
-                  value={lengthClass}
-                  onChange={setLengthClass}
-                />
-                <CurvatureChips
-                  candidates={curvatureCandidates}
-                  value={curvature}
-                  onChange={setCurvature}
-                />
-                {flow === "reducer" && (
-                  <StepRatioChips
-                    candidates={stepRatioCandidates}
-                    value={stepRatio}
-                    onChange={setStepRatio}
-                  />
-                )}
-              </>
-            )}
-            <ActiveFilterStrip
-              targetId1={targetId1}
-              targetId2={targetId2}
-              targetLen={targetLen}
-              idTol={idTol[0]}
-              lenTol={lenTol[0]}
+            {/* Pre-results strips + ActiveFilterStrip */}
+            <PreResultsStrips
+              canShowResults={canShowResults}
+              loading={loading}
+              hasActiveFilters={hasActiveFilters}
               flow={flow}
-              selectedRows={selectedRows}
-              rowMetaByNo={rowMetaByNo}
-              resultCount={filtered.length}
+              savedSearches={savedSearches}
+              applySavedSearch={applySavedSearch}
+              removeSavedSearch={removeSavedSearch}
+              saveCurrentSearch={saveCurrentSearch}
+              shareCurrentSearch={shareCurrentSearch}
+              lengthClassCandidates={lengthClassCandidates}
+              curvatureCandidates={curvatureCandidates}
+              stepRatioCandidates={stepRatioCandidates}
+              lengthClass={lengthClass} setLengthClass={setLengthClass}
+              curvature={curvature} setCurvature={setCurvature}
+              stepRatio={stepRatio} setStepRatio={setStepRatio}
+              targetId1={targetId1} targetId2={targetId2} targetLen={targetLen}
+              idTol={idTol[0]} lenTol={lenTol[0]}
+              selectedRows={selectedRows} rowMetaByNo={rowMetaByNo}
+              filteredCount={filtered.length}
               onClearId={clearIdFilters}
               onClearLen={clearLengthFilter}
               onClearType={clearFlowFilter}
@@ -905,98 +744,80 @@ export default function CoolantHoseFinder() {
         </div>
       </main>
 
-      {/* ── Compare bar ── */}
-      <AnimatePresence>
-        {compared.length > 0 && (
-          <CompareBar
-            compared={compared}
-            toggleCompare={toggleCompare}
-            clearCompare={() => setCompare([])}
-            open={compareOpen}
-            onToggleOpen={() => openCompareExclusive((prev) => !prev)}
-            onOpenCompareView={() => setCompareModalOpen(true)}
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {(shortlisted.length > 0 || shortlistWarning || shortlistOpen) && (
-          <ShortlistBar
-            shortlisted={shortlisted}
-            open={shortlistOpen}
-            onToggleOpen={() => openShortlistExclusive((prev) => !prev)}
-            onSelect={(hose) => {
-              setSelected(hose);
-              setShortlistOpen(false);
-            }}
-            onToggleShortlist={toggleShortlist}
-            onPrint={printShortlist}
-            onClear={clearShortlist}
-            warning={shortlistWarning}
-            projectName={activeProject?.name}
-            projectCount={projects.length}
-            onOpenProjects={() => setProjectManagerOpen(true)}
-            onOpenBom={activeProject ? () => openProjectBom(activeProject.id) : undefined}
-          />
-        )}
-      </AnimatePresence>
-
-      <ProjectManager
-        open={projectManagerOpen}
-        onClose={() => setProjectManagerOpen(false)}
-        projects={projects}
-        activeId={activeProjectId}
-        onSwitch={setActiveProjectId}
-        onRename={renameProject}
-        onCreate={createProject}
-        onDuplicate={duplicateProject}
-        onDelete={deleteProject}
-        onOpenBom={openProjectBom}
-      />
-      <ShareImportDialog
-        open={!!sharePayload}
-        payload={sharePayload}
-        hoses={allHoses}
-        onImport={importSharedProject}
-        onClose={closeShareImport}
-      />
-      <SimilarShapeSheet
-        open={!!similarForHose}
-        target={similarForHose}
-        allHoses={allHoses}
-        onClose={() => setSimilarForHose(null)}
-        onSelect={(h) => setSelected(h)}
-      />
-      <PhotoMeasureDialog
-        open={photoMeasureOpen}
-        onClose={() => setPhotoMeasureOpen(false)}
-        onApply={applyPhotoMeasurement}
-      />
-      <BendBuilderDialog
-        open={bendBuilderOpen}
-        onClose={() => setBendBuilderOpen(false)}
-        allHoses={allHoses}
-        onSelect={(h) => setSelected(h)}
-      />
-      <WirePhotoDialog
-        open={wirePhotoOpen}
-        onClose={() => setWirePhotoOpen(false)}
-        allHoses={allHoses}
-        onSelect={(h) => setSelected(h)}
-      />
-
-      {/* ── Compare modal ── */}
-      <CompareModal
-        open={compareModalOpen}
-        onClose={() => setCompareModalOpen(false)}
-        hoses={compared}
-        onRemove={(partNo) => {
-          toggleCompare(partNo);
-          if (compared.length <= 1) setCompareModalOpen(false);
+      {/* ── Floating bars: compare + shortlist ── */}
+      <FloatingBars
+        compare={{
+          compared,
+          toggleCompare,
+          clearCompare: () => setCompare([]),
+          open: compareOpen,
+          onToggleOpen: () => openCompareExclusive((prev) => !prev),
+          onOpenCompareView: () => setCompareModalOpen(true),
         }}
-        onSelect={(hose) => {
-          setCompareModalOpen(false);
-          setSelected(hose);
+        shortlist={{
+          shortlisted,
+          warning: shortlistWarning,
+          open: shortlistOpen,
+          onToggleOpen: () => openShortlistExclusive((prev) => !prev),
+          onSelect: (hose) => {
+            setSelected(hose);
+            setShortlistOpen(false);
+          },
+          onToggleShortlist: toggleShortlist,
+          onPrint: printShortlist,
+          onClear: clearShortlist,
+          projectName: activeProject?.name,
+          projectCount: projects.length,
+          onOpenProjects: () => setProjectManagerOpen(true),
+          onOpenBom: activeProject ? () => openProjectBom(activeProject.id) : undefined,
+        }}
+      />
+
+      <TrailingDialogs
+        allHoses={allHoses}
+        onSelect={setSelected}
+        projectManager={{
+          open: projectManagerOpen,
+          onClose: () => setProjectManagerOpen(false),
+          projects,
+          activeId: activeProjectId,
+          onSwitch: setActiveProjectId,
+          onRename: renameProject,
+          onCreate: createProject,
+          onDuplicate: duplicateProject,
+          onDelete: deleteProject,
+          onOpenBom: openProjectBom,
+        }}
+        shareImport={{
+          payload: sharePayload,
+          onImport: importSharedProject,
+          onClose: closeShareImport,
+        }}
+        similarShape={{
+          target: similarForHose,
+          onClose: () => setSimilarForHose(null),
+        }}
+        photoMeasure={{
+          open: photoMeasureOpen,
+          onClose: () => setPhotoMeasureOpen(false),
+          onApply: applyPhotoMeasurement,
+        }}
+        bendBuilder={{
+          open: bendBuilderOpen,
+          onClose: () => setBendBuilderOpen(false),
+        }}
+        wirePhoto={{
+          open: wirePhotoOpen,
+          onClose: () => setWirePhotoOpen(false),
+        }}
+        compareModal={{
+          open: compareModalOpen,
+          onClose: () => setCompareModalOpen(false),
+          hoses: compared,
+          onRemove: (partNo) => {
+            toggleCompare(partNo);
+            if (compared.length <= 1) setCompareModalOpen(false);
+          },
         }}
       />
 
