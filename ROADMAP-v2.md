@@ -618,6 +618,97 @@ so the PWA can update without manual intervention.
 
 ---
 
+## Phase 10 — Shape matching ("the wire method")
+
+> Builders rarely have calipers before they know what they want. Far more
+> often they shape a piece of bendable wire to match the routing they need,
+> then try to find a hose that matches that wire. Phase 10 is about making
+> that workflow first-class — both with zero-friction visual shortcuts and
+> with a proper geometric matcher that works from a photo or sketch.
+
+### 10.1 — Quick-shape chips
+
+**Why:** The fastest way to narrow 4,700 parts by shape is a one-tap visual
+picker. Not "select the silhouette family from this dropdown" but big,
+tappable tiles: *Straight · Gentle curve · Tight elbow · S-bend · Z-bend ·
+J-hook · Y-branch*. Each tile maps to a canned filter (curvature group +
+sometimes a flow type). No new data needed — uses the buckets that already
+exist in `src/lib/shapeBuckets.js`.
+
+**Acceptance criteria:**
+- [ ] Strip of 6–8 shape tiles with SVG silhouette previews
+- [ ] Clicking a tile toggles its curvature filter (and flow filter for
+  Y-branch)
+- [ ] Live count per tile — "47 hoses match"
+- [ ] Tiles respect current dimension filters if any are set
+- [ ] Lives above the flow cards as a parallel entry path
+
+### 10.2 — Offline shape-signature extraction
+
+**Why:** Gates publishes no structured geometry — only the 2D silhouette
+PNGs we already scraped in v1. Running image processing once over those
+4,200 PNGs lets us compute real shape signatures per part: bend count,
+bend angles, arc-to-chord ratio, end-to-end displacement. Those
+signatures unlock a real matcher instead of a bucketed one.
+
+**What to build:**
+
+- `scripts/extract_shape_signatures.py` — for each `images/hoses/*.png`:
+  - Binarize → skeletonize to 1-pixel centerline
+  - Reduce to polyline via Ramer-Douglas-Peucker
+  - Compute: bendCount, bendAngles[], arcLenPx, chordLenPx,
+    arcToChordRatio, endToEndVector, canonical bend sequence
+- Output: `data/shape_signatures.json` keyed by partNo
+- `enrichHose.js` merges the signature onto each hose record
+
+**Acceptance criteria:**
+- [ ] Script runs end-to-end on the 4,200 PNG corpus
+- [ ] Every signature has bendCount ≥ 0 and arcLenPx > 0
+- [ ] Spot-check: a wideArc silhouette has bendCount ≤ 1, a Zturn has 2+
+- [ ] Signatures are deterministic (same input → same output)
+
+### 10.3 — Bend builder
+
+**Why:** With signatures in place, users can sketch their wire on-screen:
+tap to add a bend, drag to set angle, repeat. The sketch's signature
+ranks against every hose in the catalogue.
+
+**What to build:**
+
+- Canvas-based interactive polyline builder
+- Live match count + top-5 preview as bends are added/adjusted
+- Signature distance function (weighted: bendCount first, then angles,
+  then proportions)
+- Optional "snap to 90°/45°" toggle for quick input
+
+**Acceptance criteria:**
+- [ ] Tap to add a bend, drag midpoint to adjust angle
+- [ ] Total-length slider separate from the bend sketch
+- [ ] Reset + undo controls
+- [ ] Top-5 previews update under 80ms per interaction
+- [ ] Works on touch; pointer events only, no mouse-specific handlers
+
+### 10.4 — Photo of bent wire
+
+**Why:** Highest ambition: builder snaps a photo of their bent wire on a
+white surface. Same signature pipeline extracts geometry from their
+image. No typing at all.
+
+**What to build:**
+
+- Reuse PhotoMeasureDialog upload infrastructure
+- Client-side skeletonization (OpenCV.js or a lightweight pure-JS
+  thinning implementation)
+- Extract signature → rank via the same matcher as 10.3
+- Confidence estimate based on skeletonization quality
+
+**Acceptance criteria:**
+- [ ] End-to-end runs in under 6 seconds on a mid-tier phone
+- [ ] Fails loud on non-wire photos ("No clear wire silhouette found")
+- [ ] Privacy: nothing leaves the device
+
+---
+
 ## Backlog (v2 — future consideration)
 
 Same house rules: real ideas, not prioritized, may move up based on demand.

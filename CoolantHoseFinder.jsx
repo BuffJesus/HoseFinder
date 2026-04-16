@@ -37,6 +37,7 @@ import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/conte
 import { TopBar } from "./src/components/TopBar.jsx";
 import { Hero } from "./src/components/Hero.jsx";
 import { FlowCards } from "./src/components/FlowCards.jsx";
+import { QuickShapeStrip } from "./src/components/QuickShapeStrip.jsx";
 import { WizardSizesStep } from "./src/components/WizardSizesStep.jsx";
 import { WizardLengthStep } from "./src/components/WizardLengthStep.jsx";
 import { ResultsHeader } from "./src/components/ResultsHeader.jsx";
@@ -744,6 +745,17 @@ export default function CoolantHoseFinder() {
               <ArrowRight className="h-3 w-3 text-zinc-400 transition group-hover:translate-x-0.5 group-hover:text-violet-300" />
             </button>
           </div>
+        )}
+
+        {/* ── Quick shape strip — "wire method" ── */}
+        {step === 1 && !shapeMode && (
+          <QuickShapeStrip
+            candidates={curvatureCandidates}
+            curvature={curvature}
+            setCurvature={setCurvature}
+            flow={flow}
+            setFlow={setFlow}
+          />
         )}
 
         {/* ── Flow cards ── */}
