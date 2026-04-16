@@ -4,7 +4,9 @@ function join(...parts) {
   return parts.filter(Boolean).join(" ");
 }
 
-export const Input = React.forwardRef(function Input({ className = "", ...props }, ref) {
+export const Input = React.forwardRef(
+  /** @param {React.InputHTMLAttributes<HTMLInputElement>} props */
+  function Input({ className = "", ...props }, ref) {
   return (
     <input
       ref={ref}

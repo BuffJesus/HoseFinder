@@ -38,7 +38,7 @@ export function useFilters(opts = {}) {
   const [flow, setFlow] = useState("all");
   const [search, setSearch] = useState("");
   const [sortMode, setSortMode] = useState("score");
-  const [viewMode, setViewMode] = useState(loadViewMode);
+  const [viewMode, setViewMode] = useState(/** @type {"grid"|"list"|"compact"} */ (loadViewMode));
   const [showRefine, setShowRefine] = useState(false);
   const [shapeMode, setShapeMode] = useState(false);
   const [selectedRows, setSelectedRows] = useState(() => new Set());

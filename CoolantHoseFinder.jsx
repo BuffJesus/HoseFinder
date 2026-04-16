@@ -60,31 +60,31 @@ export default function CoolantHoseFinder() {
   const { allHoses, allRows, loading, catalogMeta } = useCatalogData();
 
   // ── Filter state lives in useFilters (see ./src/hooks/useFilters.js)
-  const [unitMode,      setUnitMode]      = useState(() => {
+  const [unitMode,      setUnitMode]      = useState(/** @type {"in"|"mm"} */ (() => {
     if (typeof window === "undefined") return "in";
     try {
       const stored = window.localStorage.getItem(UNIT_KEY);
       if (stored === "in" || stored === "mm") return stored;
     } catch {}
     return "in";
-  });
+  }));
   useEffect(() => {
     try { window.localStorage.setItem(UNIT_KEY, unitMode); } catch {}
   }, [unitMode]);
-  const [locale, setLocale] = useState(() => {
+  const [locale, setLocale] = useState(/** @type {"en"|"es"} */ (() => {
     if (typeof window === "undefined") return "en";
     try {
       const stored = window.localStorage.getItem(LOCALE_KEY);
       if (LOCALES[stored]) return stored;
     } catch {}
     return "en";
-  });
+  }));
   useEffect(() => {
     try { window.localStorage.setItem(LOCALE_KEY, locale); } catch {}
   }, [locale]);
   const t = useMemo(() => createTranslator(locale), [locale]);
   const [page,          setPage]          = useState(1);
-  const [step,          setStep]          = useState(1);
+  const [step,          setStep]          = useState(/** @type {number | "results"} */ (1));
 
   // Toasts — declared early so callbacks defined below can close over pushToast.
   const { toasts, pushToast } = useToasts();
@@ -690,7 +690,7 @@ export default function CoolantHoseFinder() {
               onSelect={setSelected}
               onLoadMore={() => setPage((p) => p + 1)}
               onSearchByPart={(partNo) => setSearch(partNo)}
-              onBrowseShapes={() => { setWizardMode(true); setShapeMode(true); }}
+              onBrowseShapes={() => setShapeMode(true)}
               onApplyTolerances={({ idTol: newIdTol, lenTol: newLenTol }) => {
                 setIdTol([newIdTol]);
                 setLenTol([newLenTol]);

@@ -1,0 +1,12 @@
+{
+  "extends": "./jsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "CoolantHoseFinder.jsx"
+  ],
+  "exclude": ["node_modules", "dist", "**/*.test.js"]
+}

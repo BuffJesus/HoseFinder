@@ -16,7 +16,6 @@ import { ShareImportDialog } from "./ShareImportDialog.jsx";
 
 /**
  * @param {{
- *   viewProjectId: string,
  *   viewing: any,
  *   unitMode: "in" | "mm",
  *   allHoses: any[],

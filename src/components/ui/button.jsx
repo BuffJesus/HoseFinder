@@ -9,10 +9,9 @@ const sizeMap = {
   icon: "h-10 w-10 p-0",
 };
 
-export const Button = React.forwardRef(function Button(
-  { className = "", size = "default", type = "button", ...props },
-  ref,
-) {
+export const Button = React.forwardRef(
+  /** @param {React.ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }} props */
+  function Button({ className = "", size = "default", type = "button", ...props }, ref) {
   return (
     <button
       ref={ref}
