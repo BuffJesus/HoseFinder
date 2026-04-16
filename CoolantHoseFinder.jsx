@@ -24,7 +24,6 @@ import { ActiveFilterStrip } from "./src/components/ActiveFilterStrip.jsx";
 import { HoseImage, ImageTile, hoseImgSrc, catalogImgSrc } from "./src/components/HoseImage.jsx";
 import { ShortlistButton } from "./src/components/ShortlistButton.jsx";
 import { PresetIcon, PresetsStrip } from "./src/components/PresetsStrip.jsx";
-import { WizardSummaryStrip } from "./src/components/wizard-cards.jsx";
 import { pushMeasurementHistory } from "./src/lib/measurementHistory.js";
 import { StepRatioChips, LengthClassChips, CurvatureChips } from "./src/components/filter-chips.jsx";
 import { RoleSection } from "./src/components/RoleSection.jsx";
@@ -32,14 +31,13 @@ import { gatesUrl, gates360Url } from "./src/lib/gatesUrls.js";
 import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/context/i18n.jsx";
 import { TopBar } from "./src/components/TopBar.jsx";
 import { Hero } from "./src/components/Hero.jsx";
-import { FlowCards } from "./src/components/FlowCards.jsx";
 import { QuickShapeStrip } from "./src/components/QuickShapeStrip.jsx";
 import { BendBuilderDialog } from "./src/components/BendBuilderDialog.jsx";
 import { WirePhotoDialog } from "./src/components/WirePhotoDialog.jsx";
-import { WizardSizesStep } from "./src/components/WizardSizesStep.jsx";
-import { WizardLengthStep } from "./src/components/WizardLengthStep.jsx";
 import { ResultsHeader } from "./src/components/ResultsHeader.jsx";
 import { ResultsArea } from "./src/components/ResultsArea.jsx";
+import { RefineDisclosure } from "./src/components/RefineDisclosure.jsx";
+import { WizardSection } from "./src/components/WizardSection.jsx";
 import { MeasurementGuide } from "./src/components/MeasurementGuide.jsx";
 import { CompareBar } from "./src/components/CompareBar.jsx";
 import { ShortlistBar } from "./src/components/ShortlistBar.jsx";
@@ -55,7 +53,6 @@ import {
   enrichHose, SIZE_BAND_LABELS, APPLICATION_LABELS, SHAPE_LABELS,
 } from "./src/lib/enrichHose.js";
 import { SAMPLE_HOSES } from "./src/lib/sampleHoses.js";
-import { ShapeBrowser } from "./src/components/ShapeBrowser.jsx";
 import { useCatalogData } from "./src/hooks/useCatalogData.js";
 import { useToasts } from "./src/hooks/useToasts.js";
 import { useProjectRoute } from "./src/hooks/useProjectRoute.js";
@@ -75,8 +72,8 @@ import {
   sizeSummary as buildSizeSummary, lengthSummary as buildLengthSummary,
 } from "./src/lib/wizardSummaries.js";
 import {
-  SlidersHorizontal, Ruler,
-  ChevronDown, ArrowUpDown, Bookmark,
+  Ruler,
+  ArrowUpDown, Bookmark,
   Sparkles, ArrowRight,
   Filter, Link2, Keyboard,
 } from "lucide-react";
@@ -86,7 +83,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const PAGE_SIZE = 24;
@@ -761,184 +758,56 @@ export default function CoolantHoseFinder() {
           />
         )}
 
-        {/* ── Flow cards ── */}
-        <section className="mt-10">
-          <div className="mb-5 min-w-0">
-            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-violet-300/80">
-              <Sparkles className="h-3 w-3" />
-              {t("wizard.sectionEyebrow")}
-            </div>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.h2
-                key={`step-${step}`}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-1.5 text-2xl font-semibold tracking-tight text-white"
-              >
-                {step === 1 ? t("wizard.step1Prompt")
-                  : step === 2 ? t("wizard.step2Prompt")
-                  : step === 3 ? t("wizard.step3Prompt")
-                  : t("wizard.resultsPrompt")}
-              </motion.h2>
-            </AnimatePresence>
-          </div>
-          {true ? (
-            <>
-              {(step === 1 || flow === "all") ? (
-                <FlowCards
-                  flow={flow}
-                  onSelect={(key) => {
-                    setFlow(key);
-                    setStep(2);
-                  }}
-                />
-              ) : (
-                <WizardSummaryStrip label="Step 1" value={flowSummary} onClick={() => setStep(1)} />
-              )}
-
-              {flow !== "all" && (
-                <>
-                  {step === 2 ? (
-                    <WizardSizesStep
-                      targetId1={targetId1}
-                      setTargetId1={setTargetId1}
-                      targetId2={targetId2}
-                      setTargetId2={setTargetId2}
-                      needsSecondDiameter={needsSecondDiameter}
-                      hasRequiredDimensions={hasRequiredDimensions}
-                      liveDiameterMatches={liveDiameterMatches}
-                      unitMode={unitMode}
-                      allHoses={allHoses}
-                      t={t}
-                      onAdvance={() => setStep(3)}
-                    />
-                  ) : (
-                    <div className="mt-6">
-                      <WizardSummaryStrip label="Step 2" value={sizeSummary} onClick={() => setStep(2)} />
-                    </div>
-                  )}
-
-                  {hasRequiredDimensions && step !== 2 && (
-                    step === 3 ? (
-                      <WizardLengthStep
-                        targetLen={targetLen}
-                        setTargetLen={setTargetLen}
-                        lenTol={lenTol}
-                        setLenTol={setLenTol}
-                        liveLengthMatches={liveLengthMatches}
-                        unitMode={unitMode}
-                        t={t}
-                        onAdvance={(skip) => {
-                          if (skip) setLenTol([99]);
-                          setStep("results");
-                        }}
-                      />
-                    ) : (
-                      <div className="mt-6">
-                        <WizardSummaryStrip label="Step 3" value={lengthSummary || "Length: Not set"} onClick={() => setStep(3)} />
-                      </div>
-                    )
-                  )}
-                </>
-              )}
-            </>
-          ) : (
-            <p className="text-sm text-zinc-400">The full filter sidebar stays available here for power users who want every control at once.</p>
-          )}
-
-          {shapeMode && pageMap.length > 0 && (
-            <ShapeBrowser
-              allRows={allRows}
-              allHoses={allHoses}
-              pageMap={pageMap}
-              selectedRows={selectedRows}
-              selectedSilhouettes={silhouettes}
-              onToggleSilhouette={(sil) => {
-                setSilhouettes(prev => {
-                  const next = new Set(prev);
-                  if (next.has(sil)) next.delete(sil);
-                  else next.add(sil);
-                  return next;
-                });
-              }}
-              onTogglePage={toggleShapePage}
-              onClearAll={() => {
-                setSelectedRows(new Set());
-                setSilhouettes(new Set());
-              }}
-              onShowResults={() => {
-                setShapeMode(false);
-                setStep("results");
-              }}
-              resultCount={filtered.length}
-            />
-          )}
-        </section>
+        {/* ── Wizard section: eyebrow + step chain + optional shape browser ── */}
+        <WizardSection
+          t={t}
+          step={step} setStep={setStep}
+          flow={flow} setFlow={setFlow} flowSummary={flowSummary}
+          targetId1={targetId1} setTargetId1={setTargetId1}
+          targetId2={targetId2} setTargetId2={setTargetId2}
+          targetLen={targetLen} setTargetLen={setTargetLen}
+          needsSecondDiameter={needsSecondDiameter}
+          hasRequiredDimensions={hasRequiredDimensions}
+          liveDiameterMatches={liveDiameterMatches}
+          liveLengthMatches={liveLengthMatches}
+          lenTol={lenTol} setLenTol={setLenTol}
+          sizeSummary={sizeSummary} lengthSummary={lengthSummary}
+          unitMode={unitMode} allHoses={allHoses}
+          allRows={allRows} pageMap={pageMap}
+          selectedRows={selectedRows} silhouettes={silhouettes}
+          setSilhouettes={setSilhouettes}
+          setSelectedRows={setSelectedRows}
+          toggleShapePage={toggleShapePage}
+          shapeMode={shapeMode} setShapeMode={setShapeMode}
+          filteredCount={filtered.length}
+        />
 
         {/* ── Refine disclosure — one progressive-depth surface for every viewport ── */}
-        <div className="mt-6">
-          <button
-            type="button"
-            onClick={() => setShowRefine((prev) => !prev)}
-            aria-expanded={showRefine}
-            className="group inline-flex w-full items-center justify-between gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-left transition hover:border-violet-400/30 hover:bg-white/[0.06]"
-          >
-            <span className="inline-flex items-center gap-2 text-sm text-zinc-200">
-              <SlidersHorizontal className="h-3.5 w-3.5 text-violet-300" />
-              {t("refine.label")}
-              {hasActiveFilters && (
-                <span className={`inline-flex h-1.5 w-1.5 rounded-full bg-gradient-to-r ${ACCENT} shadow-[0_0_8px_rgba(217,70,239,0.7)]`} />
-              )}
-              <span className="text-xs text-zinc-400">{t("refine.subtitle")}</span>
-            </span>
-            <ChevronDown className={`h-4 w-4 text-zinc-400 transition ${showRefine ? "rotate-180 text-violet-300" : ""}`} />
-          </button>
-          <AnimatePresence initial={false}>
-            {showRefine && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-                className="overflow-hidden"
-              >
-                <motion.aside
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="relative mt-3 overflow-hidden rounded-[32px] border border-white/10 backdrop-blur-xl"
-                  style={{
-                    background:
-                      "radial-gradient(40rem 14rem at 0% 0%, rgba(139,92,246,0.08), transparent 60%)," +
-                      "linear-gradient(180deg, rgba(20,20,28,0.7), rgba(10,10,15,0.7))",
-                    boxShadow:
-                      "0 24px 80px -28px rgba(139,92,246,0.30), inset 0 1px 0 rgba(255,255,255,0.04)",
-                  }}
-                >
-                  <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-60`} />
-                  <FilterPanelContent
-                    search={search} setSearch={setSearch}
-                    targetId1={targetId1} setTargetId1={setTargetId1}
-                    targetId2={targetId2} setTargetId2={setTargetId2}
-                    targetLen={targetLen} setTargetLen={setTargetLen}
-                    liveDiameterMatches={liveDiameterMatches}
-                    liveLengthMatches={liveLengthMatches}
-                    showAdvancedFilters={showAdvancedFilters}
-                    setShowAdvancedFilters={setShowAdvancedFilters}
-                    idTol={idTol} setIdTol={setIdTol}
-                    lenTol={lenTol} setLenTol={setLenTol}
-                    sizeBandFilter={sizeBandFilter} setSizeBandFilter={setSizeBandFilter}
-                    endCountFilter={endCountFilter} setEndCountFilter={setEndCountFilter}
-                    clearAllFilters={resetSearch}
-                    onOpenPhotoMeasure={() => setPhotoMeasureOpen(true)}
-                    allHoses={allHoses}
-                  />
-                </motion.aside>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <RefineDisclosure
+          open={showRefine}
+          onToggle={() => setShowRefine((prev) => !prev)}
+          hasActiveFilters={hasActiveFilters}
+          label={t("refine.label")}
+          subtitle={t("refine.subtitle")}
+        >
+          <FilterPanelContent
+            search={search} setSearch={setSearch}
+            targetId1={targetId1} setTargetId1={setTargetId1}
+            targetId2={targetId2} setTargetId2={setTargetId2}
+            targetLen={targetLen} setTargetLen={setTargetLen}
+            liveDiameterMatches={liveDiameterMatches}
+            liveLengthMatches={liveLengthMatches}
+            showAdvancedFilters={showAdvancedFilters}
+            setShowAdvancedFilters={setShowAdvancedFilters}
+            idTol={idTol} setIdTol={setIdTol}
+            lenTol={lenTol} setLenTol={setLenTol}
+            sizeBandFilter={sizeBandFilter} setSizeBandFilter={setSizeBandFilter}
+            endCountFilter={endCountFilter} setEndCountFilter={setEndCountFilter}
+            clearAllFilters={resetSearch}
+            onOpenPhotoMeasure={() => setPhotoMeasureOpen(true)}
+            allHoses={allHoses}
+          />
+        </RefineDisclosure>
 
         {/* ── Results ── */}
         <div className="mt-6">
