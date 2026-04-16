@@ -35,6 +35,11 @@ jobs:
           cp -r images dist/images
           touch dist/.nojekyll
       - uses: actions/configure-pages@v5
+        with:
+          # Enable Pages on first run so the workflow doesn't require a
+          # manual Settings → Pages step. Needs `pages: write` perm, which
+          # is already granted above.
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
