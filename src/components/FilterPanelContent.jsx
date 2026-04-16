@@ -2,14 +2,15 @@
 // filters" with tolerance sliders + size-band / end-count selects → clear.
 // All strings of canonical inches flow through `<NaturalDimInput>`.
 
-import React from "react";
+import React, { useMemo } from "react";
 import { SlidersHorizontal, Search, Ruler, Sparkles, ChevronDown, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useUnit } from "../context/unit.jsx";
-import { MM_PER_IN } from "../lib/units.js";
+import { MM_PER_IN, fmtDim } from "../lib/units.js";
+import { validPairingsFor } from "../lib/endPairings.js";
 import { AnimatedCount } from "./AnimatedCount.jsx";
 import { MmHint } from "./primitives.jsx";
 import { MeasurementHint } from "./MeasurementHint.jsx";
@@ -43,6 +44,7 @@ const SIZE_BAND_LABELS = {
  *   endCountFilter: string, setEndCountFilter: (v: string) => void,
  *   clearAllFilters: () => void,
  *   onOpenPhotoMeasure?: () => void,
+ *   allHoses?: any[],
  * }} props
  */
 export function FilterPanelContent({
@@ -54,8 +56,22 @@ export function FilterPanelContent({
   sizeBandFilter, setSizeBandFilter, endCountFilter, setEndCountFilter,
   clearAllFilters,
   onOpenPhotoMeasure,
+  allHoses = [],
 }) {
   const unitMode = useUnit();
+  // Pair-aware filtering for the Common sizes chips: when the user fills
+  // End 1, dim End 2 chips that don't appear in the catalogue alongside
+  // that value. And vice versa.
+  const end2ValidSet = useMemo(
+    () => (targetId1 ? validPairingsFor(allHoses, targetId1) : null),
+    [allHoses, targetId1],
+  );
+  const end1ValidSet = useMemo(
+    () => (targetId2 ? validPairingsFor(allHoses, targetId2) : null),
+    [allHoses, targetId2],
+  );
+  const end2ConstraintLabel = targetId1 ? `pairs with ${fmtDim(targetId1, unitMode)}` : "";
+  const end1ConstraintLabel = targetId2 ? `pairs with ${fmtDim(targetId2, unitMode)}` : "";
   const idPlace1 = unitMode === "mm" ? "e.g. 38" : "e.g. 1.50";
   const idPlace2 = unitMode === "mm" ? "e.g. 32" : "e.g. 1.25";
   const lenPlace = unitMode === "mm" ? "e.g. 470" : "e.g. 18.5";
@@ -123,7 +139,12 @@ export function FilterPanelContent({
             placeholder={idPlace1}
             historyKey="id1"
           />
-          <CommonSizesPicker value={targetId1} onPick={setTargetId1} />
+          <CommonSizesPicker
+            value={targetId1}
+            onPick={setTargetId1}
+            validValues={end1ValidSet}
+            constraintLabel={end1ConstraintLabel}
+          />
           {targetId1 !== "" && (
             <div className="flex items-center gap-1.5 text-xs text-violet-300">
               <AnimatedCount value={liveDiameterMatches} /> hose{liveDiameterMatches === 1 ? "" : "s"} match this diameter set
@@ -144,7 +165,12 @@ export function FilterPanelContent({
             placeholder={idPlace2}
             historyKey="id2"
           />
-          <CommonSizesPicker value={targetId2} onPick={setTargetId2} />
+          <CommonSizesPicker
+            value={targetId2}
+            onPick={setTargetId2}
+            validValues={end2ValidSet}
+            constraintLabel={end2ConstraintLabel}
+          />
           {targetId2 !== "" && (
             <div className="flex items-center gap-1.5 text-xs text-violet-300">
               <AnimatedCount value={liveDiameterMatches} /> hose{liveDiameterMatches === 1 ? "" : "s"} match both end sizes

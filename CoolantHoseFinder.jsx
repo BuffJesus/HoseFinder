@@ -72,6 +72,11 @@ import { useMediaQuery } from "./src/hooks/useMediaQuery.js";
 import { useKeyboardShortcuts } from "./src/hooks/useKeyboardShortcuts.js";
 import { PRESETS } from "./src/lib/presets.js";
 import { printShortlist as printShortlistCmd } from "./src/lib/printShortlist.js";
+import { validPairingsFor } from "./src/lib/endPairings.js";
+import {
+  FLOW_CARDS, flowSummary as buildFlowSummary,
+  sizeSummary as buildSizeSummary, lengthSummary as buildLengthSummary,
+} from "./src/lib/wizardSummaries.js";
 import {
   Search, GitCompare, Check, Info, X, ChevronRight,
   SlidersHorizontal, Ruler, Layers3, Loader2,
@@ -503,12 +508,8 @@ export default function CoolantHoseFinder() {
   // ── Visual families for dropdowns ─────────────────────────────────────────
   const sizeBands = useMemo(() => ["all", ...new Set(allHoses.map(h => h.sizeBand))], [allHoses]);
 
-  // ── Flow cards ────────────────────────────────────────────────────────────
-  const flowCards = [
-    { key: "single",   title: "Same-size",   body: "Both ends match. Clean neck-to-neck runs.",         chip: "1 size",   silhouette: "wideArc" },
-    { key: "reducer",  title: "Reducer",     body: "Two different end diameters. Swaps and adapters.",  chip: "2 sizes",  silhouette: "Zturn"  },
-    { key: "branched", title: "Branched",    body: "Bypass or auxiliary lines. Three or more ends.",    chip: "3–4 ends", silhouette: "branchY" },
-  ];
+  // Flow cards moved to ./src/lib/wizardSummaries.js
+  const flowCards = FLOW_CARDS;
 
   // ── Exact / close counts ──────────────────────────────────────────────────
   const exactCount = filtered.filter(h => h._matchQuality === "exact").length;
@@ -649,25 +650,9 @@ export default function CoolantHoseFinder() {
     setSelectedRows(new Set());
   }, []);
 
-  const flowSummary = useMemo(() => {
-    if (flow === "single") return "Type: Same-size";
-    if (flow === "reducer") return "Type: Reducer";
-    if (flow === "branched") return "Type: Branched";
-    return "";
-  }, [flow]);
-
-  const sizeSummary = useMemo(() => {
-    if (!targetId1 && !targetId2) return "";
-    const parts = [];
-    if (targetId1) parts.push(`End 1: ${targetId1}"`);
-    if (targetId2) parts.push(`End 2: ${targetId2}"`);
-    return parts.join(" · ");
-  }, [targetId1, targetId2]);
-
-  const lengthSummary = useMemo(() => {
-    if (!targetLen) return lenTol[0] >= 99 ? "Length: Any route length" : "";
-    return lenTol[0] >= 99 ? `Length: ${targetLen}" · any tolerance` : `Length: ${targetLen}" ±${lenTol[0].toFixed(1)}"`;
-  }, [targetLen, lenTol]);
+  const flowSummary   = useMemo(() => buildFlowSummary(flow), [flow]);
+  const sizeSummary   = useMemo(() => buildSizeSummary(targetId1, targetId2), [targetId1, targetId2]);
+  const lengthSummary = useMemo(() => buildLengthSummary(targetLen, lenTol[0]), [targetLen, lenTol]);
 
   useEffect(() => {
     if (flow !== "all" && step === 1) setStep(2);
@@ -941,7 +926,12 @@ export default function CoolantHoseFinder() {
                             placeholder="e.g. 1.50"
                             className="rounded-2xl border-white/10 bg-black/30 text-zinc-100 placeholder:text-zinc-600 [appearance:textfield]"
                           />
-                          <CommonSizesPicker value={targetId1} onPick={setTargetId1} />
+                          <CommonSizesPicker
+                            value={targetId1}
+                            onPick={setTargetId1}
+                            validValues={needsSecondDiameter && targetId2 ? validPairingsFor(allHoses, targetId2) : null}
+                            constraintLabel={needsSecondDiameter && targetId2 ? `pairs with ${targetId2}"` : ""}
+                          />
                           <AnimatePresence>
                             {targetId1 !== "" && (
                               <motion.div
@@ -968,7 +958,12 @@ export default function CoolantHoseFinder() {
                               placeholder="e.g. 1.25"
                               className="rounded-2xl border-white/10 bg-black/30 text-zinc-100 placeholder:text-zinc-600 [appearance:textfield]"
                             />
-                            <CommonSizesPicker value={targetId2} onPick={setTargetId2} />
+                            <CommonSizesPicker
+                              value={targetId2}
+                              onPick={setTargetId2}
+                              validValues={targetId1 ? validPairingsFor(allHoses, targetId1) : null}
+                              constraintLabel={targetId1 ? `pairs with ${targetId1}"` : ""}
+                            />
                             <AnimatePresence>
                               {targetId2 !== "" && (
                                 <motion.div
@@ -1174,6 +1169,7 @@ export default function CoolantHoseFinder() {
                     endCountFilter={endCountFilter} setEndCountFilter={setEndCountFilter}
                     clearAllFilters={resetSearch}
                     onOpenPhotoMeasure={() => setPhotoMeasureOpen(true)}
+                    allHoses={allHoses}
                   />
                 </motion.aside>
               </motion.div>
