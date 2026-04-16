@@ -15,7 +15,7 @@ import { ToastViewport } from "./src/components/ToastViewport.jsx";
 import { KeyboardHelp } from "./src/components/KeyboardHelp.jsx";
 import { CatalogFooter } from "./src/components/CatalogFooter.jsx";
 import { UnitToggle, LocaleToggle } from "./src/components/toggles.jsx";
-import { UnitContext, useUnit, Dim } from "./src/context/unit.jsx";
+import { UnitContext, useUnit } from "./src/context/unit.jsx";
 import { BottomSheet } from "./src/components/BottomSheet.jsx";
 import { GapExplainer } from "./src/components/GapExplainer.jsx";
 import { SavedSearchesStrip } from "./src/components/SavedSearchesStrip.jsx";
@@ -26,11 +26,7 @@ import { ShortlistButton } from "./src/components/ShortlistButton.jsx";
 import { PresetIcon, PresetsStrip } from "./src/components/PresetsStrip.jsx";
 import { WizardSummaryStrip } from "./src/components/wizard-cards.jsx";
 import { pushMeasurementHistory } from "./src/lib/measurementHistory.js";
-import { SmartEmptyState } from "./src/components/SmartEmptyState.jsx";
 import { StepRatioChips, LengthClassChips, CurvatureChips } from "./src/components/filter-chips.jsx";
-import { HoseCard, HoseCardSkeleton } from "./src/components/HoseCard.jsx";
-import { HoseListCard } from "./src/components/HoseListCard.jsx";
-import { HoseCompactTable } from "./src/components/HoseCompactTable.jsx";
 import { RoleSection } from "./src/components/RoleSection.jsx";
 import { gatesUrl, gates360Url } from "./src/lib/gatesUrls.js";
 import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/context/i18n.jsx";
@@ -43,6 +39,7 @@ import { WirePhotoDialog } from "./src/components/WirePhotoDialog.jsx";
 import { WizardSizesStep } from "./src/components/WizardSizesStep.jsx";
 import { WizardLengthStep } from "./src/components/WizardLengthStep.jsx";
 import { ResultsHeader } from "./src/components/ResultsHeader.jsx";
+import { ResultsArea } from "./src/components/ResultsArea.jsx";
 import { MeasurementGuide } from "./src/components/MeasurementGuide.jsx";
 import { CompareBar } from "./src/components/CompareBar.jsx";
 import { ShortlistBar } from "./src/components/ShortlistBar.jsx";
@@ -78,7 +75,7 @@ import {
   sizeSummary as buildSizeSummary, lengthSummary as buildLengthSummary,
 } from "./src/lib/wizardSummaries.js";
 import {
-  SlidersHorizontal, Ruler, Layers3,
+  SlidersHorizontal, Ruler,
   ChevronDown, ArrowUpDown, Bookmark,
   Sparkles, ArrowRight,
   Filter, Link2, Keyboard,
@@ -1007,150 +1004,35 @@ export default function CoolantHoseFinder() {
             />
 
             {/* Cards */}
-            {loading ? (
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <HoseCardSkeleton key={i} idx={i} />
-                ))}
-              </div>
-            ) : !canShowResults ? (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-[32px] border border-white/10"
-                style={{
-                  background:
-                    "linear-gradient(160deg, rgba(139,92,246,0.08), rgba(217,70,239,0.04) 60%, rgba(20,20,26,0.95))",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
-                }}
-              >
-                <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-50`} />
-                <div className="flex flex-col items-center gap-4 p-10 text-center">
-                  <motion.div
-                    initial={{ y: 0 }}
-                    animate={{ y: [-2, 2, -2] }}
-                    transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                    className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-400/25 bg-violet-500/10 text-violet-200"
-                  >
-                    <Sparkles className="h-5 w-5" />
-                  </motion.div>
-                  <div>
-                    <div className="text-xl font-semibold tracking-tight text-white">Add a measurement to begin</div>
-                    <p className="mx-auto mt-1.5 max-w-md text-sm leading-6 text-zinc-400">
-                      Pick a hose type above, then enter an end diameter or length. Results stream in live as you type — no need to press search.
-                    </p>
-                  </div>
-                  <div className="mt-1 flex flex-wrap items-center justify-center gap-3 text-xs text-zinc-400">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-                      <Ruler className="h-3 w-3 text-violet-300" /> Diameter
-                    </span>
-                    <span className="text-zinc-600">or</span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-                      <ArrowUpDown className="h-3 w-3 text-violet-300" /> Length
-                    </span>
-                    <span className="text-zinc-600">or</span>
-                    <button
-                      type="button"
-                      onClick={() => { setWizardMode(true); setShapeMode(true); }}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/25 bg-violet-500/10 px-3 py-1.5 text-violet-200 transition hover:border-violet-400/40 hover:bg-violet-500/20"
-                    >
-                      <Layers3 className="h-3 w-3" /> Browse shapes
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ) : filtered.length === 0 ? (
-              <>
-                {fuzzyPartSuggestions.length > 0 && (
-                  <div className="mb-4 rounded-[22px] border border-violet-400/25 bg-violet-500/8 p-4">
-                    <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">Did you mean…</div>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {fuzzyPartSuggestions.map((h) => (
-                        <button
-                          key={h.partNo}
-                          type="button"
-                          onClick={() => setSearch(h.partNo)}
-                          className="group inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-zinc-100 transition hover:border-violet-400/40 hover:bg-white/[0.08] hover:text-white"
-                        >
-                          <span className="font-semibold tabular">{h.partNo}</span>
-                          <span className="text-xs text-zinc-400 tabular"><Dim value={h.hoseId} /> · <Dim value={h.length} /></span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <SmartEmptyState
-                  targetId1={dTargetId1}
-                  targetId2={dTargetId2}
-                  targetLen={dTargetLen}
-                  allHoses={allHoses}
-                  onSelect={setSelected}
-                  onApply={({ idTol: newIdTol, lenTol: newLenTol }) => {
-                    setIdTol([newIdTol]);
-                    setLenTol([newLenTol]);
-                  }}
-                  onClearLength={clearLengthFilter}
-                  onClearId={clearIdFilters}
-                  onShowGuide={() => setShowGuide(true)}
-                />
-              </>
-            ) : (
-              <>
-                {viewMode === "compact" ? (
-                      <HoseCompactTable
-                        hoses={paginated}
-                        onSelect={setSelected}
-                        shortlist={shortlist}
-                        toggleShortlist={toggleShortlist}
-                        onShowRow={showRow}
-                        rowCounts={rowCounts}
-                      />
-                ) : (
-                  <div className={viewMode === "list" ? "space-y-4" : "grid gap-4 sm:grid-cols-2 xl:grid-cols-3"}>
-                    <AnimatePresence mode="popLayout">
-                      {paginated.map((hose, i) => (
-                        viewMode === "list" ? (
-                          <HoseListCard
-                            key={hose.partNo}
-                            hose={hose}
-                            idx={i}
-                            onSelect={setSelected}
-                            shortlist={shortlist}
-                            toggleShortlist={toggleShortlist}
-                            onShowRow={showRow}
-                            onFindSimilar={findSimilar}
-                            rowCount={rowCounts[hose.rowNo]}
-                          />
-                        ) : (
-                          <HoseCard
-                            key={hose.partNo}
-                            hose={hose}
-                            idx={i}
-                            onSelect={setSelected}
-                            shortlist={shortlist}
-                            toggleShortlist={toggleShortlist}
-                            onShowRow={showRow}
-                            onFindSimilar={findSimilar}
-                            rowCount={rowCounts[hose.rowNo]}
-                          />
-                        )
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                )}
-                {hasMore && (
-                  <div className="mt-6 text-center">
-                    <Button variant="outline" onClick={() => setPage(p => p + 1)}
-                      className="rounded-2xl border-white/10 bg-white/5 px-8 text-zinc-300 hover:bg-white/10 hover:text-white"
-                    >
-                      Load more <ChevronDown className="ml-2 h-4 w-4" />
-                      <span className="ml-2 text-zinc-400 text-xs">({filtered.length - paginated.length} remaining)</span>
-                    </Button>
-                  </div>
-                )}
-              </>
-            )}
+            <ResultsArea
+              loading={loading}
+              canShowResults={canShowResults}
+              filtered={filtered}
+              paginated={paginated}
+              hasMore={hasMore}
+              fuzzyPartSuggestions={fuzzyPartSuggestions}
+              viewMode={viewMode}
+              dTargetId1={dTargetId1}
+              dTargetId2={dTargetId2}
+              dTargetLen={dTargetLen}
+              allHoses={allHoses}
+              shortlist={shortlist}
+              toggleShortlist={toggleShortlist}
+              rowCounts={rowCounts}
+              onSelect={setSelected}
+              onLoadMore={() => setPage((p) => p + 1)}
+              onSearchByPart={(partNo) => setSearch(partNo)}
+              onBrowseShapes={() => { setWizardMode(true); setShapeMode(true); }}
+              onApplyTolerances={({ idTol: newIdTol, lenTol: newLenTol }) => {
+                setIdTol([newIdTol]);
+                setLenTol([newLenTol]);
+              }}
+              onShowRow={showRow}
+              onFindSimilar={findSimilar}
+              onClearLength={clearLengthFilter}
+              onClearId={clearIdFilters}
+              onShowGuide={() => setShowGuide(true)}
+            />
         </div>
       </main>
 
