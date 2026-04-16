@@ -9,6 +9,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { enrichHose } from "../lib/enrichHose.js";
+import { classifyShape } from "../lib/classifyShape.js";
 import { SAMPLE_HOSES } from "../lib/sampleHoses.js";
 
 /**
@@ -53,7 +54,25 @@ export function useCatalogData() {
     () => rawHoses.map((h) => {
       const enriched = enrichHose(h);
       const sig = shapeSignatures[enriched.partNo];
-      return sig ? { ...enriched, shape: sig } : enriched;
+      if (!sig) return enriched;
+      // Reclassify silhouette using real geometry instead of the old
+      // rowNo-hash assignment. Updates silhouette, visualFamily, and
+      // the curvature group the hose falls into for QuickShapeStrip.
+      const realSilhouette = classifyShape(sig, {
+        hoseType: enriched.hoseType,
+        endCount: enriched.endCount,
+      });
+      const visualFamily = enriched.visualFamily.replace(
+        /S-curve|elbow|compound S|long sweep|J-hook|gentle curve|Z-routing|tight elbow|deep S|wide arc/i,
+        {
+          gentle: "gentle curve", long: "long sweep", wideArc: "wide arc",
+          sweep: "S-curve", elbow: "elbow", shortElbow: "tight elbow",
+          compound: "compound S", deepS: "deep S",
+          Zturn: "Z-routing", hook: "J-hook",
+          branch: "T-branch", branchY: "Y-branch", branchFour: "4-way branch",
+        }[realSilhouette] || realSilhouette,
+      );
+      return { ...enriched, shape: sig, silhouette: realSilhouette, visualFamily };
     }),
     [rawHoses, shapeSignatures],
   );
