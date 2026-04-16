@@ -5,7 +5,10 @@
 //   - Catalog + hose images: cache-on-demand via cache-first with background update.
 //   - Other origins and POST/etc: passthrough.
 
-const VERSION = "hosefinder-v1";
+// Bump this on any deploy that needs to invalidate stale caches — a byte
+// change makes browsers detect a new worker, fire `activate`, and purge
+// every cache that doesn't start with the new VERSION prefix.
+const VERSION = "hosefinder-v2-pages";
 const SHELL = `${VERSION}-shell`;
 const DATA = `${VERSION}-data`;
 const IMG = `${VERSION}-img`;
