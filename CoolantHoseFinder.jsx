@@ -91,7 +91,6 @@ import {
 // Viewer360Icon, MatchBadge, CountPill, Kbd, MmHint moved to
 // ./src/components/primitives.jsx — imported at top.
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
@@ -869,13 +868,17 @@ export default function CoolantHoseFinder() {
                       <div className="grid gap-4 md:grid-cols-2">
                         <div className="space-y-1.5">
                           <div className="flex items-center justify-between gap-2">
-                            <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">End 1 diameter (I.D., inches)</label>
+                            <label htmlFor="wiz-dim-id1" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                              End 1 diameter (I.D., {unitMode === "mm" ? "mm" : "inches"})
+                            </label>
                             <MeasurementHint type="id" />
                           </div>
-                          <Input type="number" step="0.01" min="0.1" max="4" value={targetId1}
-                            onChange={e => setTargetId1(e.target.value)}
-                            placeholder="e.g. 1.50"
-                            className="rounded-2xl border-white/10 bg-black/30 text-zinc-100 placeholder:text-zinc-600 [appearance:textfield]"
+                          <NaturalDimInput
+                            id="wiz-dim-id1"
+                            value={targetId1}
+                            onChange={setTargetId1}
+                            placeholder={unitMode === "mm" ? "e.g. 38" : "e.g. 1.50"}
+                            historyKey="id1"
                           />
                           <CommonSizesPicker
                             value={targetId1}
@@ -901,13 +904,17 @@ export default function CoolantHoseFinder() {
                         {needsSecondDiameter && (
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between gap-2">
-                              <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">End 2 diameter (I.D., inches)</label>
+                              <label htmlFor="wiz-dim-id2" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                                End 2 diameter (I.D., {unitMode === "mm" ? "mm" : "inches"})
+                              </label>
                               <MeasurementHint type="id" />
                             </div>
-                            <Input type="number" step="0.01" min="0.1" max="4" value={targetId2}
-                              onChange={e => setTargetId2(e.target.value)}
-                              placeholder="e.g. 1.25"
-                              className="rounded-2xl border-white/10 bg-black/30 text-zinc-100 placeholder:text-zinc-600 [appearance:textfield]"
+                            <NaturalDimInput
+                              id="wiz-dim-id2"
+                              value={targetId2}
+                              onChange={setTargetId2}
+                              placeholder={unitMode === "mm" ? "e.g. 32" : "e.g. 1.25"}
+                              historyKey="id2"
                             />
                             <CommonSizesPicker
                               value={targetId2}
@@ -971,13 +978,17 @@ export default function CoolantHoseFinder() {
                         <div className="space-y-5">
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between gap-2">
-                              <label className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Centerline length (inches)</label>
+                              <label htmlFor="wiz-dim-len" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                                Centerline length ({unitMode === "mm" ? "mm" : "inches"})
+                              </label>
                               <MeasurementHint type="length" />
                             </div>
-                            <Input type="number" step="0.1" min="1" max="100" value={targetLen}
-                              onChange={e => setTargetLen(e.target.value)}
-                              placeholder="e.g. 18.5"
-                              className="rounded-2xl border-white/10 bg-black/30 text-zinc-100 placeholder:text-zinc-600 [appearance:textfield]"
+                            <NaturalDimInput
+                              id="wiz-dim-len"
+                              value={targetLen}
+                              onChange={setTargetLen}
+                              placeholder={unitMode === "mm" ? "e.g. 470" : "e.g. 18.5"}
+                              historyKey="len"
                             />
                             <AnimatePresence>
                               {targetLen !== "" && (
