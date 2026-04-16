@@ -2,8 +2,8 @@
 // every hose matches render muted; rows where any differ highlight violet
 // so the differences pop without the reader scanning every value.
 
-import React from "react";
-import { GitCompare, X } from "lucide-react";
+import React, { useState } from "react";
+import { GitCompare, X, Layers, Table2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,9 +33,12 @@ const SIZE_BAND_LABELS = {
  *   onSelect: (h: any) => void,
  * }} props
  */
+const OVERLAY_COLORS = ["#a78bfa", "#e879f9", "#38bdf8"];
+
 export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
   const unitMode = useUnit();
   const fmtDim = useFmtDim();
+  const [view, setView] = useState("specs");
   if (!open || hoses.length === 0) return null;
 
   const rows = [
@@ -76,6 +79,72 @@ export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
         </div>
 
         <div className="px-6 pb-6 pt-5 sm:px-8 sm:pb-8">
+          {/* Specs / Overlay toggle */}
+          <div className="mb-4 flex items-center gap-1 rounded-2xl border border-white/10 bg-white/[0.04] p-1 w-fit">
+            <button
+              type="button"
+              onClick={() => setView("specs")}
+              className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium transition ${
+                view === "specs"
+                  ? `bg-gradient-to-r ${ACCENT} text-white shadow-[0_4px_14px_-4px_rgba(139,92,246,0.5)]`
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              <Table2 className="h-3 w-3" /> Specs
+            </button>
+            <button
+              type="button"
+              onClick={() => setView("overlay")}
+              className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium transition ${
+                view === "overlay"
+                  ? `bg-gradient-to-r ${ACCENT} text-white shadow-[0_4px_14px_-4px_rgba(139,92,246,0.5)]`
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              <Layers className="h-3 w-3" /> Shape overlay
+            </button>
+          </div>
+
+          {/* Overlay view: stack polylines at matched scale */}
+          {view === "overlay" && (
+            <div className="mb-6 rounded-[28px] border border-white/10 bg-black/40 p-6" style={{ background: "linear-gradient(180deg, rgba(20,20,28,0.8), rgba(9,9,14,0.8))" }}>
+              <svg viewBox="-5 -5 110 110" className="mx-auto h-64 w-full max-w-md" preserveAspectRatio="xMidYMid meet" aria-label="Shape overlay">
+                {hoses.map((h, i) => {
+                  const polyline = h.shape?.polyline;
+                  if (!polyline || polyline.length < 2) return null;
+                  const d = polyline.map((p, j) => `${j === 0 ? "M" : "L"} ${p[0]} ${p[1]}`).join(" ");
+                  return (
+                    <path
+                      key={h.partNo}
+                      d={d}
+                      fill="none"
+                      stroke={OVERLAY_COLORS[i % OVERLAY_COLORS.length]}
+                      strokeWidth={5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      opacity={0.75}
+                    />
+                  );
+                })}
+              </svg>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+                {hoses.map((h, i) => (
+                  <div key={h.partNo} className="flex items-center gap-2 text-xs">
+                    <span
+                      className="inline-block h-2.5 w-6 rounded-full"
+                      style={{ backgroundColor: OVERLAY_COLORS[i % OVERLAY_COLORS.length], opacity: 0.75 }}
+                    />
+                    <span className="tabular font-semibold text-white">{h.partNo}</span>
+                    <span className="text-zinc-400">{h.visualFamily}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-center text-[11px] text-zinc-400">
+                Polylines normalised to the same bounding box. Differences in bend angle and curvature are visible — length is not to scale.
+              </p>
+            </div>
+          )}
+
           <div className="grid gap-3" style={{ gridTemplateColumns: `120px repeat(${hoses.length}, minmax(0, 1fr))` }}>
             <div />
             {hoses.map((h) => (

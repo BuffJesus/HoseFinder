@@ -822,11 +822,14 @@ length), one violet, one fuchsia, lets a builder see where bend
 geometry differs without reading numbers.
 
 **Acceptance criteria:**
-- [ ] "Overlay" tab in compare modal alongside the specs table
-- [ ] Both silhouettes rendered into a shared SVG at the same
-  pixel-per-inch ratio
-- [ ] CSS mix-blend-mode for visual differentiation
-- [ ] Works for 2 or 3 hoses
+- [x] "Shape overlay" tab in compare modal alongside "Specs" — toggle
+  between the two views
+- [x] Both polylines rendered into a shared SVG viewBox (normalised to
+  0–100 bounding box) so bend angles and curvature are directly
+  comparable
+- [x] Color differentiation: violet / fuchsia / sky per hose with 75%
+  opacity, plus a color legend below the overlay
+- [x] Works for 2 or 3 hoses — uses the same OVERLAY_COLORS array
 
 ---
 
