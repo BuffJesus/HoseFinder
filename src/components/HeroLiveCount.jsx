@@ -40,7 +40,7 @@ export function HeroLiveCount({ total, filtered, hasFilters }) {
       >
         <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-70`} />
         <div className="flex items-baseline justify-between gap-2">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">
             {hasFilters ? "Matching now" : "Indexed parts"}
           </div>
           <div className={`text-[10px] uppercase tracking-[0.22em] ${empty ? "text-amber-300" : "text-violet-300"}`}>
@@ -51,7 +51,7 @@ export function HeroLiveCount({ total, filtered, hasFilters }) {
           <div className="text-[56px] font-semibold leading-none tracking-[-0.04em] tabular text-white">
             <AnimatedCount value={value} />
           </div>
-          <div className="pb-2 text-sm text-zinc-500 tabular">
+          <div className="pb-2 text-sm text-zinc-400 tabular">
             / {total.toLocaleString()}
           </div>
         </div>

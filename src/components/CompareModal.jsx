@@ -84,7 +84,7 @@ export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
                   type="button"
                   onClick={() => onRemove(h.partNo)}
                   aria-label="Remove from comparison"
-                  className="absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full text-zinc-500 transition hover:bg-white/10 hover:text-white"
+                  className="absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-white"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -92,7 +92,7 @@ export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
                   <HoseSilhouette type={h.silhouette} />
                 </div>
                 <div className="mt-2 text-base font-semibold tabular tracking-tight text-white">{h.partNo}</div>
-                <div className="truncate text-[11px] text-zinc-500">{h.visualFamily}</div>
+                <div className="truncate text-[11px] text-zinc-400">{h.visualFamily}</div>
                 <div className="mt-2">
                   <MatchBadge quality={h._matchQuality} />
                 </div>
@@ -114,7 +114,7 @@ export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
                   }`}
                   style={{ gridTemplateColumns: `120px repeat(${hoses.length}, minmax(0, 1fr))` }}
                 >
-                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-zinc-400">
                     {!allSame && <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-violet-400 to-fuchsia-400" />}
                     {r.label}
                   </div>
@@ -132,7 +132,7 @@ export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
           </div>
 
           <div className="mt-4 grid gap-3" style={{ gridTemplateColumns: `120px repeat(${hoses.length}, minmax(0, 1fr))` }}>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Tags</div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Tags</div>
             {hoses.map((h) => (
               <div key={`tags-${h.partNo}`} className="flex flex-wrap gap-1.5">
                 {h.tags.map((t) => (
@@ -145,7 +145,7 @@ export function CompareModal({ open, onClose, hoses, onRemove, onSelect }) {
           </div>
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-            <div className="text-xs text-zinc-500">
+            <div className="text-xs text-zinc-400">
               {(() => {
                 const ids = hoses.map((h) => parseFloat(h.hoseId)).filter((n) => !isNaN(n));
                 const lens = hoses.map((h) => h.length);

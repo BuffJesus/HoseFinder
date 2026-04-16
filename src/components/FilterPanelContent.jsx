@@ -77,7 +77,7 @@ export function FilterPanelContent({
       <div className="space-y-1.5">
         <label htmlFor="part-search-input" className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Search</label>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500 transition peer-focus:text-violet-300" aria-hidden="true" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400 transition peer-focus:text-violet-300" aria-hidden="true" />
           <Input id="part-search-input" value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Part number, size, type..."
             className="peer min-h-11 rounded-2xl border-white/10 bg-black/20 pl-10 text-zinc-100 placeholder:text-zinc-600"
@@ -181,9 +181,9 @@ export function FilterPanelContent({
         >
           <div>
             <div className="text-sm font-medium text-white">More filters</div>
-            <div className="text-xs text-zinc-500">Tolerance and category controls</div>
+            <div className="text-xs text-zinc-400">Tolerance and category controls</div>
           </div>
-          <ChevronDown className={`h-4 w-4 text-zinc-500 transition ${showAdvancedFilters ? "rotate-180" : ""}`} />
+          <ChevronDown className={`h-4 w-4 text-zinc-400 transition ${showAdvancedFilters ? "rotate-180" : ""}`} />
         </button>
         {showAdvancedFilters ? (
           <div className="mt-4 space-y-5">

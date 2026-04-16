@@ -25,7 +25,7 @@ export function SavedSearchesStrip({ items, onApply, onRemove, onSave, onShare, 
       transition={{ duration: 0.22 }}
       className="mb-3 flex flex-wrap items-center gap-2"
     >
-      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-400">
         <Bookmark className="h-3 w-3" /> Saved
       </span>
       <AnimatePresence initial={false}>
@@ -51,7 +51,7 @@ export function SavedSearchesStrip({ items, onApply, onRemove, onSave, onShare, 
               type="button"
               onClick={() => onRemove(s.id)}
               aria-label={`Remove saved search ${s.name}`}
-              className="ml-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full text-zinc-500 transition hover:bg-white/10 hover:text-red-300"
+              className="ml-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-red-300"
             >
               <Trash2 className="h-3 w-3" />
             </button>

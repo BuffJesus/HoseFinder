@@ -144,10 +144,10 @@ export function SmartEmptyState({ targetId1, targetId2, targetLen, allHoses, onA
             <div className="mt-5 grid gap-2 text-sm text-zinc-300 md:grid-cols-2">
               {diagnosis.nearestById && (
                 <div className={`rounded-2xl border px-3 py-2 ${diagnosis.blocker === "id" ? "border-amber-400/30 bg-amber-500/8" : "border-white/10 bg-white/[0.04]"}`}>
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Closest diameter</div>
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Closest diameter</div>
                   <div className="mt-0.5 tabular">
                     <span className="font-semibold text-white"><Dim value={diagnosis.nearestById.hose.hoseId} /></span>
-                    <span className="text-zinc-500"> · </span>
+                    <span className="text-zinc-400"> · </span>
                     <span className={diagnosis.blocker === "id" ? "text-amber-200" : "text-zinc-400"}>
                       {fmtDim(diagnosis.nearestById.delta, unitMode, 2)} off
                     </span>
@@ -156,10 +156,10 @@ export function SmartEmptyState({ targetId1, targetId2, targetLen, allHoses, onA
               )}
               {diagnosis.nearestByLen && (
                 <div className={`rounded-2xl border px-3 py-2 ${diagnosis.blocker === "length" ? "border-amber-400/30 bg-amber-500/8" : "border-white/10 bg-white/[0.04]"}`}>
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Closest length</div>
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Closest length</div>
                   <div className="mt-0.5 tabular">
                     <span className="font-semibold text-white"><Dim value={diagnosis.nearestByLen.hose.length} /></span>
-                    <span className="text-zinc-500"> · </span>
+                    <span className="text-zinc-400"> · </span>
                     <span className={diagnosis.blocker === "length" ? "text-amber-200" : "text-zinc-400"}>
                       {fmtDim(diagnosis.nearestByLen.delta, unitMode, 1)} off
                     </span>
@@ -171,7 +171,7 @@ export function SmartEmptyState({ targetId1, targetId2, targetLen, allHoses, onA
 
           {paths.length > 0 ? (
             <div className="mt-6">
-              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Try one of these</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Try one of these</div>
               <div className="mt-2 flex flex-wrap gap-2">
                 {paths.map((p, i) => (
                   <motion.button
@@ -199,7 +199,7 @@ export function SmartEmptyState({ targetId1, targetId2, targetLen, allHoses, onA
                       ? <Sparkles className="h-3.5 w-3.5 text-violet-200" />
                       : <Wand className="h-3.5 w-3.5 text-zinc-400 group-hover:text-violet-300" />}
                     <span className="text-sm font-medium">{p.label}</span>
-                    <span className="text-[11px] tabular text-zinc-500">{p.hint}</span>
+                    <span className="text-[11px] tabular text-zinc-400">{p.hint}</span>
                     <span className="ml-1 inline-flex items-center justify-center rounded-full bg-white/[0.06] px-2 py-0.5 text-[11px] font-semibold tabular text-violet-200">
                       {p.count}
                     </span>
@@ -247,7 +247,7 @@ export function SmartEmptyState({ targetId1, targetId2, targetLen, allHoses, onA
         {best && (
           <div className="lg:w-[26rem]">
             <div className="flex items-center justify-between gap-2">
-              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Closest if you {best.label.toLowerCase()}</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Closest if you {best.label.toLowerCase()}</div>
               <span className="rounded-full border border-violet-400/25 bg-violet-500/10 px-2 py-0.5 text-[11px] tabular text-violet-200">
                 {best.count} matches
               </span>

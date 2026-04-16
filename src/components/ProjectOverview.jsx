@@ -237,24 +237,24 @@ export function ProjectOverview({ project, hoses, onBack, onRename, onRemoveHose
             aria-label="Edit project name"
           >
             <h1 className="text-2xl font-semibold tracking-tight text-white">{project.name}</h1>
-            <Edit3 className="h-4 w-4 text-zinc-500 opacity-0 transition group-hover:opacity-100" />
+            <Edit3 className="h-4 w-4 text-zinc-400 opacity-0 transition group-hover:opacity-100" />
           </button>
         )}
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Parts</div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Parts</div>
             <div className="mt-0.5 text-lg font-semibold tabular text-white">{items.length}</div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Total length</div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Total length</div>
             <div className="mt-0.5 text-lg font-semibold tabular text-white">{totalLenStr}</div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Created</div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Created</div>
             <div className="mt-0.5 text-sm font-medium text-white">{new Date(project.createdAt).toLocaleDateString()}</div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">With notes</div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">With notes</div>
             <div className="mt-0.5 text-lg font-semibold tabular text-white">
               {items.filter((h) => (notes[h.partNo] || "").trim()).length}
               {Object.values(notes).some((n) => (n || "").trim()) && (
@@ -262,7 +262,7 @@ export function ProjectOverview({ project, hoses, onBack, onRename, onRemoveHose
                   type="button"
                   onClick={onClearNotes}
                   title="Clear all notes"
-                  className="ml-2 text-[10px] uppercase tracking-wide text-zinc-500 hover:text-red-300"
+                  className="ml-2 text-[10px] uppercase tracking-wide text-zinc-400 hover:text-red-300"
                 >
                   clear
                 </button>
@@ -301,7 +301,7 @@ export function ProjectOverview({ project, hoses, onBack, onRename, onRemoveHose
         {items.length === 0 ? (
           <div className="rounded-[28px] border border-dashed border-white/10 bg-white/[0.02] p-10 text-center">
             <div className="text-sm text-zinc-300">No parts in this project yet.</div>
-            <p className="mt-1 text-xs text-zinc-500">Go back to the finder, shortlist some hoses, and they'll land here.</p>
+            <p className="mt-1 text-xs text-zinc-400">Go back to the finder, shortlist some hoses, and they'll land here.</p>
           </div>
         ) : grouped.map((group) => (
           <RoleSection

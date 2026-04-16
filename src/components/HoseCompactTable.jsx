@@ -38,7 +38,7 @@ export function HoseCompactTable({ hoses, onSelect, shortlist, toggleShortlist, 
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-zinc-200">
           <thead>
-            <tr className="border-b border-white/10 text-left text-[10px] uppercase tracking-[0.22em] text-zinc-500 backdrop-blur-xl">
+            <tr className="border-b border-white/10 text-left text-[10px] uppercase tracking-[0.22em] text-zinc-400 backdrop-blur-xl">
               <th scope="col" className="px-4 py-3 font-semibold">Part</th>
               <th scope="col" className="px-4 py-3 font-semibold">I.D.</th>
               <th scope="col" className="px-4 py-3 font-semibold">Length</th>
@@ -63,7 +63,7 @@ export function HoseCompactTable({ hoses, onSelect, shortlist, toggleShortlist, 
                   <td className="relative px-4 py-3.5">
                     <span className={`pointer-events-none absolute inset-y-2 left-0 w-[2px] rounded-r-full bg-gradient-to-b ${ACCENT} opacity-0 transition-opacity group-hover:opacity-100`} />
                     <div className="font-semibold text-white tabular tracking-tight">{hose.partNo}</div>
-                    <div className="text-xs text-zinc-500 tabular">Row {hose.rowNo}</div>
+                    <div className="text-xs text-zinc-400 tabular">Row {hose.rowNo}</div>
                   </td>
                   <td className="px-4 py-3.5 tabular"><Dim value={hose.hoseId} /></td>
                   <td className="px-4 py-3.5 tabular"><Dim value={hose.length} /></td>

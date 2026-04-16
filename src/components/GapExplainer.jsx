@@ -52,12 +52,12 @@ export function GapExplainer({ gap }) {
             }`}
           >
             <span className="flex items-center gap-1.5">
-              <Icon className={`h-3 w-3 ${l.ok ? "text-emerald-300" : "text-zinc-500"}`} />
+              <Icon className={`h-3 w-3 ${l.ok ? "text-emerald-300" : "text-zinc-400"}`} />
               <span className="text-zinc-400">{l.label}</span>
             </span>
             <span className="flex items-center gap-1.5 tabular">
               <span className="font-semibold text-white">{l.value}</span>
-              {l.suffix && <span className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{l.suffix}</span>}
+              {l.suffix && <span className="text-[10px] uppercase tracking-[0.14em] text-zinc-400">{l.suffix}</span>}
               {l.ok && <Check className="h-3 w-3 text-emerald-300" strokeWidth={3} />}
             </span>
           </div>

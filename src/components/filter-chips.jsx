@@ -45,7 +45,7 @@ export function StepRatioChips({ candidates, value, onChange }) {
       transition={{ duration: 0.22 }}
       className="mb-3 flex flex-wrap items-center gap-2"
     >
-      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-400">
         <GitCompare className="h-3 w-3" /> Step
       </span>
       {visible.map((s) => {
@@ -65,7 +65,7 @@ export function StepRatioChips({ candidates, value, onChange }) {
             }`}
           >
             <span className="font-medium">{s.label}</span>
-            <span className="text-[10px] tabular text-zinc-500">{s.hint}</span>
+            <span className="text-[10px] tabular text-zinc-400">{s.hint}</span>
             <span className={`rounded-full px-1.5 py-0.5 text-[10px] tabular ${
               active ? "bg-white/15 text-white" : "bg-white/[0.06] text-zinc-400"
             }`}>
@@ -78,7 +78,7 @@ export function StepRatioChips({ candidates, value, onChange }) {
         <button
           type="button"
           onClick={() => onChange(new Set())}
-          className="ml-1 inline-flex items-center gap-1 rounded-2xl px-2 py-1 text-[11px] text-zinc-500 transition hover:bg-white/[0.04] hover:text-white"
+          className="ml-1 inline-flex items-center gap-1 rounded-2xl px-2 py-1 text-[11px] text-zinc-400 transition hover:bg-white/[0.04] hover:text-white"
         >
           <X className="h-3 w-3" /> Clear
         </button>
@@ -110,7 +110,7 @@ export function LengthClassChips({ candidates, value, onChange }) {
       transition={{ duration: 0.22 }}
       className="mb-3 flex flex-wrap items-center gap-2"
     >
-      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-400">
         <ArrowUpDown className="h-3 w-3" /> Length
       </span>
       {visible.map((c) => {
@@ -130,7 +130,7 @@ export function LengthClassChips({ candidates, value, onChange }) {
             }`}
           >
             <span className="font-medium">{c.label}</span>
-            <span className="text-[10px] tabular text-zinc-500">{c.hint}</span>
+            <span className="text-[10px] tabular text-zinc-400">{c.hint}</span>
             <span className={`rounded-full px-1.5 py-0.5 text-[10px] tabular ${
               active ? "bg-white/15 text-white" : "bg-white/[0.06] text-zinc-400"
             }`}>
@@ -143,7 +143,7 @@ export function LengthClassChips({ candidates, value, onChange }) {
         <button
           type="button"
           onClick={() => onChange(new Set())}
-          className="ml-1 inline-flex items-center gap-1 rounded-2xl px-2 py-1 text-[11px] text-zinc-500 transition hover:bg-white/[0.04] hover:text-white"
+          className="ml-1 inline-flex items-center gap-1 rounded-2xl px-2 py-1 text-[11px] text-zinc-400 transition hover:bg-white/[0.04] hover:text-white"
         >
           <X className="h-3 w-3" /> Clear
         </button>
@@ -174,7 +174,7 @@ export function CurvatureChips({ candidates, value, onChange }) {
       transition={{ duration: 0.22 }}
       className="mb-3 flex flex-wrap items-center gap-2"
     >
-      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-400">
         <Layers3 className="h-3 w-3" /> Curvature
       </span>
       {visible.map((g) => {
@@ -214,7 +214,7 @@ export function CurvatureChips({ candidates, value, onChange }) {
         <button
           type="button"
           onClick={() => onChange(new Set())}
-          className="ml-1 inline-flex items-center gap-1 rounded-2xl px-2 py-1 text-[11px] text-zinc-500 transition hover:bg-white/[0.04] hover:text-white"
+          className="ml-1 inline-flex items-center gap-1 rounded-2xl px-2 py-1 text-[11px] text-zinc-400 transition hover:bg-white/[0.04] hover:text-white"
         >
           <X className="h-3 w-3" /> Clear
         </button>

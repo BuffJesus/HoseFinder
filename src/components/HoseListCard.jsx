@@ -41,7 +41,7 @@ export function HoseListCard({ hose, onSelect, shortlist, toggleShortlist, onSho
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
             <div className="rounded-[24px] border border-white/10 bg-black/20 p-3 lg:w-48 lg:shrink-0">
-              <div className="mb-2 flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+              <div className="mb-2 flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-zinc-400">
                 <span>{hose.hoseType}</span>
                 <span>Row {hose.rowNo}</span>
               </div>
@@ -65,19 +65,19 @@ export function HoseListCard({ hose, onSelect, shortlist, toggleShortlist, onSho
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4 xl:min-w-[24rem]">
                   <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">I.D.</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">I.D.</div>
                     <div className="mt-1 font-semibold text-white tabular"><Dim value={hose.hoseId} /></div>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Length</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Length</div>
                     <div className="mt-1 font-semibold text-white tabular"><Dim value={hose.length} /></div>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Type</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Type</div>
                     <div className="mt-1 font-semibold capitalize text-white">{hose.hoseType}</div>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Shape</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Shape</div>
                     <div className="mt-1 truncate font-semibold text-white tabular">{rowCount || "?"} in row</div>
                   </div>
                 </div>

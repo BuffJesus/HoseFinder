@@ -56,7 +56,7 @@ export function CompareBar({ compared, toggleCompare, clearCompare, open, onTogg
             </span>
             {open && (
               <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Side-by-side</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Side-by-side</div>
                 <div className="flex items-center gap-2 text-base font-semibold text-white">
                   Compare <CountPill value={compared.length} max={3} />
                 </div>
@@ -96,7 +96,7 @@ export function CompareBar({ compared, toggleCompare, clearCompare, open, onTogg
                         <div className="font-semibold text-white tabular">{h.partNo}</div>
                         <div className="text-xs text-zinc-400 tabular"><Dim value={h.hoseId} /> · <Dim value={h.length} /></div>
                       </div>
-                      <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full text-zinc-500 hover:bg-white/10 hover:text-white" onClick={() => toggleCompare(h.partNo)}>
+                      <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full text-zinc-400 hover:bg-white/10 hover:text-white" onClick={() => toggleCompare(h.partNo)}>
                         <X className="h-3 w-3" />
                       </Button>
                     </div>

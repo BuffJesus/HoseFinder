@@ -68,7 +68,7 @@ export function TopBar({
                     <Sparkles className="h-3.5 w-3.5 text-white" />
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-[10px] uppercase tracking-[0.22em] text-zinc-500">{t("brand")}</span>
+                    <span className="block text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("brand")}</span>
                     <span className="block truncate text-[11px] text-zinc-400 transition group-hover:text-white">{t("common.backToTop")}</span>
                   </span>
                 </button>
@@ -77,7 +77,7 @@ export function TopBar({
                   <div className="hidden sm:block">
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-base font-semibold tabular text-white"><AnimatedCount value={value} /></span>
-                      <span className="text-[11px] text-zinc-500 tabular">/ {total.toLocaleString()}</span>
+                      <span className="text-[11px] text-zinc-400 tabular">/ {total.toLocaleString()}</span>
                     </div>
                     <div className="mt-1 h-1 w-32 overflow-hidden rounded-full bg-white/[0.06]">
                       <motion.div

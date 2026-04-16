@@ -66,10 +66,10 @@ export function WizardSummaryStrip({ label, value, onClick }) {
       className="flex w-full items-center justify-between rounded-[24px] border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:border-zinc-700 hover:bg-white/10"
     >
       <div className="min-w-0">
-        <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">{label}</div>
+        <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{label}</div>
         <div className="truncate text-sm font-medium text-white">{value}</div>
       </div>
-      <ChevronRight className="h-4 w-4 text-zinc-500" />
+      <ChevronRight className="h-4 w-4 text-zinc-400" />
     </button>
   );
 }

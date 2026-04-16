@@ -55,7 +55,7 @@ export function SimilarShapeSheet({ open, target, allHoses, onClose, onSelect })
           </DialogHeader>
 
           <div className="mt-4 flex items-center gap-2">
-            <label className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Refine by I.D.</label>
+            <label className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Refine by I.D.</label>
             <NaturalDimInput
               value={idFilter}
               onChange={setIdFilter}

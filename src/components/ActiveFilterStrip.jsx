@@ -80,7 +80,7 @@ export function ActiveFilterStrip({
           className="mb-3 overflow-hidden"
         >
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+            <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-zinc-400">
               <Filter className="h-3 w-3" /> Active
             </span>
             <AnimatePresence initial={false}>

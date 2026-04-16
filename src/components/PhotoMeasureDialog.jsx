@@ -210,9 +210,9 @@ export function PhotoMeasureDialog({ open, onClose, onApply }) {
                 <label className="flex h-64 w-full cursor-pointer flex-col items-center justify-center gap-2 p-6 text-center text-sm text-zinc-400 transition hover:border-violet-400/40 hover:text-white">
                   <span className="sr-only">Upload a photo to measure from</span>
                   <input type="file" accept="image/*" capture="environment" onChange={onFile} className="hidden" />
-                  <Plus className="h-8 w-8 text-zinc-500" />
+                  <Plus className="h-8 w-8 text-zinc-400" />
                   <div aria-hidden="true">Tap to choose or take a photo</div>
-                  <div className="text-[11px] text-zinc-600" aria-hidden="true">JPG, PNG, WebP · HEIC may need conversion first</div>
+                  <div className="text-[11px] text-zinc-400" aria-hidden="true">JPG, PNG, WebP · HEIC may need conversion first</div>
                 </label>
               ) : (
                 <canvas
@@ -231,7 +231,7 @@ export function PhotoMeasureDialog({ open, onClose, onApply }) {
 
             <div className="space-y-3">
               <div>
-                <label htmlFor="photo-ref-select" className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Reference object</label>
+                <label htmlFor="photo-ref-select" className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Reference object</label>
                 <select
                   id="photo-ref-select"
                   value={refKey}
@@ -260,7 +260,7 @@ export function PhotoMeasureDialog({ open, onClose, onApply }) {
               {imageDataUrl && (
                 <>
                   <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-xs">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Measurement</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Measurement</div>
                     <div className="mt-1 text-xl font-semibold tabular text-white">{displayStr}</div>
                     <div className="mt-2 text-[11px] text-zinc-400">
                       Reference: {refPx.toFixed(0)} px · {refMm != null ? `${refMm.toFixed(1)} mm` : "—"}

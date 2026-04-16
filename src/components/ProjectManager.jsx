@@ -101,7 +101,7 @@ export function ProjectManager({ open, onClose, projects, activeId, onSwitch, on
                         {active && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
                       </span>
                       <span className="min-w-0 truncate text-sm font-medium text-white">{p.name}</span>
-                      <span className="ml-auto shrink-0 text-[11px] tabular text-zinc-500">{p.partNos.length}</span>
+                      <span className="ml-auto shrink-0 text-[11px] tabular text-zinc-400">{p.partNos.length}</span>
                     </button>
                   )}
 
@@ -185,7 +185,7 @@ export function ProjectManager({ open, onClose, projects, activeId, onSwitch, on
               className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-3 py-2 text-xs text-zinc-300 transition hover:border-violet-400/30 hover:bg-white/[0.05] hover:text-white disabled:opacity-40"
             >
               <Plus className="h-3.5 w-3.5" /> New project
-              {atLimit && <span className="text-zinc-500">· limit reached</span>}
+              {atLimit && <span className="text-zinc-400">· limit reached</span>}
             </button>
           )}
         </div>

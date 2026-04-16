@@ -107,13 +107,14 @@ input[type="text"][inputmode="decimal"] {
   font-family: var(--font-mono);
 }
 
-/* ── Eyebrow labels: tight, even tracking, no descender drift */
+/* ── Eyebrow labels: tight, even tracking, no descender drift.
+   Colour chosen for WCAG AA contrast on zinc-950 (~7.5:1). */
 .eyebrow {
   font-size: 10px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgb(113 113 122);
+  color: rgb(161 161 170);
 }
 
 /* ── Selection — soft violet, never blue */

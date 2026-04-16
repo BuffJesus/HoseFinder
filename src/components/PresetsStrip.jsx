@@ -113,7 +113,7 @@ export function PresetsStrip({ presets, onApply, onDismiss }) {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-sm font-semibold text-white">{preset.label}</div>
-                  <div className="text-[11px] text-zinc-500">{preset.sub}</div>
+                  <div className="text-[11px] text-zinc-400">{preset.sub}</div>
                 </div>
                 <div className="rounded-2xl border border-violet-400/25 bg-violet-500/10 p-2 text-violet-200 transition group-hover:border-violet-400/45 group-hover:bg-violet-500/20">
                   <PresetIcon icon={preset.icon} />
@@ -121,15 +121,15 @@ export function PresetsStrip({ presets, onApply, onDismiss }) {
               </div>
               <div className="mt-4 grid gap-1.5 text-[11px] text-zinc-300">
                 <div className="flex items-center justify-between rounded-xl border border-white/10 bg-black/20 px-3 py-1.5">
-                  <span className="text-zinc-500">Type</span>
+                  <span className="text-zinc-400">Type</span>
                   <span className="capitalize text-white">{preset.flow}</span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl border border-white/10 bg-black/20 px-3 py-1.5">
-                  <span className="text-zinc-500">End sizes</span>
+                  <span className="text-zinc-400">End sizes</span>
                   <span className="text-white tabular">{sizeText}"</span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl border border-white/10 bg-black/20 px-3 py-1.5">
-                  <span className="text-zinc-500">Length</span>
+                  <span className="text-zinc-400">Length</span>
                   <span className="text-white tabular">{preset.targetLen}" ±{preset.lenTol}"</span>
                 </div>
               </div>

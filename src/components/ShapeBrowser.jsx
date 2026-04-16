@@ -123,7 +123,7 @@ export function ShapeBrowser({ allRows, allHoses, pageMap, selectedRows, selecte
             disabled={!anySelection}
             className={`h-9 rounded-2xl px-4 text-sm transition ${
               !anySelection
-                ? "border border-white/10 bg-white/[0.04] text-zinc-500"
+                ? "border border-white/10 bg-white/[0.04] text-zinc-400"
                 : `border-0 bg-gradient-to-r ${ACCENT} text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.55)] hover:shadow-[0_14px_40px_-8px_rgba(217,70,239,0.65)]`
             }`}
           >
@@ -158,7 +158,7 @@ export function ShapeBrowser({ allRows, allHoses, pageMap, selectedRows, selecte
                 </span>
                 <span className="text-left">
                   <span className="block text-sm font-medium leading-none">{a.label}</span>
-                  <span className="mt-0.5 block text-[10px] uppercase tracking-[0.16em] text-zinc-500">{a.sub}</span>
+                  <span className="mt-0.5 block text-[10px] uppercase tracking-[0.16em] text-zinc-400">{a.sub}</span>
                 </span>
                 <span className={`ml-1 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular ${
                   active ? "bg-white/15 text-white" : "bg-white/[0.06] text-zinc-400"
@@ -235,7 +235,7 @@ export function ShapeBrowser({ allRows, allHoses, pageMap, selectedRows, selecte
                     }`}>
                       <HoseSilhouette type={b.silhouette} />
                     </div>
-                    <div className="mt-3 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-zinc-500">
+                    <div className="mt-3 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-zinc-400">
                       <span>{b.rows.length} row{b.rows.length === 1 ? "" : "s"}</span>
                       <span className="rounded-full bg-white/[0.06] px-2 py-0.5 tabular text-violet-200">
                         {b.count.toLocaleString()} hoses
@@ -294,7 +294,7 @@ export function ShapeBrowser({ allRows, allHoses, pageMap, selectedRows, selecte
                         />
                         <div className="px-2 py-1.5 text-[10px] tabular text-zinc-400 group-hover:text-zinc-200">
                           <span className="font-semibold text-white">P. {page.page}</span>
-                          <span className="text-zinc-500"> · {page.count}</span>
+                          <span className="text-zinc-400"> · {page.count}</span>
                         </div>
                       </button>
                     );

@@ -21,7 +21,7 @@ export function CommonSizesPicker({ value, onPick }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex items-center gap-1 text-[11px] text-zinc-500 transition hover:text-violet-200"
+        className="inline-flex items-center gap-1 text-[11px] text-zinc-400 transition hover:text-violet-200"
       >
         Common sizes
         <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />

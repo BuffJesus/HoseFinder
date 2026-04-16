@@ -29,7 +29,7 @@ export function RecentlyViewedStrip({ hoses, onSelect }) {
       <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-40`} />
       <div className="flex items-center justify-between gap-3 px-4 pt-4 sm:px-5">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Recently viewed</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Recently viewed</div>
           <div className="mt-1 text-sm text-zinc-300">Jump back into recent candidates without rebuilding the search.</div>
         </div>
         <div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-zinc-400 sm:inline-flex">
@@ -46,7 +46,7 @@ export function RecentlyViewedStrip({ hoses, onSelect }) {
           >
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Part</div>
+                <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Part</div>
                 <div className="mt-1 text-lg font-semibold tracking-tight text-white tabular">{hose.partNo}</div>
               </div>
               <div className="rounded-full border border-white/10 bg-black/20 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-zinc-400">
@@ -57,7 +57,7 @@ export function RecentlyViewedStrip({ hoses, onSelect }) {
               <HoseSilhouette type={hose.silhouette} />
             </div>
             <div className="mt-3 line-clamp-1 text-sm text-zinc-300">{hose.visualFamily}</div>
-            <div className="mt-1 text-xs text-zinc-500">
+            <div className="mt-1 text-xs text-zinc-400">
               <span className="tabular"><Dim value={hose.hoseId} /></span>
               <span className="mx-1.5 text-zinc-700">·</span>
               <span className="tabular"><Dim value={hose.length} /></span>

@@ -109,7 +109,7 @@ export function DetailModal({
 
       <div className="grid gap-6 px-6 pb-6 pt-5 sm:px-8 sm:pb-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-3">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Visual</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Visual</div>
           <div className="grid gap-3 sm:grid-cols-2">
             {hose.images.map((mode, i) => (
               <button
@@ -133,19 +133,19 @@ export function DetailModal({
             ))}
           </div>
           {hose.catalogPage && (
-            <p className="text-center text-xs text-zinc-600">Images from Gates catalog page {hose.catalogPage}.</p>
+            <p className="text-center text-xs text-zinc-400">Images from Gates catalog page {hose.catalogPage}.</p>
           )}
         </div>
 
         <div className="space-y-4">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Specifications</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Specifications</div>
           <div className="grid grid-cols-2 gap-2">
             {stats.map(({ icon: Icon, label, value, mono }) => (
               <div
                 key={label}
                 className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 transition hover:border-violet-400/25 hover:bg-white/[0.06]"
               >
-                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-zinc-400">
                   <Icon className="h-3 w-3 text-violet-300/70" />
                   {label}
                 </div>
@@ -241,7 +241,7 @@ export function DetailModal({
 
           {hose.tags?.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Tags</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Tags</div>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {hose.tags.map((t) => (
                   <Badge
@@ -258,12 +258,12 @@ export function DetailModal({
           {pairSuggestions.length > 0 && (
             <div>
               <div className="flex items-center justify-between gap-2">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Often added alongside this hose</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Often added alongside this hose</div>
                 {onDisablePairing && (
                   <button
                     type="button"
                     onClick={onDisablePairing}
-                    className="text-[10px] uppercase tracking-[0.18em] text-zinc-500 transition hover:text-red-300"
+                    className="text-[10px] uppercase tracking-[0.18em] text-zinc-400 transition hover:text-red-300"
                     title="All pairing data is local. Clicking turns this feature off."
                   >
                     disable
@@ -299,7 +299,7 @@ export function DetailModal({
           {suggestions.length > 0 && (
             <div>
               <div className="flex items-center justify-between gap-2">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Similar hoses</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Similar hoses</div>
                 <span className="text-[10px] uppercase tracking-[0.22em] text-violet-300/70">By proximity</span>
               </div>
               <div className="mt-2 grid gap-2">

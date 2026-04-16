@@ -49,7 +49,7 @@ export function HoseCard({ hose, shortlist, toggleShortlist, onSelect, onShowRow
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Part number</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Part number</div>
               <div className="mt-0.5 text-2xl font-semibold text-white tabular tracking-tight">{hose.partNo}</div>
               <div className="mt-1 flex flex-wrap items-center gap-2">
                 <span className="text-sm text-zinc-400">{hose.visualFamily}</span>
@@ -105,7 +105,7 @@ export function HoseCard({ hose, shortlist, toggleShortlist, onSelect, onShowRow
               aria-hidden
               className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-300/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
             />
-            <div className="mb-2 flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+            <div className="mb-2 flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-zinc-400">
               <span className="capitalize">{hose.hoseType}</span>
               <span className="tabular">Row {hose.rowNo}</span>
             </div>
@@ -120,15 +120,15 @@ export function HoseCard({ hose, shortlist, toggleShortlist, onSelect, onShowRow
 
           <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
             <div className="rounded-2xl border border-white/10 p-3 transition group-hover:border-white/15" style={{ background: "rgba(255,255,255,0.05)" }}>
-              <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">I.D.</div>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">I.D.</div>
               <div className="mt-0.5 font-semibold text-white tabular"><Dim value={hose.hoseId} /></div>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 transition group-hover:border-white/15" style={{ background: "rgba(255,255,255,0.05)" }}>
-              <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Length</div>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Length</div>
               <div className="mt-0.5 font-semibold text-white tabular"><Dim value={hose.length} /></div>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 transition group-hover:border-white/15" style={{ background: "rgba(255,255,255,0.05)" }}>
-              <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Ends</div>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Ends</div>
               <div className="mt-0.5 font-semibold text-white capitalize tabular">{hose.hoseType === "single" ? "1" : hose.hoseType === "reducer" ? "2" : `${hose.endCount}`}</div>
             </div>
           </div>

@@ -438,8 +438,10 @@ right thing to do and a legal requirement in some jurisdictions.
   work; focus-visible ring present site-wide; **Dialog and BottomSheet now
   trap Tab inside the modal, auto-focus the first focusable, and restore
   focus to the trigger on close** (`src/lib/focusTrap.js`)
-- [ ] Color contrast audit — not run. Zinc-500 on zinc-950 is near-limit;
-  needs spot checks
+- [x] Color contrast audit — all `text-zinc-500` content text (94 sites) bumped
+  to `text-zinc-400` (~7.5:1 on zinc-950, clears AA 4.5:1 threshold). Sub-AA
+  `text-zinc-600` captions/metadata bumped too; `.eyebrow` token updated in
+  `styles.css`. `placeholder:text-zinc-600` retained — WCAG exempts placeholders
 - [ ] Focus order matches visual order — not audited
 - [x] Skip link at top of page ("Skip to results" → `#results-main` landmark)
 - [x] `<main>` landmark, live toast region (`role="status"`, `aria-live="polite"`),

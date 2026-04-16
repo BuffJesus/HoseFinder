@@ -67,7 +67,7 @@ export function ShortlistBar({
             </span>
             {open && (
               <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Parts list</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Parts list</div>
                 <div className="flex items-center gap-2 text-base font-semibold text-white">
                   <span className="truncate">{projectName || "Shortlist"}</span>
                   <CountPill value={shortlisted.length} max={SHORTLIST_LIMIT} />
@@ -144,7 +144,7 @@ export function ShortlistBar({
                           <Button
                             size="icon"
                             variant="ghost"
-                            className="h-8 w-8 rounded-full text-zinc-500 hover:bg-white/10 hover:text-white"
+                            className="h-8 w-8 rounded-full text-zinc-400 hover:bg-white/10 hover:text-white"
                             onClick={() => onToggleShortlist(hose.partNo)}
                           >
                             <X className="h-4 w-4" />

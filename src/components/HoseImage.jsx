@@ -81,7 +81,7 @@ export function ImageTile({ label, mode, partNo, silhouette, catalogPage }) {
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 via-zinc-900 to-violet-950 p-4">
       <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-transparent to-fuchsia-500/10 opacity-0 transition group-hover:opacity-100" />
-      <div className="mb-3 text-[10px] uppercase tracking-[0.22em] text-zinc-500">{label}</div>
+      <div className="mb-3 text-[10px] uppercase tracking-[0.22em] text-zinc-400">{label}</div>
       <HoseImage
         partNo={partNo}
         catalogPage={catalogPage}

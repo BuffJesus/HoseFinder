@@ -30,7 +30,7 @@ export function RoleSection({ group, notes, roles, onRemoveHose, onUpdateNote, o
         onClick={() => setOpen((o) => !o)}
         className="flex w-full items-center gap-2 rounded-xl border border-white/5 bg-white/[0.02] px-3 py-2 text-left transition hover:bg-white/[0.05]"
       >
-        <ChevronDown className={`h-3.5 w-3.5 text-zinc-500 transition ${open ? "" : "-rotate-90"}`} />
+        <ChevronDown className={`h-3.5 w-3.5 text-zinc-400 transition ${open ? "" : "-rotate-90"}`} />
         <span className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${group.key === "_unassigned" ? "text-amber-300/80" : "text-violet-300/80"}`}>
           {group.label}
         </span>
@@ -51,17 +51,17 @@ export function RoleSection({ group, notes, roles, onRemoveHose, onUpdateNote, o
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Part</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Part</div>
                     <div className="mt-0.5 text-xl font-semibold tabular text-white">{h.partNo}</div>
                     <div className="mt-1 text-xs text-zinc-400">{h.visualFamily} · <span className="capitalize">{h.hoseType}</span></div>
                   </div>
                   <div className="flex items-center gap-3 tabular text-sm">
                     <div className="text-right">
-                      <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">I.D.</div>
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">I.D.</div>
                       <div className="font-semibold text-white"><Dim value={h.hoseId} /></div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Length</div>
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Length</div>
                       <div className="font-semibold text-white"><Dim value={h.length} /></div>
                     </div>
                     <button
@@ -75,7 +75,7 @@ export function RoleSection({ group, notes, roles, onRemoveHose, onUpdateNote, o
                   </div>
                 </div>
                 <div className="mt-3 flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">Role</span>
+                  <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Role</span>
                   <select
                     aria-label={`Role for ${h.partNo}`}
                     value={isCustom ? "custom" : raw}

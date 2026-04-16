@@ -93,7 +93,7 @@ export function NaturalDimInput({ id, value, onChange, placeholder, className = 
             onClick={() => { setHistoryTick((t) => t + 1); setHistoryOpen((o) => !o); }}
             aria-label="Recent measurements"
             title="Recent measurements"
-            className="absolute right-2 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-zinc-500 transition hover:bg-white/[0.06] hover:text-violet-300"
+            className="absolute right-2 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-zinc-400 transition hover:bg-white/[0.06] hover:text-violet-300"
           >
             <Clock className="h-3.5 w-3.5" />
           </button>
@@ -101,7 +101,7 @@ export function NaturalDimInput({ id, value, onChange, placeholder, className = 
       </div>
       {historyOpen && history.length > 0 && (
         <div className="absolute z-20 mt-1.5 w-full rounded-2xl border border-white/10 bg-zinc-950 p-2 shadow-[0_16px_48px_-20px_rgba(0,0,0,0.8)]">
-          <div className="px-2 pb-1 text-[10px] uppercase tracking-[0.22em] text-zinc-500">Recent</div>
+          <div className="px-2 pb-1 text-[10px] uppercase tracking-[0.22em] text-zinc-400">Recent</div>
           {history.map((e) => (
             <button
               key={`${e.at}-${e.inches}`}
@@ -115,7 +115,7 @@ export function NaturalDimInput({ id, value, onChange, placeholder, className = 
               className="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-1.5 text-left text-sm text-zinc-100 transition hover:bg-white/[0.06]"
             >
               <span className="tabular font-semibold"><Dim value={e.inches} /></span>
-              <span className="text-[11px] text-zinc-500">{formatRelativeTime(e.at)}</span>
+              <span className="text-[11px] text-zinc-400">{formatRelativeTime(e.at)}</span>
             </button>
           ))}
         </div>

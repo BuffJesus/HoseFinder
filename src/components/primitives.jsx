@@ -66,7 +66,7 @@ export function MmHint({ value, className = "" }) {
   const n = parseFloat(String(value));
   if (isNaN(n) || n <= 0) return null;
   return (
-    <span className={`tabular text-zinc-500 ${className}`.trim()}>
+    <span className={`tabular text-zinc-400 ${className}`.trim()}>
       ≈ {(n * 25.4).toFixed(1)} mm
     </span>
   );
