@@ -16,7 +16,6 @@ import { HoseSilhouette, MorphingHoseSilhouette, SILHOUETTE_FAMILIES } from "./s
 import { ToastViewport } from "./src/components/ToastViewport.jsx";
 import { KeyboardHelp } from "./src/components/KeyboardHelp.jsx";
 import { AnimatedCount } from "./src/components/AnimatedCount.jsx";
-import { HeroLiveCount } from "./src/components/HeroLiveCount.jsx";
 import { CatalogFooter } from "./src/components/CatalogFooter.jsx";
 import { UnitToggle, LocaleToggle } from "./src/components/toggles.jsx";
 import { MeasurementHint } from "./src/components/MeasurementHint.jsx";
@@ -42,6 +41,7 @@ import { RoleSection } from "./src/components/RoleSection.jsx";
 import { gatesUrl, gates360Url } from "./src/lib/gatesUrls.js";
 import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/context/i18n.jsx";
 import { TopBar } from "./src/components/TopBar.jsx";
+import { Hero } from "./src/components/Hero.jsx";
 import { MeasurementGuide } from "./src/components/MeasurementGuide.jsx";
 import { CompareBar } from "./src/components/CompareBar.jsx";
 import { ShortlistBar } from "./src/components/ShortlistBar.jsx";
@@ -721,68 +721,19 @@ export default function CoolantHoseFinder() {
       <main id="results-main" className="mx-auto max-w-7xl px-4 py-8 md:px-6 lg:px-8 pb-32">
 
         {/* ── Hero ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-            <div className="max-w-3xl">
-              <Badge className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] tracking-[0.18em] text-zinc-300 backdrop-blur uppercase">
-                {t("hero.eyebrow")}
-              </Badge>
-              <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-6xl">
-                {t("hero.title1")}
-                <span className={`block bg-gradient-to-r ${ACCENT} bg-clip-text text-transparent`}>
-                  {t("hero.title2")}
-                </span>
-              </h1>
-              <p className="mt-5 max-w-xl text-base leading-7 text-zinc-400">
-                {t("hero.subtitle")}
-              </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <Button
-                  className={`rounded-2xl bg-gradient-to-r ${ACCENT} px-5 text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.6)] transition hover:shadow-[0_14px_44px_-8px_rgba(217,70,239,0.7)]`}
-                  onClick={() => {
-                    setShapeMode(false);
-                    setStep(flow === "all" ? 1 : step);
-                  }}
-                >
-                  {t("hero.ctaStart")}
-                  <ChevronRight className="ml-1.5 h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] text-zinc-100 backdrop-blur transition hover:border-violet-400/30 hover:bg-white/[0.08]"
-                  onClick={() => setShapeMode((prev) => !prev)}
-                >
-                  {t("hero.ctaBrowse")}
-                </Button>
-                <button
-                  type="button"
-                  onClick={() => setShowGuide(true)}
-                  className="text-sm text-zinc-400 transition hover:text-white"
-                >
-                  {t("hero.ctaGuide")}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setKeyboardHelpOpen(true)}
-                  className="hidden items-center gap-1.5 text-xs text-zinc-500 transition hover:text-white sm:inline-flex"
-                  aria-label={t("common.shortcuts")}
-                >
-                  {t("common.shortcuts")} <Kbd>?</Kbd>
-                </button>
-              </div>
-            </div>
-
-            <HeroLiveCount
-              total={allHoses.length}
-              filtered={filtered.length}
-              hasFilters={hasActiveFilters}
-            />
-          </div>
-        </motion.div>
+        <Hero
+          t={t}
+          totalHoses={allHoses.length}
+          filteredCount={filtered.length}
+          hasActiveFilters={hasActiveFilters}
+          onStart={() => {
+            setShapeMode(false);
+            setStep(flow === "all" ? 1 : step);
+          }}
+          onToggleShape={() => setShapeMode((prev) => !prev)}
+          onShowGuide={() => setShowGuide(true)}
+          onShowShortcuts={() => setKeyboardHelpOpen(true)}
+        />
 
         {showPresets ? (
           <PresetsStrip
@@ -801,7 +752,7 @@ export default function CoolantHoseFinder() {
                 <Sparkles className="h-3 w-3" />
               </span>
               Start from a preset
-              <ArrowRight className="h-3 w-3 text-zinc-500 transition group-hover:translate-x-0.5 group-hover:text-violet-300" />
+              <ArrowRight className="h-3 w-3 text-zinc-400 transition group-hover:translate-x-0.5 group-hover:text-violet-300" />
             </button>
           </div>
         )}
@@ -987,7 +938,7 @@ export default function CoolantHoseFinder() {
                             className={`group h-11 rounded-2xl px-5 transition ${
                               hasRequiredDimensions
                                 ? `border-0 bg-gradient-to-r ${ACCENT} text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.55)] hover:shadow-[0_14px_40px_-8px_rgba(217,70,239,0.65)]`
-                                : "border border-white/10 bg-white/[0.04] text-zinc-500 cursor-not-allowed"
+                                : "border border-white/10 bg-white/[0.04] text-zinc-400 cursor-not-allowed"
                             }`}
                           >
                             {t("common.continue")}
@@ -997,7 +948,7 @@ export default function CoolantHoseFinder() {
                             type="button"
                             onClick={() => setStep(3)}
                             disabled={!hasRequiredDimensions}
-                            className="text-xs text-zinc-500 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                            className="text-xs text-zinc-400 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             Skip to length
                           </button>
@@ -1065,7 +1016,7 @@ export default function CoolantHoseFinder() {
                                 setLenTol([99]);
                                 setStep("results");
                               }}
-                              className="text-xs text-zinc-500 transition hover:text-white"
+                              className="text-xs text-zinc-400 transition hover:text-white"
                             >
                               {t("common.skipForNow")}
                             </button>
@@ -1128,9 +1079,9 @@ export default function CoolantHoseFinder() {
               {hasActiveFilters && (
                 <span className={`inline-flex h-1.5 w-1.5 rounded-full bg-gradient-to-r ${ACCENT} shadow-[0_0_8px_rgba(217,70,239,0.7)]`} />
               )}
-              <span className="text-xs text-zinc-500">{t("refine.subtitle")}</span>
+              <span className="text-xs text-zinc-400">{t("refine.subtitle")}</span>
             </span>
-            <ChevronDown className={`h-4 w-4 text-zinc-500 transition ${showRefine ? "rotate-180 text-violet-300" : ""}`} />
+            <ChevronDown className={`h-4 w-4 text-zinc-400 transition ${showRefine ? "rotate-180 text-violet-300" : ""}`} />
           </button>
           <AnimatePresence initial={false}>
             {showRefine && (
@@ -1239,7 +1190,7 @@ export default function CoolantHoseFinder() {
               <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-50`} />
               <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-5">
                 <div className="min-w-0">
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Results</div>
+                  <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Results</div>
                   <div className="mt-0.5 flex flex-wrap items-baseline gap-2">
                     <div className="flex items-baseline gap-2 text-xl font-semibold tracking-tight text-white sm:text-2xl">
                       {loading ? (
@@ -1250,7 +1201,7 @@ export default function CoolantHoseFinder() {
                       ) : canShowResults ? (
                         <>
                           <span className="tabular"><AnimatedCount value={filtered.length} /></span>
-                          <span className="text-sm font-normal text-zinc-500">
+                          <span className="text-sm font-normal text-zinc-400">
                             hose{filtered.length !== 1 ? "s" : ""}
                           </span>
                         </>
@@ -1307,7 +1258,7 @@ export default function CoolantHoseFinder() {
                     })}
                   </div>
                   <div className="flex items-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] pl-2.5">
-                    <ArrowUpDown className="h-3.5 w-3.5 text-zinc-500" />
+                    <ArrowUpDown className="h-3.5 w-3.5 text-zinc-400" />
                     <Select value={sortMode} onValueChange={setSortMode}>
                       <SelectTrigger className="h-9 w-40 rounded-2xl border-0 bg-transparent text-xs text-zinc-200">
                         <SelectValue />
@@ -1463,7 +1414,7 @@ export default function CoolantHoseFinder() {
                       className="rounded-2xl border-white/10 bg-white/5 px-8 text-zinc-300 hover:bg-white/10 hover:text-white"
                     >
                       Load more <ChevronDown className="ml-2 h-4 w-4" />
-                      <span className="ml-2 text-zinc-500 text-xs">({filtered.length - paginated.length} remaining)</span>
+                      <span className="ml-2 text-zinc-400 text-xs">({filtered.length - paginated.length} remaining)</span>
                     </Button>
                   </div>
                 )}
