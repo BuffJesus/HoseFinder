@@ -14,6 +14,7 @@ import { DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/c
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useUnit, useFmtDim, Dim } from "../context/unit.jsx";
+import { useLocale } from "../context/i18n.jsx";
 import { gatesUrl, gates360Url } from "../lib/gatesUrls.js";
 import { MatchBadge, Viewer360Icon } from "./primitives.jsx";
 import { HoseSilhouette } from "./HoseSilhouette.jsx";
@@ -60,18 +61,19 @@ export function DetailModal({
   const [activeImg, setActiveImg] = useState(0);
   const unitMode = useUnit();
   const fmtDim = useFmtDim();
+  const { t } = useLocale();
   if (!hose) return null;
   const inShortlist = shortlist.has(hose.partNo);
   const inCompare = compare.includes(hose.partNo);
 
   const stats = [
-    { icon: Ruler,             label: "End sizes (I.D.)",   value: fmtDim(hose.hoseId, unitMode), mono: true },
-    { icon: ArrowUpDown,       label: "Centerline length",  value: fmtDim(hose.length, unitMode), mono: true },
-    { icon: Layers3,           label: "End count",          value: hose.endCount, mono: true },
-    { icon: GitCompare,        label: "Type",               value: <span className="capitalize">{hose.hoseType}</span> },
-    { icon: BookOpen,          label: "Shape family",       value: rowMeta?.familyLabel || `${hose.visualFamily} · row ${hose.rowNo}` },
-    { icon: SlidersHorizontal, label: "Size band",          value: SIZE_BAND_LABELS[hose.sizeBand] || hose.sizeBand },
-    { icon: Bookmark,          label: "Catalog page",       value: hose.catalogPage || "—", mono: true },
+    { icon: Ruler,             label: t("detail.endSizes"),        value: fmtDim(hose.hoseId, unitMode), mono: true },
+    { icon: ArrowUpDown,       label: t("detail.centerlineLength"), value: fmtDim(hose.length, unitMode), mono: true },
+    { icon: Layers3,           label: t("detail.endCount"),        value: hose.endCount, mono: true },
+    { icon: GitCompare,        label: t("detail.type"),            value: <span className="capitalize">{hose.hoseType}</span> },
+    { icon: BookOpen,          label: t("detail.shapeFamily"),     value: rowMeta?.familyLabel || `${hose.visualFamily} · row ${hose.rowNo}` },
+    { icon: SlidersHorizontal, label: t("detail.sizeBand"),        value: SIZE_BAND_LABELS[hose.sizeBand] || hose.sizeBand },
+    { icon: Bookmark,          label: t("detail.catalogPage"),     value: hose.catalogPage || "—", mono: true },
   ];
 
   return (
@@ -109,7 +111,7 @@ export function DetailModal({
 
       <div className="grid gap-6 px-6 pb-6 pt-5 sm:px-8 sm:pb-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-3">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Visual</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("detail.visual")}</div>
           <div className="grid gap-3 sm:grid-cols-2">
             {hose.images.map((mode, i) => (
               <button
@@ -133,12 +135,12 @@ export function DetailModal({
             ))}
           </div>
           {hose.catalogPage && (
-            <p className="text-center text-xs text-zinc-400">Images from Gates catalog page {hose.catalogPage}.</p>
+            <p className="text-center text-xs text-zinc-400">{t("detail.catalogImages")} {hose.catalogPage}.</p>
           )}
         </div>
 
         <div className="space-y-4">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Specifications</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("detail.specifications")}</div>
           <div className="grid grid-cols-2 gap-2">
             {stats.map(({ icon: Icon, label, value, mono }) => (
               <div
@@ -166,7 +168,7 @@ export function DetailModal({
               }`}
             >
               <Bookmark className={`mr-2 h-4 w-4 ${inShortlist ? "fill-current" : ""}`} />
-              {inShortlist ? "Saved" : "Shortlist"}
+              {inShortlist ? t("detail.saved") : t("detail.shortlist")}
             </Button>
             <Button
               onClick={() => toggleCompare(hose.partNo)}
@@ -177,7 +179,7 @@ export function DetailModal({
               }`}
             >
               {inCompare ? <Check className="mr-2 h-4 w-4" /> : <GitCompare className="mr-2 h-4 w-4" />}
-              {inCompare ? "Comparing" : "Compare"}
+              {inCompare ? t("detail.comparing") : t("detail.compare")}
             </Button>
           </div>
 
@@ -190,7 +192,7 @@ export function DetailModal({
               }}
               className="group w-full rounded-2xl border border-white/10 bg-white/[0.04] text-sm text-zinc-300 transition hover:border-violet-400/25 hover:bg-white/[0.07] hover:text-white"
             >
-              See all <span className="mx-1 font-semibold text-zinc-100 tabular">{rowCount || "?"}</span> in row
+              {t("detail.seeAllInRow")} <span className="mx-1 font-semibold text-zinc-100 tabular">{rowCount || "?"}</span> {t("detail.inRow")}
               <ArrowRight className="ml-1.5 h-4 w-4 transition group-hover:translate-x-0.5" />
             </Button>
             <Button
@@ -198,7 +200,7 @@ export function DetailModal({
               onClick={() => onFindSimilar?.(hose)}
               className="group w-full rounded-2xl border border-violet-400/20 bg-violet-500/8 text-sm text-violet-100 transition hover:border-violet-400/45 hover:bg-violet-500/15 hover:text-white"
             >
-              <Sparkles className="mr-1.5 h-4 w-4" /> Find similar
+              <Sparkles className="mr-1.5 h-4 w-4" /> {t("detail.findSimilar")}
               <ArrowRight className="ml-1.5 h-4 w-4 transition group-hover:translate-x-0.5" />
             </Button>
           </div>
@@ -211,7 +213,7 @@ export function DetailModal({
               className={`group inline-flex h-11 items-center justify-center gap-2 rounded-2xl border border-violet-400/30 bg-gradient-to-r ${ACCENT} text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(139,92,246,0.5)] transition hover:shadow-[0_12px_30px_-8px_rgba(217,70,239,0.6)]`}
             >
               <Viewer360Icon className="h-4 w-4" />
-              View 360° on Gates
+              {t("detail.view360")}
               <ExternalLink className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
             </a>
             <a
@@ -220,7 +222,7 @@ export function DetailModal({
               rel="noopener noreferrer"
               className="group inline-flex h-11 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] text-sm text-zinc-200 transition hover:border-violet-400/30 hover:bg-white/[0.08] hover:text-white"
             >
-              Search gates.com
+              {t("detail.searchGates")}
               <ExternalLink className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
             </a>
           </div>
@@ -234,14 +236,14 @@ export function DetailModal({
               }}
             >
               <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-50`} />
-              <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">Match vs your spec</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">{t("detail.matchVsSpec")}</div>
               <div className="mt-2"><GapExplainer gap={hose._gap} bendCount={hose.shape?.bendCount} /></div>
             </div>
           )}
 
           {hose.tags?.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Tags</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("detail.tags")}</div>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {hose.tags.map((t) => (
                   <Badge
@@ -258,7 +260,7 @@ export function DetailModal({
           {pairSuggestions.length > 0 && (
             <div>
               <div className="flex items-center justify-between gap-2">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Often added alongside this hose</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("detail.oftenPaired")}</div>
                 {onDisablePairing && (
                   <button
                     type="button"
@@ -299,8 +301,8 @@ export function DetailModal({
           {suggestions.length > 0 && (
             <div>
               <div className="flex items-center justify-between gap-2">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Similar hoses</div>
-                <span className="text-[10px] uppercase tracking-[0.22em] text-violet-300/70">By proximity</span>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("detail.similarHoses")}</div>
+                <span className="text-[10px] uppercase tracking-[0.22em] text-violet-300/70">{t("detail.byProximity")}</span>
               </div>
               <div className="mt-2 grid gap-2">
                 {suggestions.map((s, i) => (
