@@ -69,6 +69,7 @@ import { useProjects } from "./src/hooks/useProjects.js";
 import { useFilters } from "./src/hooks/useFilters.js";
 import { useSavedSearches } from "./src/hooks/useSavedSearches.js";
 import { useMediaQuery } from "./src/hooks/useMediaQuery.js";
+import { useKeyboardShortcuts } from "./src/hooks/useKeyboardShortcuts.js";
 import { PRESETS } from "./src/lib/presets.js";
 import { printShortlist as printShortlistCmd } from "./src/lib/printShortlist.js";
 import {
@@ -551,36 +552,21 @@ export default function CoolantHoseFinder() {
 
   // ── Keyboard shortcuts ────────────────────────────────────────────────────
   const [keyboardHelpOpen, setKeyboardHelpOpen] = useState(false);
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const tag = e.target?.tagName;
-      const editable = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || e.target?.isContentEditable;
-      if (editable) return;
-      switch (e.key) {
-        case "/": {
-          setShowRefine(true);
-          requestAnimationFrame(() => {
-            const el = document.getElementById("part-search-input");
-            el?.focus();
-            el?.select?.();
-          });
-          break;
-        }
-        case "s": openShortlistExclusive(o => !o); break;
-        case "c": openCompareExclusive(o => !o); break;
-        case "1": setViewMode("grid"); break;
-        case "2": setViewMode("list"); break;
-        case "3": setViewMode("compact"); break;
-        case "g": window.scrollTo({ top: 0, behavior: "smooth" }); break;
-        case "?": setKeyboardHelpOpen(true); break;
-        default: return;
-      }
-      e.preventDefault();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  useKeyboardShortcuts({
+    focusSearch: useCallback(() => {
+      setShowRefine(true);
+      requestAnimationFrame(() => {
+        const el = document.getElementById("part-search-input");
+        el?.focus();
+        el?.select?.();
+      });
+    }, []),
+    toggleShortlist: useCallback(() => openShortlistExclusive((o) => !o), [openShortlistExclusive]),
+    toggleCompare:   useCallback(() => openCompareExclusive((o) => !o), [openCompareExclusive]),
+    setViewMode,
+    scrollToTop:     useCallback(() => window.scrollTo({ top: 0, behavior: "smooth" }), []),
+    showHelp:        useCallback(() => setKeyboardHelpOpen(true), []),
+  });
 
   // ── Saved searches ────────────────────────────────────────────────────────
   const { savedSearches, saveSearch, removeSearch: removeSavedSearch } = useSavedSearches({ pushToast });
