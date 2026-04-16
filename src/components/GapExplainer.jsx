@@ -5,6 +5,7 @@
 import React from "react";
 import { Ruler, ArrowUpDown, Check } from "lucide-react";
 import { useUnit, useFmtDim } from "../context/unit.jsx";
+import { useLocale } from "../context/i18n.jsx";
 
 /**
  * @param {{
@@ -15,16 +16,17 @@ import { useUnit, useFmtDim } from "../context/unit.jsx";
 export function GapExplainer({ gap, bendCount }) {
   const unitMode = useUnit();
   const fmtDim = useFmtDim();
+  const { t } = useLocale();
   if (!gap || (!gap.idHasTgt && !gap.lenHasTgt)) return null;
   const lines = [];
   if (gap.idHasTgt) {
     if (gap.idExact) {
-      lines.push({ ok: true, icon: Ruler, label: "Diameter", value: "Exact match" });
+      lines.push({ ok: true, icon: Ruler, label: t("common.diameter"), value: t("gap.exactMatch") });
     } else {
       lines.push({
         ok: false,
         icon: Ruler,
-        label: "Diameter",
+        label: t("common.diameter"),
         value: fmtDim(gap.idDelta, unitMode, 2),
         suffix: gap.idDir,
       });
@@ -32,12 +34,12 @@ export function GapExplainer({ gap, bendCount }) {
   }
   if (gap.lenHasTgt) {
     if (gap.lenExact) {
-      lines.push({ ok: true, icon: ArrowUpDown, label: "Length", value: "Exact match" });
+      lines.push({ ok: true, icon: ArrowUpDown, label: t("common.length"), value: t("gap.exactMatch") });
     } else {
       lines.push({
         ok: false,
         icon: ArrowUpDown,
-        label: "Length",
+        label: t("common.length"),
         value: fmtDim(gap.lenDelta, unitMode, 1),
         suffix: gap.lenDir,
       });
@@ -48,8 +50,8 @@ export function GapExplainer({ gap, bendCount }) {
   const isStraight = typeof bendCount === "number" && bendCount <= 1;
   const cutTip = isLonger
     ? isStraight
-      ? "Straight hoses can be trimmed \u2014 mark your cut line and use a sharp blade."
-      : "Molded hoses can\u2019t be shortened without changing the bend profile."
+      ? t("gap.cutTipStraight")
+      : t("gap.cutTipMolded")
     : null;
 
   return (

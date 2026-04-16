@@ -7,11 +7,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Ruler, ArrowUpDown, Layers3 } from "lucide-react";
+import { useLocale } from "../context/i18n.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
 /** @param {{ onBrowseShapes: () => void }} props */
 export function ResultsPlaceholder({ onBrowseShapes }) {
+  const { t } = useLocale();
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -36,18 +38,18 @@ export function ResultsPlaceholder({ onBrowseShapes }) {
           <Sparkles className="h-5 w-5" />
         </motion.div>
         <div>
-          <div className="text-xl font-semibold tracking-tight text-white">Add a measurement to begin</div>
+          <div className="text-xl font-semibold tracking-tight text-white">{t("results.placeholder.title")}</div>
           <p className="mx-auto mt-1.5 max-w-md text-sm leading-6 text-zinc-400">
-            Pick a hose type above, then enter an end diameter or length. Results stream in live as you type — no need to press search.
+            {t("results.placeholder.description")}
           </p>
         </div>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-3 text-xs text-zinc-400">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-            <Ruler className="h-3 w-3 text-violet-300" aria-hidden="true" /> Diameter
+            <Ruler className="h-3 w-3 text-violet-300" aria-hidden="true" /> {t("common.diameter")}
           </span>
-          <span className="text-zinc-500" aria-hidden="true">or</span>
+          <span className="text-zinc-500" aria-hidden="true">·</span>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-            <ArrowUpDown className="h-3 w-3 text-violet-300" aria-hidden="true" /> Length
+            <ArrowUpDown className="h-3 w-3 text-violet-300" aria-hidden="true" /> {t("common.length")}
           </span>
           <span className="text-zinc-500" aria-hidden="true">or</span>
           <button
@@ -55,7 +57,7 @@ export function ResultsPlaceholder({ onBrowseShapes }) {
             onClick={onBrowseShapes}
             className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/25 bg-violet-500/10 px-3 py-1.5 text-violet-200 transition hover:border-violet-400/40 hover:bg-violet-500/20"
           >
-            <Layers3 className="h-3 w-3" aria-hidden="true" /> Browse shapes
+            <Layers3 className="h-3 w-3" aria-hidden="true" /> {t("results.placeholder.browseShapes")}
           </button>
         </div>
       </div>

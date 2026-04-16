@@ -10,7 +10,12 @@
     "continue": "Continue",
     "skipForNow": "Skip for now",
     "hide": "Hide",
-    "shortcuts": "Shortcuts"
+    "shortcuts": "Shortcuts",
+    "diameter": "Diameter",
+    "length": "Length",
+    "hose": "hose",
+    "hoses": "hoses",
+    "custom": "Custom"
   },
   "hero": {
     "eyebrow": "Gates Molded Coolant Hose",
@@ -19,7 +24,8 @@
     "subtitle": "Start with hose type, then enter only the measurements you know. Results narrow live — guided, not technical.",
     "ctaStart": "Start with measurements",
     "ctaBrowse": "Browse by shape",
-    "ctaGuide": "Measurement guide"
+    "ctaGuide": "Measurement guide",
+    "partLookup": "Already have a part number?"
   },
   "wizard": {
     "sectionEyebrow": "Find your hose",
@@ -30,11 +36,64 @@
     "step1Prompt": "What kind of hose do you need?",
     "step2Prompt": "Enter your sizes",
     "step3Prompt": "How long is the route?",
-    "resultsPrompt": "Matching hoses"
+    "resultsPrompt": "Matching hoses",
+    "step2Title": "Your sizes",
+    "step2Subtitle": "Enter the neck diameters you measured. Results start narrowing as soon as you type.",
+    "step3Title": "Route length",
+    "step3Subtitle": "Add a centerline length if you have one, or skip and browse by size first.",
+    "showResults": "Show results",
+    "skipToLength": "Skip to length",
+    "end1Label": "End 1 diameter (I.D.)",
+    "end2Label": "End 2 diameter (I.D.)",
+    "lengthLabel": "Centerline length",
+    "lengthTolerance": "Length tolerance"
+  },
+  "results": {
+    "header": "Results",
+    "loading": "Loading catalog…",
+    "enterSize": "Enter a size to start narrowing",
+    "exact": "exact",
+    "close": "close",
+    "sort": {
+      "score": "Best match",
+      "id": "By diameter",
+      "len": "By length",
+      "part": "By part number"
+    },
+    "placeholder": {
+      "title": "Add a measurement to begin",
+      "description": "Pick a hose type above, then enter an end diameter or length. Results stream in live as you type — no need to press search.",
+      "browseShapes": "Browse shapes"
+    },
+    "loadMore": "Load more",
+    "remaining": "remaining"
   },
   "refine": {
     "label": "Refine results",
     "subtitle": "tolerances · size band · silhouettes · text search"
+  },
+  "tolerance": {
+    "label": "Tolerance",
+    "exact": "Exact",
+    "exactHint": "tight fit",
+    "flexible": "Flexible",
+    "flexibleHint": "close enough",
+    "wide": "Wide",
+    "wideHint": "show me options"
+  },
+  "gap": {
+    "exactMatch": "Exact match",
+    "exactDiameter": "Exact diameter",
+    "exactLength": "Exact length",
+    "cutTipStraight": "Straight hoses can be trimmed — mark your cut line and use a sharp blade.",
+    "cutTipMolded": "Molded hoses can't be shortened without changing the bend profile."
+  },
+  "wireMethod": {
+    "eyebrow": "The wire method",
+    "title": "Bent a piece of wire? Pick the shape it looks like.",
+    "subtitle": "Tiles narrow to hoses with that routing. Combine with a size below.",
+    "sketchButton": "Sketch it",
+    "photoButton": "Photo of wire"
   },
   "shortlist": {
     "parts": "Parts list",

@@ -15,6 +15,7 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { CURVATURE_BY_SIL } from "../lib/shapeBuckets.js";
 import { HoseSilhouette } from "./HoseSilhouette.jsx";
+import { useLocale } from "../context/i18n.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
@@ -52,6 +53,7 @@ const TILES = [
  * }} props
  */
 export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, setFlow, onOpenBendBuilder, onOpenWirePhoto }) {
+  const { t } = useLocale();
   const counts = useMemo(() => {
     const m = /** @type {Record<string, number>} */ ({});
     for (const h of candidates) {
@@ -93,12 +95,12 @@ export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, set
       <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-50`} />
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">The wire method</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">{t("wireMethod.eyebrow")}</div>
           <h3 id="quick-shape-heading" className="mt-0.5 text-base font-semibold tracking-tight text-white">
-            Bent a piece of wire? Pick the shape it looks like.
+            {t("wireMethod.title")}
           </h3>
           <p className="mt-0.5 text-xs text-zinc-400">
-            Tiles narrow to hoses with that routing. Combine with a size below.
+            {t("wireMethod.subtitle")}
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
@@ -108,7 +110,7 @@ export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, set
               onClick={onOpenBendBuilder}
               className="inline-flex items-center gap-1.5 rounded-2xl border border-violet-400/30 bg-violet-500/15 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-violet-400/50 hover:bg-violet-500/25"
             >
-              Sketch it
+              {t("wireMethod.sketchButton")}
               <span aria-hidden>→</span>
             </button>
           )}
@@ -118,7 +120,7 @@ export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, set
               onClick={onOpenWirePhoto}
               className="inline-flex items-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-zinc-200 transition hover:border-violet-400/30 hover:bg-white/[0.08] hover:text-white"
             >
-              Photo of wire
+              {t("wireMethod.photoButton")}
               <span aria-hidden>→</span>
             </button>
           )}

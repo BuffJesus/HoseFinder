@@ -10,7 +10,12 @@
     "continue": "Continuar",
     "skipForNow": "Omitir por ahora",
     "hide": "Ocultar",
-    "shortcuts": "Atajos"
+    "shortcuts": "Atajos",
+    "diameter": "Diámetro",
+    "length": "Longitud",
+    "hose": "manguera",
+    "hoses": "mangueras",
+    "custom": "Personalizado"
   },
   "hero": {
     "eyebrow": "Manguera de refrigerante moldeada Gates",
@@ -19,7 +24,8 @@
     "subtitle": "Empieza por el tipo de manguera y añade solo las medidas que conozcas. Los resultados se afinan en vivo — guiado, no técnico.",
     "ctaStart": "Empezar por medidas",
     "ctaBrowse": "Buscar por forma",
-    "ctaGuide": "Guía de medición"
+    "ctaGuide": "Guía de medición",
+    "partLookup": "¿Ya tienes un número de pieza?"
   },
   "wizard": {
     "sectionEyebrow": "Encuentra tu manguera",
@@ -30,11 +36,64 @@
     "step1Prompt": "¿Qué tipo de manguera necesitas?",
     "step2Prompt": "Introduce tus medidas",
     "step3Prompt": "¿Qué longitud tiene el recorrido?",
-    "resultsPrompt": "Mangueras coincidentes"
+    "resultsPrompt": "Mangueras coincidentes",
+    "step2Title": "Tus medidas",
+    "step2Subtitle": "Introduce los diámetros de cuello que mediste. Los resultados se afinan mientras escribes.",
+    "step3Title": "Longitud del recorrido",
+    "step3Subtitle": "Añade una longitud de línea central si la tienes, u omite para buscar por tamaño primero.",
+    "showResults": "Mostrar resultados",
+    "skipToLength": "Saltar a longitud",
+    "end1Label": "Diámetro extremo 1 (D.I.)",
+    "end2Label": "Diámetro extremo 2 (D.I.)",
+    "lengthLabel": "Longitud de línea central",
+    "lengthTolerance": "Tolerancia de longitud"
+  },
+  "results": {
+    "header": "Resultados",
+    "loading": "Cargando catálogo…",
+    "enterSize": "Introduce un tamaño para empezar a filtrar",
+    "exact": "exacta",
+    "close": "cercana",
+    "sort": {
+      "score": "Mejor coincidencia",
+      "id": "Por diámetro",
+      "len": "Por longitud",
+      "part": "Por número de pieza"
+    },
+    "placeholder": {
+      "title": "Añade una medida para comenzar",
+      "description": "Elige un tipo de manguera arriba y luego introduce un diámetro o longitud. Los resultados se muestran en vivo mientras escribes — sin necesidad de pulsar buscar.",
+      "browseShapes": "Buscar por forma"
+    },
+    "loadMore": "Cargar más",
+    "remaining": "restantes"
   },
   "refine": {
     "label": "Afinar resultados",
     "subtitle": "tolerancias · banda de tamaño · siluetas · búsqueda de texto"
+  },
+  "tolerance": {
+    "label": "Tolerancia",
+    "exact": "Exacto",
+    "exactHint": "ajuste exacto",
+    "flexible": "Flexible",
+    "flexibleHint": "suficientemente cerca",
+    "wide": "Amplio",
+    "wideHint": "mostrar opciones"
+  },
+  "gap": {
+    "exactMatch": "Coincidencia exacta",
+    "exactDiameter": "Diámetro exacto",
+    "exactLength": "Longitud exacta",
+    "cutTipStraight": "Las mangueras rectas se pueden recortar — marca la línea de corte y usa una cuchilla afilada.",
+    "cutTipMolded": "Las mangueras moldeadas no se pueden acortar sin cambiar el perfil de curva."
+  },
+  "wireMethod": {
+    "eyebrow": "El método del alambre",
+    "title": "¿Doblaste un alambre? Elige la forma que se parece.",
+    "subtitle": "Los mosaicos filtran por ese tipo de recorrido. Combina con un tamaño abajo.",
+    "sketchButton": "Dibújalo",
+    "photoButton": "Foto del alambre"
   },
   "shortlist": {
     "parts": "Lista de piezas",

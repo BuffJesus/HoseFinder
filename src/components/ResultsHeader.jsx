@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Check, LayoutGrid, List, Table2, ArrowUpDown, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatedCount } from "./AnimatedCount.jsx";
+import { useLocale } from "../context/i18n.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
@@ -43,6 +44,7 @@ export function ResultsHeader({
   sortMode,
   setSortMode,
 }) {
+  const { t } = useLocale();
   return (
     <div
       className="sticky top-3 z-30 mb-5 overflow-hidden rounded-[28px] border border-white/10 backdrop-blur-xl"
@@ -54,35 +56,35 @@ export function ResultsHeader({
       <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-50`} />
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-5">
         <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">Results</div>
+          <div className="text-[10px] uppercase tracking-[0.22em] text-zinc-400">{t("results.header")}</div>
           <div className="mt-0.5 flex flex-wrap items-baseline gap-2">
             <div className="flex items-baseline gap-2 text-xl font-semibold tracking-tight text-white sm:text-2xl">
               {loading ? (
                 <span className="flex items-center gap-2 text-base text-zinc-400">
                   <Loader2 className="h-4 w-4 animate-spin text-violet-400" />
-                  Loading catalog…
+                  {t("results.loading")}
                 </span>
               ) : canShowResults ? (
                 <>
                   <span className="tabular"><AnimatedCount value={filteredCount} /></span>
                   <span className="text-sm font-normal text-zinc-400">
-                    hose{filteredCount !== 1 ? "s" : ""}
+                    {filteredCount !== 1 ? t("common.hoses") : t("common.hose")}
                   </span>
                 </>
               ) : (
-                <span className="text-base text-zinc-400">Enter a size to start narrowing</span>
+                <span className="text-base text-zinc-400">{t("results.enterSize")}</span>
               )}
             </div>
             {hasActiveFilters && filteredCount > 0 && canShowResults && (
               <div className="flex flex-wrap items-center gap-1.5">
                 {exactCount > 0 && (
                   <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold tabular text-emerald-300">
-                    <Check className="h-2.5 w-2.5" /> {exactCount} exact
+                    <Check className="h-2.5 w-2.5" /> {exactCount} {t("results.exact")}
                   </span>
                 )}
                 {closeCount > 0 && (
                   <span className="inline-flex items-center gap-1 rounded-full border border-sky-400/25 bg-sky-500/10 px-2 py-0.5 text-[11px] font-semibold tabular text-sky-300">
-                    {closeCount} close
+                    {closeCount} {t("results.close")}
                   </span>
                 )}
               </div>
@@ -129,10 +131,10 @@ export function ResultsHeader({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="score">Best match</SelectItem>
-                <SelectItem value="id">By diameter</SelectItem>
-                <SelectItem value="len">By length</SelectItem>
-                <SelectItem value="part">By part number</SelectItem>
+                <SelectItem value="score">{t("results.sort.score")}</SelectItem>
+                <SelectItem value="id">{t("results.sort.id")}</SelectItem>
+                <SelectItem value="len">{t("results.sort.len")}</SelectItem>
+                <SelectItem value="part">{t("results.sort.part")}</SelectItem>
               </SelectContent>
             </Select>
           </div>

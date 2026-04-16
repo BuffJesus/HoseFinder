@@ -8,14 +8,15 @@
 // either slider, so the two controls never contradict each other.
 
 import React, { useMemo } from "react";
+import { useLocale } from "../context/i18n.jsx";
 
 const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
 
-/** @type {ReadonlyArray<{ key: string, label: string, hint: string, idTol: number, lenTol: number }>} */
+/** @type {ReadonlyArray<{ key: string, labelKey: string, hintKey: string, idTol: number, lenTol: number }>} */
 const PRESETS = [
-  { key: "exact",    label: "Exact",    hint: "tight fit",       idTol: 0.02, lenTol: 0.5 },
-  { key: "flexible", label: "Flexible", hint: "close enough",    idTol: 0.06, lenTol: 2.0 },
-  { key: "wide",     label: "Wide",     hint: "show me options", idTol: 0.15, lenTol: 5.0 },
+  { key: "exact",    labelKey: "tolerance.exact",    hintKey: "tolerance.exactHint",    idTol: 0.02, lenTol: 0.5 },
+  { key: "flexible", labelKey: "tolerance.flexible", hintKey: "tolerance.flexibleHint", idTol: 0.06, lenTol: 2.0 },
+  { key: "wide",     labelKey: "tolerance.wide",     hintKey: "tolerance.wideHint",     idTol: 0.15, lenTol: 5.0 },
 ];
 
 /**
@@ -26,6 +27,7 @@ const PRESETS = [
  * }} props
  */
 export function TolerancePresets({ idTol, lenTol, onApply }) {
+  const { t } = useLocale();
   const activeKey = useMemo(() => {
     // Epsilons are half the smallest gap between adjacent presets so a
     // slider nudge of one step (idTol step=0.01, lenTol step=0.5) deselects.
@@ -37,7 +39,7 @@ export function TolerancePresets({ idTol, lenTol, onApply }) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Tolerance</span>
+      <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">{t("tolerance.label")}</span>
       <div className="flex items-center gap-1.5">
         {PRESETS.map((p) => {
           const active = activeKey === p.key;
@@ -46,19 +48,19 @@ export function TolerancePresets({ idTol, lenTol, onApply }) {
               key={p.key}
               type="button"
               onClick={() => onApply(p.idTol, p.lenTol)}
-              title={p.hint}
+              title={t(p.hintKey)}
               className={`rounded-xl px-2.5 py-1 text-[11px] font-medium transition ${
                 active
                   ? `bg-gradient-to-r ${ACCENT} text-white shadow-[0_4px_14px_-4px_rgba(139,92,246,0.55)]`
                   : "border border-white/10 bg-white/[0.04] text-zinc-300 hover:border-violet-400/25 hover:bg-white/[0.07] hover:text-white"
               }`}
             >
-              {p.label}
+              {t(p.labelKey)}
             </button>
           );
         })}
         {activeKey === null && (
-          <span className="text-[10px] text-zinc-400 italic">Custom</span>
+          <span className="text-[10px] text-zinc-400 italic">{t("common.custom")}</span>
         )}
       </div>
     </div>

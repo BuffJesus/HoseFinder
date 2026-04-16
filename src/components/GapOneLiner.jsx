@@ -6,6 +6,7 @@
 
 import React from "react";
 import { useUnit, useFmtDim } from "../context/unit.jsx";
+import { useLocale } from "../context/i18n.jsx";
 
 /**
  * @param {{ gap: any | null | undefined }} props
@@ -13,6 +14,7 @@ import { useUnit, useFmtDim } from "../context/unit.jsx";
 export function GapOneLiner({ gap }) {
   const unitMode = useUnit();
   const fmtDim = useFmtDim();
+  const { t } = useLocale();
   if (!gap) return null;
   if (!gap.idHasTgt && !gap.lenHasTgt) return null;
 
@@ -20,7 +22,7 @@ export function GapOneLiner({ gap }) {
 
   if (gap.idHasTgt) {
     if (gap.idExact) {
-      parts.push("\u2713 Exact diameter");
+      parts.push(`\u2713 ${t("gap.exactDiameter")}`);
     } else {
       parts.push(`${fmtDim(gap.idDelta, unitMode, 2)} ${gap.idDir || "off"}`);
     }
@@ -28,7 +30,7 @@ export function GapOneLiner({ gap }) {
 
   if (gap.lenHasTgt) {
     if (gap.lenExact) {
-      parts.push("\u2713 Exact length");
+      parts.push(`\u2713 ${t("gap.exactLength")}`);
     } else {
       parts.push(`${fmtDim(gap.lenDelta, unitMode, 1)} ${gap.lenDir || "off"}`);
     }

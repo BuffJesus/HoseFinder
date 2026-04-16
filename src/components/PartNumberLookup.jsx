@@ -11,6 +11,7 @@
 
 import React, { useState, useCallback, useRef } from "react";
 import { Search } from "lucide-react";
+import { useLocale } from "../context/i18n.jsx";
 
 /**
  * @param {{
@@ -19,6 +20,7 @@ import { Search } from "lucide-react";
  * }} props
  */
 export function PartNumberLookup({ allHoses, onMatch }) {
+  const { t } = useLocale();
   const [value, setValue] = useState("");
   const indexRef = useRef(/** @type {Map<string, any> | null} */ (null));
   const hosesRef = useRef(allHoses);
@@ -48,7 +50,7 @@ export function PartNumberLookup({ allHoses, onMatch }) {
     <div className="mt-5 flex items-center gap-2">
       <Search className="h-3.5 w-3.5 text-zinc-500" aria-hidden="true" />
       <label htmlFor="hero-part-lookup" className="text-xs text-zinc-400">
-        Already have a part number?
+        {t("hero.partLookup")}
       </label>
       <input
         id="hero-part-lookup"
