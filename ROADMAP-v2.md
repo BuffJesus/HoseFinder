@@ -442,7 +442,13 @@ right thing to do and a legal requirement in some jurisdictions.
   to `text-zinc-400` (~7.5:1 on zinc-950, clears AA 4.5:1 threshold). Sub-AA
   `text-zinc-600` captions/metadata bumped too; `.eyebrow` token updated in
   `styles.css`. `placeholder:text-zinc-600` retained — WCAG exempts placeholders
-- [ ] Focus order matches visual order — not audited
+- [x] Focus order matches visual order — audited. Skip-link first, then
+  TopBar, then `<main id="results-main">`. Sticky `CompareBar` / `ShortlistBar`
+  render after `</main>` in DOM (correct — finish content flow before
+  floating overlays). No positive `tabIndex` anywhere; `tabIndex={-1}` only
+  on Dialog/BottomSheet panels to receive programmatic focus. `autoFocus`
+  only on conditionally-mounted rename/create inputs — correct use. Modals
+  fully unmount on close so no stale tab stops.
 - [x] Skip link at top of page ("Skip to results" → `#results-main` landmark)
 - [x] `<main>` landmark, live toast region (`role="status"`, `aria-live="polite"`),
   live filter count announcer (`HeroLiveCount` carries aria-label that reads
