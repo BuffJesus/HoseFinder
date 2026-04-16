@@ -738,6 +738,140 @@ image. No typing at all.
 
 ## Backlog (v2 — future consideration)
 
+---
+
+## Phase 11 — UX Refinements
+
+> Small, high-leverage improvements that reduce friction between "I need a
+> hose" and "I found the right part number." Each is achievable client-side
+> with no new data dependencies. Ordered by estimated impact.
+
+---
+
+### 11.1 — "Why this rank?" one-liner on every result card
+
+**Why:** The `_gap` object already knows "exact diameter, 1.2" longer" —
+but that info only surfaces inside the detail modal. Showing it directly
+on the card is the single most impactful trust signal when a builder is
+choosing between three candidates at the parts counter.
+
+**Acceptance criteria:**
+- [x] Grid cards show a muted one-liner below the part number when
+  dimension filters are active — `GapOneLiner` component renders
+  "✓ Exact diameter · 1.2" longer" style strings directly from `_gap`
+- [x] List and compact rows show the same text inline
+- [x] Hidden when no filters are active (browsing mode) — `_gap` is
+  null/undefined when no targets are set
+- [x] Exact axes say "✓ Exact" in green, not "0.00" off"
+
+---
+
+### 11.2 — "Can I cut this?" contextual tip
+
+**Why:** When a straight hose is longer than the target, novice builders
+don't know they can trim it. When a molded hose is longer, they need to
+know they *can't*. One conditional sentence in `GapExplainer` closes
+both knowledge gaps.
+
+**Acceptance criteria:**
+- [x] Straight hose + longer than target → "Straight hoses can be
+  trimmed — mark your cut line and use a sharp blade." — rendered in
+  emerald when `bendCount ≤ 1` and `lenDir === "longer"`
+- [x] Curved hose + longer than target → "Molded hoses can't be
+  shortened without changing the bend profile." — rendered in amber
+- [x] Tip hidden when length is exact or hose is shorter than target
+
+---
+
+### 11.3 — Tolerance presets: "Exact / Flexible / Wide"
+
+**Why:** Builders think "exact replacement" vs "close enough" vs "show
+me everything" — not ±0.06 vs ±0.10. Three labeled radio buttons
+directly below each dimension input remove that cognitive load.
+
+**Acceptance criteria:**
+- [ ] Three preset buttons visible under the dimension inputs in both
+  wizard step 2/3 and the refine panel
+- [ ] Selecting a preset sets the underlying numeric tolerances
+- [ ] Preset deselects if the user manually adjusts the slider
+- [ ] Slider stays available in advanced mode
+
+---
+
+### 11.4 — Reverse lookup: "I have this part number"
+
+**Why:** Builder pulls a cracked hose, reads a part number off the
+remnants, and wants "what else fits this routing?" A fourth entry point
+on step 1 that takes a known part number and shows its specs + all
+alternatives in the same shape row + similar shapes.
+
+**Acceptance criteria:**
+- [ ] Dedicated "I have a part number" input on step 1
+- [ ] Typing a valid part shows that part's specs immediately
+- [ ] "Show alternatives" button filters to same row + similar shapes
+- [ ] Results header says "Alternatives to 22062" with a dismiss button
+
+---
+
+### 11.5 — Silhouette overlay in compare mode
+
+**Why:** Stacking two silhouettes at the same scale (normalised by
+length), one violet, one fuchsia, lets a builder see where bend
+geometry differs without reading numbers.
+
+**Acceptance criteria:**
+- [ ] "Overlay" tab in compare modal alongside the specs table
+- [ ] Both silhouettes rendered into a shared SVG at the same
+  pixel-per-inch ratio
+- [ ] CSS mix-blend-mode for visual differentiation
+- [ ] Works for 2 or 3 hoses
+
+---
+
+### 11.6 — Voice measurement entry
+
+**Why:** Under the hood, both hands are busy. Say "one and a half
+inches" and the app fills in 1.50".
+
+**Acceptance criteria:**
+- [ ] Mic icon next to each dimension input (hidden on unsupported
+  browsers)
+- [ ] Uses Web Speech API (`webkitSpeechRecognition`)
+- [ ] Feeds utterance through `parseNaturalSize`
+- [ ] Works in Chrome/Edge/Safari; graceful fallback elsewhere
+
+---
+
+### 11.7 — Barcode scan for existing hose ID
+
+**Why:** Gates hoses have barcodes on packaging. Point the camera at one
+to instantly pull up that part.
+
+**Acceptance criteria:**
+- [ ] Barcode icon next to the search bar
+- [ ] Uses `BarcodeDetector` API or `zxing-js` for client-side decode
+- [ ] Decoded string feeds into the search pipeline
+- [ ] Graceful fallback on unsupported browsers
+
+---
+
+### 11.8 — "Field Mode" — aggressive offline pre-cache
+
+**Why:** Builders in shops with poor signal don't know the PWA works
+offline. An explicit toggle pre-caches all 4,200 hose images and shows
+a persistent "Offline ready" badge.
+
+**Acceptance criteria:**
+- [ ] Toggle in settings triggers `cache.addAll()` for all hose image
+  URLs
+- [ ] Progress bar during download ("Downloading 4,200 images…")
+- [ ] Persistent green "Offline ready" badge when complete
+- [ ] Gates.com links show "saved for later" in field mode
+
+---
+
+## Backlog (v2 — future consideration)
+
 Same house rules: real ideas, not prioritized, may move up based on demand.
 
 - **AI semantic search** — "short bypass tee for SBC" → ranked candidates.

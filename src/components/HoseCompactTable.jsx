@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MatchBadge, Viewer360Icon } from "./primitives.jsx";
+import { GapOneLiner } from "./GapOneLiner.jsx";
 import { ShortlistButton } from "./ShortlistButton.jsx";
 import { Dim } from "../context/unit.jsx";
 import { gatesUrl, gates360Url } from "../lib/gatesUrls.js";
@@ -69,7 +70,10 @@ export function HoseCompactTable({ hoses, onSelect, shortlist, toggleShortlist, 
                   <td className="px-4 py-3.5 tabular"><Dim value={hose.length} /></td>
                   <td className="px-4 py-3.5 capitalize">{hose.hoseType}</td>
                   <td className="max-w-[18rem] truncate px-4 py-3.5 text-zinc-400">{hose.visualFamily}</td>
-                  <td className="px-4 py-3.5"><MatchBadge quality={hose._matchQuality} /></td>
+                  <td className="px-4 py-3.5">
+                    <MatchBadge quality={hose._matchQuality} />
+                    <GapOneLiner gap={hose._gap} />
+                  </td>
                   <td className="px-4 py-3.5">
                     <div className="flex justify-end gap-1">
                       <Button

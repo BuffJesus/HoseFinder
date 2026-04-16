@@ -235,7 +235,7 @@ export function DetailModal({
             >
               <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${ACCENT} opacity-50`} />
               <div className="text-[10px] uppercase tracking-[0.22em] text-violet-300/80">Match vs your spec</div>
-              <div className="mt-2"><GapExplainer gap={hose._gap} /></div>
+              <div className="mt-2"><GapExplainer gap={hose._gap} bendCount={hose.shape?.bendCount} /></div>
             </div>
           )}
 

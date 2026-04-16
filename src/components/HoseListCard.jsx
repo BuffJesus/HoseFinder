@@ -7,6 +7,7 @@ import { Sparkles, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MatchBadge } from "./primitives.jsx";
+import { GapOneLiner } from "./GapOneLiner.jsx";
 import { ShortlistButton } from "./ShortlistButton.jsx";
 import { HoseImage } from "./HoseImage.jsx";
 import { GapExplainer } from "./GapExplainer.jsx";
@@ -62,6 +63,7 @@ export function HoseListCard({ hose, onSelect, shortlist, toggleShortlist, onSho
                     <MatchBadge quality={hose._matchQuality} />
                   </div>
                   <div className="mt-1 text-sm text-zinc-400">{hose.visualFamily}</div>
+                  <GapOneLiner gap={hose._gap} />
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4 xl:min-w-[24rem]">
                   <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">

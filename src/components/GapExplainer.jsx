@@ -6,8 +6,13 @@ import React from "react";
 import { Ruler, ArrowUpDown, Check } from "lucide-react";
 import { useUnit, useFmtDim } from "../context/unit.jsx";
 
-/** @param {{ gap: import("../lib/filter.js").Gap | null | undefined }} props */
-export function GapExplainer({ gap }) {
+/**
+ * @param {{
+ *   gap: import("../lib/filter.js").Gap | null | undefined,
+ *   bendCount?: number,
+ * }} props
+ */
+export function GapExplainer({ gap, bendCount }) {
   const unitMode = useUnit();
   const fmtDim = useFmtDim();
   if (!gap || (!gap.idHasTgt && !gap.lenHasTgt)) return null;
@@ -38,6 +43,15 @@ export function GapExplainer({ gap }) {
       });
     }
   }
+  // "Can I cut this?" tip — only when the hose is longer than the target.
+  const isLonger = gap.lenHasTgt && !gap.lenExact && gap.lenDir === "longer";
+  const isStraight = typeof bendCount === "number" && bendCount <= 1;
+  const cutTip = isLonger
+    ? isStraight
+      ? "Straight hoses can be trimmed \u2014 mark your cut line and use a sharp blade."
+      : "Molded hoses can\u2019t be shortened without changing the bend profile."
+    : null;
+
   return (
     <div className="space-y-1.5 text-xs">
       {lines.map((l) => {
@@ -63,6 +77,15 @@ export function GapExplainer({ gap }) {
           </div>
         );
       })}
+      {cutTip && (
+        <div className={`rounded-xl border px-2.5 py-1.5 text-[11px] ${
+          isStraight
+            ? "border-emerald-400/20 bg-emerald-500/5 text-emerald-200/90"
+            : "border-amber-400/20 bg-amber-500/5 text-amber-200/90"
+        }`}>
+          {cutTip}
+        </div>
+      )}
     </div>
   );
 }
