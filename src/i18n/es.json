@@ -1,0 +1,53 @@
+{
+  "brand": "Gates HoseFinder",
+  "common": {
+    "backToTop": "Volver arriba",
+    "skipToResults": "Saltar a resultados",
+    "cancel": "Cancelar",
+    "clear": "Limpiar",
+    "open": "Abrir",
+    "close": "Cerrar",
+    "continue": "Continuar",
+    "skipForNow": "Omitir por ahora",
+    "hide": "Ocultar",
+    "shortcuts": "Atajos"
+  },
+  "hero": {
+    "eyebrow": "Manguera de refrigerante moldeada Gates",
+    "title1": "Encuentra la manguera",
+    "title2": "de refrigerante correcta.",
+    "subtitle": "Empieza por el tipo de manguera y añade solo las medidas que conozcas. Los resultados se afinan en vivo — guiado, no técnico.",
+    "ctaStart": "Empezar por medidas",
+    "ctaBrowse": "Buscar por forma",
+    "ctaGuide": "Guía de medición"
+  },
+  "wizard": {
+    "sectionEyebrow": "Encuentra tu manguera",
+    "mode": {
+      "guided": "Guiado",
+      "advanced": "Avanzado"
+    },
+    "step1Prompt": "¿Qué tipo de manguera necesitas?",
+    "step2Prompt": "Introduce tus medidas",
+    "step3Prompt": "¿Qué longitud tiene el recorrido?",
+    "resultsPrompt": "Mangueras coincidentes"
+  },
+  "refine": {
+    "label": "Afinar resultados",
+    "subtitle": "tolerancias · banda de tamaño · siluetas · búsqueda de texto"
+  },
+  "shortlist": {
+    "parts": "Lista de piezas",
+    "printBom": "Imprimir BOM",
+    "quickPrint": "Impresión rápida",
+    "openBom": "Abrir BOM"
+  },
+  "guide": {
+    "title": "Cómo medir",
+    "subtitle": "Empieza con seguridad, no con suposiciones."
+  },
+  "photo": {
+    "title": "Sube una foto con un objeto de referencia",
+    "uploadCta": "Toca para elegir o tomar una foto"
+  }
+}

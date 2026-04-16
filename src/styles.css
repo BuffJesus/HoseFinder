@@ -1,0 +1,304 @@
+:root {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+  --accent-violet: 139 92 246;
+  --accent-fuchsia: 217 70 239;
+
+  /* Semantic tone tokens — paired with src/lib/theme.js. Read that file
+     before adding a sixth hue. */
+  --tone-primary: 139 92 246;   /* violet-500   */
+  --tone-ok:       16 185 129;  /* emerald-500  */
+  --tone-warning: 245 158  11;  /* amber-500    */
+  --tone-danger:  244  63  94;  /* rose-500     */
+  --tone-special:  14 165 233;  /* sky-500      */
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01", "ss03", "cv05";
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-color: #09090b;
+}
+
+/* ── App surface — layered mesh of soft violet / fuchsia halos over a deep
+       neutral. Two slow-drifting blobs add life without distraction.
+       Sits on the .app-surface container so it scrolls with content. */
+.app-surface {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(60rem 40rem at 12% -8%, rgba(139, 92, 246, 0.22), transparent 60%),
+    radial-gradient(48rem 32rem at 88% 8%, rgba(217, 70, 239, 0.16), transparent 60%),
+    radial-gradient(80rem 48rem at 50% 110%, rgba(91, 33, 182, 0.18), transparent 65%),
+    linear-gradient(180deg, #09090b 0%, #0c0c10 50%, #0a0a0d 100%);
+}
+
+/* Slow-drifting accent halos — pure GPU transforms, no layout cost */
+.app-surface::before,
+.app-surface::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: -2;
+  background:
+    radial-gradient(28rem 28rem at 30% 30%, rgba(167, 139, 250, 0.10), transparent 60%);
+  filter: blur(40px);
+  animation: drift-a 28s ease-in-out infinite alternate;
+}
+.app-surface::after {
+  background:
+    radial-gradient(24rem 24rem at 70% 60%, rgba(232, 121, 249, 0.08), transparent 60%);
+  animation: drift-b 36s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  0%   { transform: translate3d(-2%, -1%, 0) scale(1); }
+  100% { transform: translate3d(4%, 6%, 0) scale(1.08); }
+}
+@keyframes drift-b {
+  0%   { transform: translate3d(3%, 4%, 0) scale(1); }
+  100% { transform: translate3d(-5%, -3%, 0) scale(1.12); }
+}
+
+/* Fine grain — premium tactility. SVG noise inlined as data URI, very low
+   alpha, mix-blend for warmth without tinting the surface. */
+.app-surface > .grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  font-feature-settings: inherit;
+}
+
+/* ── Numeric values use lining + tabular figures so digits don't jiggle */
+.tabular,
+.font-mono,
+input[type="number"],
+input[type="text"][inputmode="decimal"] {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum", "lnum", "cv11";
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ── Eyebrow labels: tight, even tracking, no descender drift */
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgb(113 113 122);
+}
+
+/* ── Selection — soft violet, never blue */
+::selection {
+  background: rgba(139, 92, 246, 0.32);
+  color: #fff;
+}
+
+/* ── Scrollbar — slim, themed, doesn't fight the dark surface */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.28) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.38);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* ── Focus ring — universal, violet, soft */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(9, 9, 11, 1), 0 0 0 4px rgba(167, 139, 250, 0.55);
+  border-radius: 0.5rem;
+}
+
+/* ── Native range input → premium slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    rgba(139, 92, 246, 0.85) 0%,
+    rgba(217, 70, 239, 0.85) var(--range-progress, 50%),
+    rgba(255, 255, 255, 0.08) var(--range-progress, 50%),
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+input[type="range"]::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, rgb(139, 92, 246), rgb(217, 70, 239));
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  margin-top: -6px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid rgb(139, 92, 246);
+  box-shadow:
+    0 0 0 4px rgba(139, 92, 246, 0.18),
+    0 4px 14px -2px rgba(139, 92, 246, 0.55);
+  transition: transform 120ms ease, box-shadow 200ms ease;
+}
+input[type="range"]::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid rgb(139, 92, 246);
+  box-shadow:
+    0 0 0 4px rgba(139, 92, 246, 0.18),
+    0 4px 14px -2px rgba(139, 92, 246, 0.55);
+  transition: transform 120ms ease, box-shadow 200ms ease;
+}
+input[type="range"]:hover::-webkit-slider-thumb,
+input[type="range"]:focus::-webkit-slider-thumb {
+  transform: scale(1.1);
+  box-shadow:
+    0 0 0 6px rgba(139, 92, 246, 0.22),
+    0 6px 20px -2px rgba(217, 70, 239, 0.6);
+}
+input[type="range"]:hover::-moz-range-thumb,
+input[type="range"]:focus::-moz-range-thumb {
+  transform: scale(1.1);
+  box-shadow:
+    0 0 0 6px rgba(139, 92, 246, 0.22),
+    0 6px 20px -2px rgba(217, 70, 239, 0.6);
+}
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.18);
+}
+input[type="range"]:active::-moz-range-thumb {
+  transform: scale(1.18);
+}
+
+/* ── Number input — kill spinner buttons, they always look ugly */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ── Subtle shimmer for the gradient accent bar on cards */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.accent-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+/* ── Skeleton shimmer — for placeholder loading cards */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -180% 0; }
+  100% { background-position: 180% 0; }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.04);
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(167, 139, 250, 0.10) 50%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Soft pulse — used on success / shortlist add */
+@keyframes soft-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+  50%      { box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.18); }
+}
+.pulse-once {
+  animation: soft-pulse 600ms ease-out;
+}
+
+/* ── Mobile tap targets — bump every interactive element to 44px on phones.
+   `:where()` keeps specificity at 0 so component layout classes still win. */
+@media (max-width: 767px) {
+  :where(button, a[aria-label]) {
+    min-height: 44px;
+  }
+  :where(button[aria-label], a[aria-label]) {
+    min-width: 44px;
+  }
+}
+
+/* ── Reduced motion — be respectful */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

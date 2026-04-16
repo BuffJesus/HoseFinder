@@ -1,0 +1,53 @@
+{
+  "brand": "Gates HoseFinder",
+  "common": {
+    "backToTop": "Back to top",
+    "skipToResults": "Skip to results",
+    "cancel": "Cancel",
+    "clear": "Clear",
+    "open": "Open",
+    "close": "Close",
+    "continue": "Continue",
+    "skipForNow": "Skip for now",
+    "hide": "Hide",
+    "shortcuts": "Shortcuts"
+  },
+  "hero": {
+    "eyebrow": "Gates Molded Coolant Hose",
+    "title1": "Find the right",
+    "title2": "coolant hose.",
+    "subtitle": "Start with hose type, then enter only the measurements you know. Results narrow live — guided, not technical.",
+    "ctaStart": "Start with measurements",
+    "ctaBrowse": "Browse by shape",
+    "ctaGuide": "Measurement guide"
+  },
+  "wizard": {
+    "sectionEyebrow": "Find your hose",
+    "mode": {
+      "guided": "Guided",
+      "advanced": "Advanced"
+    },
+    "step1Prompt": "What kind of hose do you need?",
+    "step2Prompt": "Enter your sizes",
+    "step3Prompt": "How long is the route?",
+    "resultsPrompt": "Matching hoses"
+  },
+  "refine": {
+    "label": "Refine results",
+    "subtitle": "tolerances · size band · silhouettes · text search"
+  },
+  "shortlist": {
+    "parts": "Parts list",
+    "printBom": "Print BOM",
+    "quickPrint": "Quick print",
+    "openBom": "Open BOM"
+  },
+  "guide": {
+    "title": "How to measure",
+    "subtitle": "Start with confidence, not guesswork."
+  },
+  "photo": {
+    "title": "Upload a photo with a reference object",
+    "uploadCta": "Tap to choose or take a photo"
+  }
+}
