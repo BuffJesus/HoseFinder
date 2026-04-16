@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import { MM_PER_IN, fmtLen, inchStringToDisplay, parseUnitInput, fmtDim } from "./src/lib/units.js";
 import { parseNaturalSize, fractionSuggestionsFor, COMMON_FRACTIONS } from "./src/lib/naturalSize.js";
 import { editDistance } from "./src/lib/strings.js";
 import {
@@ -71,6 +70,7 @@ import { useFilters } from "./src/hooks/useFilters.js";
 import { useSavedSearches } from "./src/hooks/useSavedSearches.js";
 import { useMediaQuery } from "./src/hooks/useMediaQuery.js";
 import { PRESETS } from "./src/lib/presets.js";
+import { printShortlist as printShortlistCmd } from "./src/lib/printShortlist.js";
 import {
   Search, GitCompare, Check, Info, X, ChevronRight,
   SlidersHorizontal, Ruler, Layers3, Loader2,
@@ -537,53 +537,11 @@ export default function CoolantHoseFinder() {
   }, [hasManualInputs, applyPresetFilters, pushToast]);
 
   const printShortlist = useCallback(() => {
-    if (shortlisted.length === 0) return;
-    const rows = shortlisted.map((h) => `
-      <tr>
-        <td>${h.partNo}</td>
-        <td>${fmtDim(h.hoseId, unitMode)}</td>
-        <td>${fmtDim(h.length, unitMode)}</td>
-        <td>${h.hoseType}</td>
-        <td>${h.visualFamily}</td>
-      </tr>
-    `).join("");
-
-    const html = `<!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8" />
-        <title>HoseFinder Parts List</title>
-        <style>
-          body { font-family: Arial, sans-serif; padding: 32px; color: #111827; }
-          h1 { margin: 0 0 8px; font-size: 24px; }
-          p { margin: 0 0 24px; color: #4b5563; font-size: 13px; }
-          table { width: 100%; border-collapse: collapse; }
-          th, td { border: 1px solid #d1d5db; padding: 10px 12px; text-align: left; }
-          th { background: #f3f4f6; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
-        </style>
-      </head>
-      <body>
-        <h1>Gates Molded Coolant Hose Parts List</h1>
-        <p>Generated ${new Date().toLocaleDateString()} · ${shortlisted.length} part${shortlisted.length === 1 ? "" : "s"}</p>
-        <table>
-          <thead>
-            <tr><th>Part #</th><th>I.D.</th><th>Length</th><th>Type</th><th>Shape</th></tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </body>
-    </html>`;
-
-    const printWindow = window.open("", "_blank", "noopener,noreferrer");
-    if (!printWindow) {
+    const result = printShortlistCmd(shortlisted, unitMode);
+    if (result === "popup-blocked") {
       pushToast("Popup blocked. Allow popups to print the shortlist.", { tone: "warning" });
-      return;
     }
-    printWindow.document.write(html);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-  }, [shortlisted, unitMode]);
+  }, [shortlisted, unitMode, pushToast]);
 
   const showRow = useCallback((rowNo) => {
     setSelectedRows(new Set([rowNo]));
