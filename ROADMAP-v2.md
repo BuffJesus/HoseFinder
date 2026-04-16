@@ -867,11 +867,14 @@ offline. An explicit toggle pre-caches all 4,200 hose images and shows
 a persistent "Offline ready" badge.
 
 **Acceptance criteria:**
-- [ ] Toggle in settings triggers `cache.addAll()` for all hose image
-  URLs
-- [ ] Progress bar during download ("Downloading 4,200 images…")
-- [ ] Persistent green "Offline ready" badge when complete
-- [ ] Gates.com links show "saved for later" in field mode
+- [x] Toggle accessible via WiFi icon in the TopBar — opens
+  FieldModeDialog with a single "Download for offline use" button
+- [x] Progress bar during download — batched 12-at-a-time via
+  `cache.add()` with live `N / 4,723` counter + cancel button
+- [x] Persistent green "Offline ready" badge in TopBar when complete
+  (WiFi icon turns emerald with a filled state)
+- [~] Gates.com links: not modified in field mode (links still work
+  when connectivity returns; deferring the "saved for later" pattern)
 
 ---
 

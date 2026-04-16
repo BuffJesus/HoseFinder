@@ -20,6 +20,7 @@ import { FloatingBars } from "./src/components/FloatingBars.jsx";
 import { PreResultsStrips } from "./src/components/PreResultsStrips.jsx";
 import { ProjectBomRoute } from "./src/components/ProjectBomRoute.jsx";
 import { MeasurementGuideDialog } from "./src/components/MeasurementGuideDialog.jsx";
+import { FieldModeDialog, isFieldModeReady } from "./src/components/FieldModeDialog.jsx";
 import { FilterPanelContent } from "./src/components/FilterPanelContent.jsx";
 import { useCatalogData } from "./src/hooks/useCatalogData.js";
 import { useToasts } from "./src/hooks/useToasts.js";
@@ -124,6 +125,7 @@ export default function CoolantHoseFinder() {
   const [photoMeasureOpen, setPhotoMeasureOpen] = useState(false);
   const [bendBuilderOpen, setBendBuilderOpen] = useState(false);
   const [wirePhotoOpen, setWirePhotoOpen] = useState(false);
+  const [fieldModeOpen, setFieldModeOpen] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [showPresets, setShowPresets] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
@@ -521,6 +523,8 @@ export default function CoolantHoseFinder() {
         setUnitMode={setUnitMode}
         locale={locale}
         setLocale={setLocale}
+        onOpenFieldMode={() => setFieldModeOpen(true)}
+        fieldModeReady={isFieldModeReady()}
       />
       <ToastViewport toasts={toasts} />
       <KeyboardHelp open={keyboardHelpOpen} onClose={() => setKeyboardHelpOpen(false)} />
@@ -786,6 +790,11 @@ export default function CoolantHoseFinder() {
         }}
       />
 
+      <FieldModeDialog
+        open={fieldModeOpen}
+        onClose={() => setFieldModeOpen(false)}
+        allHoses={allHoses}
+      />
       <MeasurementGuideDialog
         open={showGuide}
         onOpenChange={setShowGuide}

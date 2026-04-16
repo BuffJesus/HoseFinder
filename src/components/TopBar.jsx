@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Sparkles, Bookmark, ChevronDown } from "lucide-react";
+import { Sparkles, Bookmark, ChevronDown, Wifi, WifiOff } from "lucide-react";
 import { useLocale } from "../context/i18n.jsx";
 import { AnimatedCount } from "./AnimatedCount.jsx";
 import { UnitToggle, LocaleToggle } from "./toggles.jsx";
@@ -21,12 +21,15 @@ const ACCENT = "from-violet-500 via-fuchsia-500 to-purple-500";
  *   setUnitMode?: (m: "in"|"mm") => void,
  *   locale: "en"|"es",
  *   setLocale?: (l: "en"|"es") => void,
+ *   onOpenFieldMode?: () => void,
+ *   fieldModeReady?: boolean,
  * }} props
  */
 export function TopBar({
   total, filtered, hasFilters,
   shortlistCount, onShowShortlist,
   unitMode, setUnitMode, locale, setLocale,
+  onOpenFieldMode, fieldModeReady,
 }) {
   const { t } = useLocale();
   const { scrollY } = useScroll();
@@ -88,6 +91,20 @@ export function TopBar({
                       />
                     </div>
                   </div>
+                  {onOpenFieldMode && (
+                    <button
+                      type="button"
+                      onClick={onOpenFieldMode}
+                      title={fieldModeReady ? "Offline ready" : "Set up offline mode"}
+                      className={`inline-flex h-8 w-8 items-center justify-center rounded-2xl border transition ${
+                        fieldModeReady
+                          ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-300"
+                          : "border-white/10 bg-white/[0.04] text-zinc-400 hover:border-violet-400/30 hover:text-white"
+                      }`}
+                    >
+                      {fieldModeReady ? <Wifi className="h-3.5 w-3.5" /> : <WifiOff className="h-3.5 w-3.5" />}
+                    </button>
+                  )}
                   {setLocale && <LocaleToggle locale={locale} onChange={setLocale} />}
                   {setUnitMode && <UnitToggle mode={unitMode} onChange={setUnitMode} />}
                   {shortlistCount > 0 && (
