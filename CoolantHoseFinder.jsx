@@ -11,7 +11,6 @@ import {
 } from "./src/lib/shapeBuckets.js";
 import { shapeSimilarity, findSimilarHoses } from "./src/lib/similarity.js";
 import { scoreAndFilter } from "./src/lib/filter.js";
-import { HoseSilhouette, MorphingHoseSilhouette, SILHOUETTE_FAMILIES } from "./src/components/HoseSilhouette.jsx";
 import { ToastViewport } from "./src/components/ToastViewport.jsx";
 import { KeyboardHelp } from "./src/components/KeyboardHelp.jsx";
 import { AnimatedCount } from "./src/components/AnimatedCount.jsx";
@@ -38,6 +37,7 @@ import { gatesUrl, gates360Url } from "./src/lib/gatesUrls.js";
 import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/context/i18n.jsx";
 import { TopBar } from "./src/components/TopBar.jsx";
 import { Hero } from "./src/components/Hero.jsx";
+import { FlowCards } from "./src/components/FlowCards.jsx";
 import { WizardSizesStep } from "./src/components/WizardSizesStep.jsx";
 import { WizardLengthStep } from "./src/components/WizardLengthStep.jsx";
 import { MeasurementGuide } from "./src/components/MeasurementGuide.jsx";
@@ -71,7 +71,7 @@ import { useKeyboardShortcuts } from "./src/hooks/useKeyboardShortcuts.js";
 import { PRESETS } from "./src/lib/presets.js";
 import { printShortlist as printShortlistCmd } from "./src/lib/printShortlist.js";
 import {
-  FLOW_CARDS, flowSummary as buildFlowSummary,
+  flowSummary as buildFlowSummary,
   sizeSummary as buildSizeSummary, lengthSummary as buildLengthSummary,
 } from "./src/lib/wizardSummaries.js";
 import {
@@ -89,7 +89,6 @@ import {
 // ./src/components/primitives.jsx — imported at top.
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
@@ -503,8 +502,8 @@ export default function CoolantHoseFinder() {
   // ── Visual families for dropdowns ─────────────────────────────────────────
   const sizeBands = useMemo(() => ["all", ...new Set(allHoses.map(h => h.sizeBand))], [allHoses]);
 
-  // Flow cards moved to ./src/lib/wizardSummaries.js
-  const flowCards = FLOW_CARDS;
+  // Flow cards live in ./src/lib/wizardSummaries.js; FlowCards component
+  // renders them directly.
 
   // ── Exact / close counts ──────────────────────────────────────────────────
   const exactCount = filtered.filter(h => h._matchQuality === "exact").length;
@@ -778,77 +777,13 @@ export default function CoolantHoseFinder() {
           {true ? (
             <>
               {(step === 1 || flow === "all") ? (
-                <div className="grid gap-3 md:grid-cols-3">
-                  {flowCards.map((card, i) => {
-                    const active = flow === card.key;
-                    return (
-                      <motion.button
-                        key={card.key}
-                        type="button"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.06, duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                        whileHover={{ y: -3 }}
-                        whileTap={{ scale: 0.985 }}
-                        onClick={() => {
-                          setFlow(card.key);
-                          setStep(2);
-                        }}
-                        className={`group relative overflow-hidden rounded-[28px] border p-5 text-left transition-[border-color,background-color,box-shadow] duration-300 ${
-                          active
-                            ? "border-violet-400/40 bg-violet-950/60 shadow-[0_18px_60px_-20px_rgba(139,92,246,0.55)]"
-                            : "border-zinc-800 bg-zinc-900 hover:border-violet-400/25 hover:bg-zinc-900 hover:shadow-[0_18px_60px_-28px_rgba(139,92,246,0.45)]"
-                        }`}
-                      >
-                        {active && (
-                          <motion.div
-                            layoutId="flowCardGlow"
-                            aria-hidden
-                            className={`pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${ACCENT}`}
-                            transition={{ type: "spring", stiffness: 280, damping: 30 }}
-                          />
-                        )}
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <div className="text-base font-semibold text-white">{card.title}</div>
-                              {active && (
-                                <motion.span
-                                  initial={{ scale: 0, opacity: 0 }}
-                                  animate={{ scale: 1, opacity: 1 }}
-                                  transition={{ type: "spring", stiffness: 380, damping: 22 }}
-                                  className={`inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r ${ACCENT} text-white shadow-[0_4px_14px_-2px_rgba(139,92,246,0.7)]`}
-                                >
-                                  <Check className="h-3 w-3" strokeWidth={3} />
-                                </motion.span>
-                              )}
-                            </div>
-                            <p className="mt-1.5 text-sm leading-6 text-zinc-400">{card.body}</p>
-                          </div>
-                          <Badge
-                            className={`rounded-full border-0 shrink-0 transition-colors ${
-                              active ? `bg-gradient-to-r ${ACCENT}` : "bg-white/10 text-zinc-300 group-hover:bg-white/15"
-                            }`}
-                          >
-                            {card.chip}
-                          </Badge>
-                        </div>
-                        <div
-                          className={`mt-4 rounded-[20px] border p-3 transition-colors duration-300 ${
-                            active
-                              ? "border-violet-400/30 text-violet-200"
-                              : "border-white/10 text-violet-300 group-hover:border-violet-400/20 group-hover:text-violet-200"
-                          }`}
-                          style={{ background: active ? "rgba(15,10,30,0.55)" : "rgba(0,0,0,0.4)" }}
-                        >
-                          <div className="h-16">
-                            <MorphingHoseSilhouette family={card.key} />
-                          </div>
-                        </div>
-                      </motion.button>
-                    );
-                  })}
-                </div>
+                <FlowCards
+                  flow={flow}
+                  onSelect={(key) => {
+                    setFlow(key);
+                    setStep(2);
+                  }}
+                />
               ) : (
                 <WizardSummaryStrip label="Step 1" value={flowSummary} onClick={() => setStep(1)} />
               )}
