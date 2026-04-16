@@ -88,8 +88,13 @@ push to `main` runs `.github/workflows/deploy.yml`:
    for tiny shell assets — the 77 MB image corpus lives at the repo root).
 3. Uploads `dist/` as a Pages artifact and `actions/deploy-pages@v4` publishes.
 
-**One-time repo setup** (already done, noted for future forks): Settings →
-Pages → Source: "GitHub Actions". No custom domain needed unless desired.
+**One-time repo setup — must be done manually once per fork:**
+Settings → Pages → Source → pick **"GitHub Actions"**. The workflow uses
+`actions/deploy-pages@v4`, which requires Actions mode — the default
+"Deploy from a branch" mode will happily serve raw source files
+(`src/main.jsx`, unbuilt `index.html`, etc.) and every built asset will
+404. `actions/configure-pages@v5`'s `enablement` flag can turn Pages on
+but won't switch an existing repo out of branch mode.
 
 For root-hosted deployments (Vercel, Netlify, custom domain), override:
 ```bash
