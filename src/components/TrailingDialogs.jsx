@@ -5,6 +5,7 @@
 // future dialogs a single drop-in location.
 
 import React from "react";
+import { Dialog } from "@/components/ui/dialog";
 import { ProjectManager } from "./ProjectManager.jsx";
 import { ShareImportDialog } from "./ShareImportDialog.jsx";
 import { SimilarShapeSheet } from "./SimilarShapeSheet.jsx";
@@ -12,6 +13,7 @@ import { PhotoMeasureDialog } from "./PhotoMeasureDialog.jsx";
 import { BendBuilderDialog } from "./BendBuilderDialog.jsx";
 import { WirePhotoDialog } from "./WirePhotoDialog.jsx";
 import { CompareModal } from "./CompareModal.jsx";
+import { DetailModal } from "./DetailModal.jsx";
 
 /**
  * @param {{
@@ -45,12 +47,21 @@ import { CompareModal } from "./CompareModal.jsx";
  *     open: boolean, onClose: () => void,
  *     hoses: any[], onRemove: (partNo: string) => void,
  *   },
+ *   detailModal: {
+ *     hose: any, onClose: () => void,
+ *     suggestions: any[], onShowRow: (rowNo: number) => void,
+ *     onFindSimilar: (h: any) => void,
+ *     rowCount: number, rowMeta: any,
+ *     shortlist: Set<string>, toggleShortlist: (partNo: string) => void,
+ *     compare: string[], toggleCompare: (partNo: string) => void,
+ *     pairSuggestions: any[], onDisablePairing: () => void,
+ *   },
  * }} props
  */
 export function TrailingDialogs({
   allHoses, onSelect,
   projectManager, shareImport, similarShape,
-  photoMeasure, bendBuilder, wirePhoto, compareModal,
+  photoMeasure, bendBuilder, wirePhoto, compareModal, detailModal,
 }) {
   return (
     <>
@@ -104,6 +115,24 @@ export function TrailingDialogs({
         onRemove={compareModal.onRemove}
         onSelect={(hose) => { compareModal.onClose(); onSelect(hose); }}
       />
+      <Dialog open={!!detailModal.hose} onOpenChange={(open) => !open && detailModal.onClose()}>
+        <DetailModal
+          hose={detailModal.hose}
+          onClose={detailModal.onClose}
+          suggestions={detailModal.suggestions}
+          onSelect={onSelect}
+          onShowRow={detailModal.onShowRow}
+          onFindSimilar={detailModal.onFindSimilar}
+          rowCount={detailModal.rowCount}
+          rowMeta={detailModal.rowMeta}
+          shortlist={detailModal.shortlist}
+          toggleShortlist={detailModal.toggleShortlist}
+          compare={detailModal.compare}
+          toggleCompare={detailModal.toggleCompare}
+          pairSuggestions={detailModal.pairSuggestions}
+          onDisablePairing={detailModal.onDisablePairing}
+        />
+      </Dialog>
     </>
   );
 }

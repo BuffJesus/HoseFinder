@@ -1,30 +1,12 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import { parseNaturalSize, fractionSuggestionsFor, COMMON_FRACTIONS } from "./src/lib/naturalSize.js";
 import { editDistance } from "./src/lib/strings.js";
-import {
-  ROLES, ROLE_LABEL, CANONICAL_ROLES_FOR_COMPLETE_BUILD,
-  roleKey, roleDisplay,
-} from "./src/lib/roles.js";
-import {
-  STEP_RATIOS, LENGTH_CLASSES, LENGTH_CLASS_BY_KEY,
-  CURVATURE_GROUPS, CURVATURE_BY_SIL, reducerStepRatio,
-} from "./src/lib/shapeBuckets.js";
-import { shapeSimilarity, findSimilarHoses } from "./src/lib/similarity.js";
 import { scoreAndFilter } from "./src/lib/filter.js";
 import { ToastViewport } from "./src/components/ToastViewport.jsx";
 import { KeyboardHelp } from "./src/components/KeyboardHelp.jsx";
 import { CatalogFooter } from "./src/components/CatalogFooter.jsx";
-import { UnitToggle, LocaleToggle } from "./src/components/toggles.jsx";
 import { UnitContext, useUnit } from "./src/context/unit.jsx";
-import { BottomSheet } from "./src/components/BottomSheet.jsx";
-import { GapExplainer } from "./src/components/GapExplainer.jsx";
 import { RecentlyViewedStrip } from "./src/components/RecentlyViewedStrip.jsx";
-import { HoseImage, ImageTile, hoseImgSrc, catalogImgSrc } from "./src/components/HoseImage.jsx";
-import { ShortlistButton } from "./src/components/ShortlistButton.jsx";
-import { PresetIcon, PresetsStrip } from "./src/components/PresetsStrip.jsx";
-import { pushMeasurementHistory } from "./src/lib/measurementHistory.js";
-import { RoleSection } from "./src/components/RoleSection.jsx";
-import { gatesUrl, gates360Url } from "./src/lib/gatesUrls.js";
+import { PresetsStrip } from "./src/components/PresetsStrip.jsx";
 import { LocaleContext, useLocale, createTranslator, LOCALES } from "./src/context/i18n.jsx";
 import { TopBar } from "./src/components/TopBar.jsx";
 import { Hero } from "./src/components/Hero.jsx";
@@ -36,18 +18,9 @@ import { WizardSection } from "./src/components/WizardSection.jsx";
 import { TrailingDialogs } from "./src/components/TrailingDialogs.jsx";
 import { FloatingBars } from "./src/components/FloatingBars.jsx";
 import { PreResultsStrips } from "./src/components/PreResultsStrips.jsx";
-import { MeasurementGuide } from "./src/components/MeasurementGuide.jsx";
-// ShareImportDialog is still used inside the ProjectOverview branch
-// (separate render from the main-page TrailingDialogs), so its import
-// stays even though TrailingDialogs owns the main-page mount.
-import { ShareImportDialog } from "./src/components/ShareImportDialog.jsx";
-import { DetailModal } from "./src/components/DetailModal.jsx";
-import { ProjectOverview } from "./src/components/ProjectOverview.jsx";
+import { ProjectBomRoute } from "./src/components/ProjectBomRoute.jsx";
+import { MeasurementGuideDialog } from "./src/components/MeasurementGuideDialog.jsx";
 import { FilterPanelContent } from "./src/components/FilterPanelContent.jsx";
-import {
-  enrichHose, SIZE_BAND_LABELS, APPLICATION_LABELS, SHAPE_LABELS,
-} from "./src/lib/enrichHose.js";
-import { SAMPLE_HOSES } from "./src/lib/sampleHoses.js";
 import { useCatalogData } from "./src/hooks/useCatalogData.js";
 import { useToasts } from "./src/hooks/useToasts.js";
 import { useProjectRoute } from "./src/hooks/useProjectRoute.js";
@@ -67,13 +40,10 @@ import {
   sizeSummary as buildSizeSummary, lengthSummary as buildLengthSummary,
 } from "./src/lib/wizardSummaries.js";
 import {
-  Ruler,
-  ArrowUpDown, Bookmark,
+  Ruler, Bookmark,
   Sparkles, ArrowRight,
   Filter, Link2, Keyboard,
 } from "lucide-react";
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -504,37 +474,27 @@ export default function CoolantHoseFinder() {
     if (flow !== "all" && step === 1) setStep(2);
   }, [flow, step]);
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // When the hash route resolves to #/project/:id, take over the whole
+  // page with the BOM editor — skip the wizard/results surface entirely.
   if (viewProjectId) {
-    const viewing = projects.find((p) => p.id === viewProjectId);
     return (
-      <UnitContext.Provider value={unitMode}>
-        <div className="dark" style={{ colorScheme: "dark" }}>
-          <div className="app-surface min-h-screen text-zinc-100">
-            <div className="grain" aria-hidden />
-            <ToastViewport toasts={toasts} />
-            <ProjectOverview
-              project={viewing}
-              hoses={allHoses}
-              onBack={closeProjectBom}
-              onRename={renameProject}
-              onRemoveHose={(partNo) => removeFromProject(viewProjectId, partNo)}
-              onUpdateNote={(partNo, text) => updateProjectNote(viewProjectId, partNo, text)}
-              onUpdateRole={(partNo, role) => updateProjectRole(viewProjectId, partNo, role)}
-              onDismissBanner={() => dismissMissingBanner(viewProjectId)}
-              onClearNotes={() => clearProjectNotes(viewProjectId)}
-              onShare={() => shareProjectUrl(viewProjectId)}
-            />
-            <ShareImportDialog
-              open={!!sharePayload}
-              payload={sharePayload}
-              hoses={allHoses}
-              onImport={importSharedProject}
-              onClose={closeShareImport}
-            />
-          </div>
-        </div>
-      </UnitContext.Provider>
+      <ProjectBomRoute
+        viewing={projects.find((p) => p.id === viewProjectId)}
+        unitMode={unitMode}
+        allHoses={allHoses}
+        toasts={toasts}
+        onBack={closeProjectBom}
+        onRename={renameProject}
+        onRemoveHose={(partNo) => removeFromProject(viewProjectId, partNo)}
+        onUpdateNote={(partNo, text) => updateProjectNote(viewProjectId, partNo, text)}
+        onUpdateRole={(partNo, role) => updateProjectRole(viewProjectId, partNo, role)}
+        onDismissBanner={() => dismissMissingBanner(viewProjectId)}
+        onClearNotes={() => clearProjectNotes(viewProjectId)}
+        onShare={() => shareProjectUrl(viewProjectId)}
+        sharePayload={sharePayload}
+        onImportShare={importSharedProject}
+        onCloseShareImport={closeShareImport}
+      />
     );
   }
 
@@ -819,42 +779,28 @@ export default function CoolantHoseFinder() {
             if (compared.length <= 1) setCompareModalOpen(false);
           },
         }}
+        detailModal={{
+          hose: selected,
+          onClose: () => setSelected(null),
+          suggestions,
+          onShowRow: showRow,
+          onFindSimilar: findSimilar,
+          rowCount: selected ? rowCounts[selected.rowNo] : 0,
+          rowMeta: selected ? rowMetaByNo[selected.rowNo] : null,
+          shortlist,
+          toggleShortlist,
+          compare,
+          toggleCompare,
+          pairSuggestions,
+          onDisablePairing: disablePairing,
+        }}
       />
 
-      {/* ── Detail modal ── */}
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <DetailModal
-          hose={selected}
-          onClose={() => setSelected(null)}
-          suggestions={suggestions}
-          onSelect={setSelected}
-          onShowRow={showRow}
-          onFindSimilar={findSimilar}
-          rowCount={selected ? rowCounts[selected.rowNo] : 0}
-          rowMeta={selected ? rowMetaByNo[selected.rowNo] : null}
-          shortlist={shortlist}
-          toggleShortlist={toggleShortlist}
-          compare={compare}
-          toggleCompare={toggleCompare}
-          pairSuggestions={pairSuggestions}
-          onDisablePairing={disablePairing}
-        />
-      </Dialog>
-
-      {/* ── Measurement guide ── */}
-      <Dialog open={showGuide} onOpenChange={setShowGuide}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto rounded-[32px] border-white/10 bg-zinc-950 text-zinc-100 sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-2xl text-white">
-              <Ruler className="h-6 w-6 text-violet-300" /> {t("guide.title")}
-            </DialogTitle>
-            <DialogDescription className="text-zinc-400">{t("guide.subtitle")}</DialogDescription>
-          </DialogHeader>
-          <div className="mt-3">
-            <MeasurementGuide />
-          </div>
-        </DialogContent>
-      </Dialog>
+      <MeasurementGuideDialog
+        open={showGuide}
+        onOpenChange={setShowGuide}
+        t={t}
+      />
 
       <CatalogFooter meta={catalogMeta} />
     </div>
