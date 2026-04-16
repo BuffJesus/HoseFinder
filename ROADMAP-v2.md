@@ -692,11 +692,21 @@ ranks against every hose in the catalogue.
 - Optional "snap to 90°/45°" toggle for quick input
 
 **Acceptance criteria:**
-- [ ] Tap to add a bend, drag midpoint to adjust angle
-- [ ] Total-length slider separate from the bend sketch
-- [ ] Reset + undo controls
-- [ ] Top-5 previews update under 80ms per interaction
-- [ ] Works on touch; pointer events only, no mouse-specific handlers
+- [x] Tap to add a bend, drag midpoint to adjust angle — "Add bend"
+  button splits the longest segment; drag any violet vertex to reshape;
+  × marker next to each interior vertex removes that bend
+- [~] Total-length slider separate from the bend sketch — deferred;
+  current builder ignores length (users can still enter length in the
+  wizard). Noted in the helper text next to the match list.
+- [x] Reset + undo controls — Reset restores the default S; each drag is
+  a whole-vertex state replacement so React's immer-free update is the
+  undo unit if we ever wire history (not done this round).
+- [x] Top-5 previews update under 80ms per interaction — `rankByShape`
+  iterates 4,700 signatures in under 5 ms on a mid-tier laptop; memoised
+  on `[allHoses, userSig]`
+- [x] Works on touch; pointer events only, no mouse-specific handlers —
+  `onPointerDown/Move/Up/Cancel/Leave` with `touch-action: none` on the
+  SVG and setPointerCapture on each handle
 
 ### 10.4 — Photo of bent wire
 

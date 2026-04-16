@@ -47,9 +47,10 @@ const TILES = [
  *   setCurvature: (s: Set<string>) => void,
  *   flow: string,
  *   setFlow: (f: string) => void,
+ *   onOpenBendBuilder?: () => void,
  * }} props
  */
-export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, setFlow }) {
+export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, setFlow, onOpenBendBuilder }) {
   const counts = useMemo(() => {
     const m = /** @type {Record<string, number>} */ ({});
     for (const h of candidates) {
@@ -99,6 +100,16 @@ export function QuickShapeStrip({ candidates, curvature, setCurvature, flow, set
             Tiles narrow to hoses with that routing. Combine with a size below.
           </p>
         </div>
+        {onOpenBendBuilder && (
+          <button
+            type="button"
+            onClick={onOpenBendBuilder}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-2xl border border-violet-400/30 bg-violet-500/15 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-violet-400/50 hover:bg-violet-500/25"
+          >
+            Sketch a custom shape
+            <span aria-hidden>→</span>
+          </button>
+        )}
       </div>
 
       <div className="grid gap-2.5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
