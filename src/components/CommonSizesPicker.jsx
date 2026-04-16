@@ -2,10 +2,11 @@
 // on real engines. Values stored and pasted as inch strings; `<Dim>` picks
 // up whatever unit the user is currently viewing.
 //
-// When a `validValues` Set is passed, chips not in the set render dimmed
-// with `aria-disabled="true"` and don't fire `onPick`. This lets the End 2
-// picker show only diameters that actually pair with the End 1 value in the
-// catalogue — same idea in reverse when the user starts with End 2.
+// When a `validValues` Set is passed, only the sizes that actually appear
+// alongside the other end in the catalogue are shown. Everything else is
+// omitted — e.g. if End 1 = 0.75", End 2 shows only the diameters Gates
+// actually ships with a 0.75" partner (1.0, 1.25, …). Plus the chip for
+// the user's current pick, so they can see what they selected.
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -29,8 +30,9 @@ const COMMON_IDS = [
  */
 export function CommonSizesPicker({ value, onPick, validValues = null, constraintLabel }) {
   const [open, setOpen] = useState(false);
-  const anyValid = !validValues
-    || COMMON_IDS.some((v) => isPairingValid(validValues, v));
+  const activeValue = (v) => value === v || parseFloat(value) === parseFloat(v);
+  const shownIds = COMMON_IDS.filter((v) => isPairingValid(validValues, v) || activeValue(v));
+  const hiddenCount = COMMON_IDS.length - shownIds.length;
   return (
     <div className="mt-1.5">
       <button
@@ -51,34 +53,35 @@ export function CommonSizesPicker({ value, onPick, validValues = null, constrain
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="mt-2 grid grid-cols-5 gap-1.5 sm:grid-cols-8">
-              {COMMON_IDS.map((v) => {
-                const active = value === v || parseFloat(value) === parseFloat(v);
-                const enabled = isPairingValid(validValues, v);
-                return (
-                  <button
-                    key={v}
-                    type="button"
-                    onClick={() => { if (enabled) onPick(v); }}
-                    aria-disabled={!enabled}
-                    title={!enabled ? "No catalog hose pairs this with the other end" : undefined}
-                    className={`rounded-xl border px-1.5 py-1 text-[11px] tabular transition ${
-                      active
-                        ? `border-violet-400/40 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 text-white shadow-[0_4px_14px_-4px_rgba(139,92,246,0.55)]`
-                        : enabled
-                          ? "border-white/10 bg-white/[0.04] text-zinc-300 hover:border-violet-400/25 hover:bg-white/[0.07] hover:text-white"
-                          : "border-white/5 bg-white/[0.01] text-zinc-600 cursor-not-allowed opacity-40"
-                    }`}
-                  >
-                    <Dim value={v} />
-                  </button>
-                );
-              })}
-            </div>
-            {!anyValid && validValues && (
+            {shownIds.length > 0 ? (
+              <div className="mt-2 grid grid-cols-5 gap-1.5 sm:grid-cols-8">
+                {shownIds.map((v) => {
+                  const active = activeValue(v);
+                  return (
+                    <button
+                      key={v}
+                      type="button"
+                      onClick={() => onPick(v)}
+                      className={`rounded-xl border px-1.5 py-1 text-[11px] tabular transition ${
+                        active
+                          ? `border-violet-400/40 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 text-white shadow-[0_4px_14px_-4px_rgba(139,92,246,0.55)]`
+                          : "border-white/10 bg-white/[0.04] text-zinc-300 hover:border-violet-400/25 hover:bg-white/[0.07] hover:text-white"
+                      }`}
+                    >
+                      <Dim value={v} />
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
               <div className="mt-2 rounded-xl border border-amber-400/25 bg-amber-500/8 px-3 py-2 text-[11px] text-amber-200">
                 No catalog hose pairs with the other end at any of the common sizes.
                 Clear the other end to see all options.
+              </div>
+            )}
+            {validValues && hiddenCount > 0 && shownIds.length > 0 && (
+              <div className="mt-1.5 text-[10px] text-zinc-500">
+                Showing only sizes that pair with the other end ({hiddenCount} hidden).
               </div>
             )}
           </motion.div>
